@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "g2lex-data"
+description = "Reproducible G2Lex data builds, manifests, releases, and catalog publication."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "Holger Nahrstaedt"}]
+dynamic = ["version"]
+dependencies = ["g2lex>=0.1.8,<0.2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.16", "build>=1", "tomli>=2; python_version < '3.11'"]
+
+[project.scripts]
+g2lex-data = "g2lex_data.cli:main"
+
+[project.urls]
+Repository = "https://github.com/buchwandler/g2lex-data"
+Issues = "https://github.com/buchwandler/g2lex-data/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "g2lex_data._version.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["g2lex_data*"]
+
+[tool.setuptools.package-data]
+g2lex_data = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

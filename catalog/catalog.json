@@ -1,0 +1,99 @@
+{
+  "artifacts": [
+    {
+      "asset": {
+        "entry_count": 6,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "e2263f3aebeb27d289767f9d7ca2a90f26a0251967fd400c3f56f0d3848140a5",
+        "name": "g2lex-de-de-demo.g2lex",
+        "schema": 1,
+        "sha256": "7220c0a31c2518b301b1a8320126a7b3116af8b49ef403757d0fd8869d68b908",
+        "size": 2076,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-de-de-demo.g2lex"
+      },
+      "data_version": "0.1.0",
+      "display_name": "German typed IPA demo",
+      "id": "de-de:demo",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "manifest": {
+        "name": "g2lex-de-de-demo.manifest.json",
+        "sha256": "905cb826c74d48234649eb238f70da9d9a2b1cd2cddcdf797644669eef9b93fb",
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-de-de-demo.manifest.json"
+      },
+      "name": "demo",
+      "phoneme_encoding": "ipa",
+      "release_tag": "data-0.1.0",
+      "source": {
+        "license_expression": "CC0-1.0",
+        "provider": "buchwandler",
+        "revision": "mvp-fixture-2"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 3,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "08aedd3ba7c8c39d7c7c20f6fbf5f9b612b7673aed83463df9fe8512d857397e",
+        "name": "g2lex-en-us-demo-cmu.g2lex",
+        "schema": 1,
+        "sha256": "402a06a15123f864520c177183f894e4cc2dc56e77c4813fb73e0d8cb245e5b1",
+        "size": 1988,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-en-us-demo-cmu.g2lex"
+      },
+      "data_version": "0.1.0",
+      "display_name": "English CMU/ARPABET demo",
+      "id": "en-us:demo-cmu",
+      "kind": "pronunciation",
+      "language": "en-US",
+      "manifest": {
+        "name": "g2lex-en-us-demo-cmu.manifest.json",
+        "sha256": "86c5e47da122fb56e2d52159ba814d5642f07be07d4906378baae86d58e0ff2d",
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-en-us-demo-cmu.manifest.json"
+      },
+      "name": "demo-cmu",
+      "phoneme_encoding": "arpabet",
+      "release_tag": "data-0.1.0",
+      "source": {
+        "license_expression": "CC0-1.0",
+        "provider": "buchwandler",
+        "revision": "mvp-fixture-2"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 3,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "a9b932f6d07c9e9b8ecaba19ce79e5bdaf578f48e38ba285b785867c5f1b651e",
+        "name": "g2lex-ja-jp-demo-words.g2lex",
+        "schema": 1,
+        "sha256": "a2affb68c00ba15b90985be49388d77d4c2a08faac0ab80a32875516dd9e95cb",
+        "size": 1948,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-ja-jp-demo-words.g2lex"
+      },
+      "data_version": "0.1.0",
+      "display_name": "Japanese membership demo",
+      "id": "ja-jp:demo-words",
+      "kind": "membership",
+      "language": "ja-JP",
+      "manifest": {
+        "name": "g2lex-ja-jp-demo-words.manifest.json",
+        "sha256": "b13068b3db48e05fd731ceb3519ab543632c91f4de6c015f5dfa3886e8b3ac3b",
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-ja-jp-demo-words.manifest.json"
+      },
+      "name": "demo-words",
+      "phoneme_encoding": "none",
+      "release_tag": "data-0.1.0",
+      "source": {
+        "license_expression": "CC0-1.0",
+        "provider": "buchwandler",
+        "revision": "mvp-fixture-2"
+      }
+    }
+  ],
+  "catalog_version": 1,
+  "data_version": "0.1.0",
+  "release_tag": "data-0.1.0",
+  "repository": "buchwandler/g2lex-data",
+  "runtime_contract": "g2lex-data.catalog.v1"
+}

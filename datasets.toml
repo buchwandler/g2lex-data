@@ -1,0 +1,62 @@
+schema_version = 1
+repository = "buchwandler/g2lex-data"
+catalog_version = 1
+runtime_contract = "g2lex-data.catalog.v1"
+release_tag_prefix = "data-"
+
+# Tiny self-owned fixtures prove typed IPA, ARPABET variants, and membership.
+# Production records should point at revision-pinned upstream sources.
+
+[[asset]]
+id = "de-de:demo"
+language = "de-DE"
+name = "demo"
+display_name = "German typed IPA demo"
+kind = "pronunciation"
+source = "sources/demo/de_demo.jsonl"
+source_format = "jsonl"
+source_id = "demo-de"
+source_sha256 = "61ee64a38c2a78764060d3472b00d8892232990daeb2d4114e91bb70186a471c"
+source_size = 389
+phoneme_encoding = "ipa"
+provider = "buchwandler"
+revision = "mvp-fixture-2"
+license_expression = "CC0-1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+attribution = "MVP fixture authored for buchwandler/g2lex-data"
+
+[[asset]]
+id = "en-us:demo-cmu"
+language = "en-US"
+name = "demo-cmu"
+display_name = "English CMU/ARPABET demo"
+kind = "pronunciation"
+source = "sources/demo/en_demo.dict"
+source_format = "cmudict"
+source_id = "demo-cmu"
+source_sha256 = "f4a9032364313faab7cd471cdbf10aa7ee0011b6967802898075bc6818dc5592"
+source_size = 68
+phoneme_encoding = "arpabet"
+provider = "buchwandler"
+revision = "mvp-fixture-2"
+license_expression = "CC0-1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+attribution = "MVP fixture authored for buchwandler/g2lex-data"
+
+[[asset]]
+id = "ja-jp:demo-words"
+language = "ja-JP"
+name = "demo-words"
+display_name = "Japanese membership demo"
+kind = "membership"
+source = "sources/demo/ja_words.txt"
+source_format = "words"
+source_id = "demo-ja-words"
+source_sha256 = "66804f0335d1fd5f76ce222b1d6295310111d405df8b597747af1efefe50a097"
+source_size = 21
+phoneme_encoding = "none"
+provider = "buchwandler"
+revision = "mvp-fixture-2"
+license_expression = "CC0-1.0"
+license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+attribution = "MVP fixture authored for buchwandler/g2lex-data"
