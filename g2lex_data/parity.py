@@ -37,7 +37,9 @@ def _value_difference(actual: Any, expected: Any) -> bool:
     return True
 
 
-def compare_asset(actual_path: Path, baseline_path: Path, expected: dict[str, Any]) -> dict[str, object]:
+def compare_asset(
+    actual_path: Path, baseline_path: Path, expected: dict[str, Any]
+) -> dict[str, object]:
     actual_hash = sha256_file(actual_path)
     with g2lex.open(actual_path) as actual, g2lex.open(baseline_path) as baseline:
         result: dict[str, object] = {
@@ -48,7 +50,10 @@ def compare_asset(actual_path: Path, baseline_path: Path, expected: dict[str, An
             "asset_sha256": actual_hash,
             "expected_asset_sha256": expected["asset_sha256"],
         }
-        if result["logical_sha256"] == expected["logical_sha256"] and len(actual) == expected["entry_count"]:
+        if (
+            result["logical_sha256"] == expected["logical_sha256"]
+            and len(actual) == expected["entry_count"]
+        ):
             result["ok"] = True
             result["comparison"] = "logical-hash"
             return result

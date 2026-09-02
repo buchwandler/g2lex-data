@@ -14,6 +14,7 @@ def _data_tag(config, version: str) -> str:
     prefix = config.release_tag_prefix
     return version if version.startswith(prefix) else f"{prefix}{version}"
 
+
 def _join_url(root: str, filename: str) -> str:
     return root.rstrip("/") + "/" + filename
 
@@ -24,11 +25,13 @@ def build_catalog(
     base_url: str | None = None,
     output: Path = CATALOG_PATH,
     ids: list[str] | None = None,
- ) -> dict[str, object]:
+) -> dict[str, object]:
     if not version or "/" in version or version.isspace():
         raise ValueError("version must be a non-empty release identifier")
     config = load_config()
-    records = config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    records = (
+        config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    )
     tag = _data_tag(config, version)
     root = base_url or _release_root(config.repository, tag)
     artifacts: list[dict[str, object]] = []

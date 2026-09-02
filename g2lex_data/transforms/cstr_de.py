@@ -31,7 +31,9 @@ def normalize_cstr(source: Path, output: Path) -> dict[str, object]:
                 skipped_header = True
                 continue
             if len(fields) not in (2, 3):
-                raise ValueError(f"{source}:{line_number}: expected two or three tab-separated fields")
+                raise ValueError(
+                    f"{source}:{line_number}: expected two or three tab-separated fields"
+                )
             word, pronunciation = fields[:2]
             if not word:
                 raise ValueError(f"{source}:{line_number}: empty spelling")

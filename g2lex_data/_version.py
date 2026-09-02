@@ -13,15 +13,19 @@ _TAG = re.compile(
     r"^v?(?P<base>\d+\.\d+\.\d+)(?:-(?P<count>\d+)-g(?P<sha>[0-9a-f]+))?(?P<dirty>-dirty)?$"
 )
 
+
 def _sdist_version(root: Path) -> str | None:
     try:
-        metadata = Parser().parsestr((root / "PKG-INFO").read_text(encoding="utf-8"), headersonly=True)
+        metadata = Parser().parsestr(
+            (root / "PKG-INFO").read_text(encoding="utf-8"), headersonly=True
+        )
     except (OSError, UnicodeError):
         return None
     if metadata.get("Name") != "g2lex-data":
         return None
     value = metadata.get("Version")
     return value.strip() if value and value.strip() else None
+
 
 def get_version() -> str:
     override = os.environ.get("G2LEX_DATA_VERSION")
@@ -30,7 +34,17 @@ def get_version() -> str:
     root = Path(__file__).resolve().parents[1]
     try:
         text = subprocess.check_output(
-            ["git", "-C", str(root), "describe", "--tags", "--long", "--dirty", "--match", "v[0-9]*"],
+            [
+                "git",
+                "-C",
+                str(root),
+                "describe",
+                "--tags",
+                "--long",
+                "--dirty",
+                "--match",
+                "v[0-9]*",
+            ],
             stderr=subprocess.DEVNULL,
             text=True,
             timeout=2,
@@ -53,5 +67,6 @@ def get_version() -> str:
         local.append("dirty")
     version = f"{base}.post{count}" if count else f"{base}.dev0"
     return version + ("+" + ".".join(local) if local else "")
+
 
 __version__ = get_version()

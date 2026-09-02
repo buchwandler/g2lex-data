@@ -64,8 +64,7 @@ REVIEWED_COLLISION_POLICIES: Mapping[str, Mapping[str, object]] = {
         "allowed_pos": ("DET", "PRON"),
         "drop_pos": ("NOUN",),
         "reason": (
-            "Sentence-initial German article/pronoun must not resolve "
-            "to technical noun Die /daɪ/."
+            "Sentence-initial German article/pronoun must not resolve to technical noun Die /daɪ/."
         ),
     },
 }
@@ -119,9 +118,7 @@ def parse_crane_rows(path: Path) -> list[CraneRow]:
         for source_index, line in enumerate(stream):
             fields = line.rstrip("\r\n").split("\t")
             if len(fields) != 2:
-                raise ValueError(
-                    f"{path}:{source_index + 1}: expected spelling and pronunciation"
-                )
+                raise ValueError(f"{path}:{source_index + 1}: expected spelling and pronunciation")
             spelling = unicodedata.normalize("NFC", fields[0])
             pronunciation = unicodedata.normalize("NFC", fields[1].strip())
             if not spelling:
@@ -139,9 +136,7 @@ def group_lowercase(rows: Iterable[CraneRow]) -> dict[str, LowercaseGroup]:
         key = normalize_key(row.source_spelling)
         group = groups.setdefault(key, LowercaseGroup(key))
         pair = (row.source_spelling, row.pronunciation)
-        if not any(
-            (old.source_spelling, old.pronunciation) == pair for old in group.rows
-        ):
+        if not any((old.source_spelling, old.pronunciation) == pair for old in group.rows):
             group.rows.append(row)
     return groups
 
@@ -202,9 +197,7 @@ def resolve_group(
     for row in group.rows:
         if row.pronunciation not in pronunciations:
             pronunciations.append(row.pronunciation)
-    exact_lowercase = [
-        row.pronunciation for row in group.rows if row.source_spelling == group.key
-    ]
+    exact_lowercase = [row.pronunciation for row in group.rows if row.source_spelling == group.key]
     default = exact_lowercase[0] if exact_lowercase else pronunciations[0]
     report: dict[str, object] = {
         "key": group.key,
@@ -230,15 +223,11 @@ def resolve_group(
     report["source"] = source_report
 
     policy = REVIEWED_COLLISION_POLICIES.get(group.key)
-    is_interesting = (
-        len(source_report) > 1 or len(pronunciations) > 1 or policy is not None
-    )
+    is_interesting = len(source_report) > 1 or len(pronunciations) > 1 or policy is not None
     if not is_interesting:
         report.update(
             {
-                "output": default
-                if len(pronunciations) == 1
-                else tuple(pronunciations),
+                "output": default if len(pronunciations) == 1 else tuple(pronunciations),
                 "policy": None,
             }
         )
@@ -266,9 +255,7 @@ def resolve_group(
     if policy is not None:
         policy_default = str(policy["default"])
         if policy_default not in pronunciations:
-            raise ValueError(
-                f"reviewed policy default is absent from Crane group {group.key!r}"
-            )
+            raise ValueError(f"reviewed policy default is absent from Crane group {group.key!r}")
         selectors = {"DEFAULT": policy_default}
         allowed = set(policy["allowed_pos"])
         for selector, pronunciation in matched.items():
@@ -282,11 +269,7 @@ def resolve_group(
     else:
         report["policy"] = "lexhint" if matched else "unresolved"
 
-    value = (
-        _ordered_selectors(selectors)
-        if len(selectors) > 1
-        else _plain_value(pronunciations)
-    )
+    value = _ordered_selectors(selectors) if len(selectors) > 1 else _plain_value(pronunciations)
     report["output"] = value
     report["matched"] = dict(sorted(matched.items()))
     return ResolvedCraneEntry(group.key, value, report)
@@ -313,12 +296,8 @@ def transform_crane(
         source_spellings = {row.source_spelling for row in group.rows}
         pronunciations = {row.pronunciation for row in group.rows}
         policy = REVIEWED_COLLISION_POLICIES.get(key)
-        interesting = (
-            len(source_spellings) > 1 or len(pronunciations) > 1 or policy is not None
-        )
-        candidates = (
-            collect_lexhint_candidates(lexhint_lexicon, key) if interesting else ()
-        )
+        interesting = len(source_spellings) > 1 or len(pronunciations) > 1 or policy is not None
+        candidates = collect_lexhint_candidates(lexhint_lexicon, key) if interesting else ()
         resolved = resolve_group(group, lexhint_entries=candidates)
         entries[key] = resolved.value
         if interesting:
@@ -394,15 +373,9 @@ def main() -> int:
             )
         )
     if args.show_collisions:
-        print(
-            json.dumps(
-                result.report["groups"], ensure_ascii=False, indent=2, sort_keys=True
-            )
-        )
+        print(json.dumps(result.report["groups"], ensure_ascii=False, indent=2, sort_keys=True))
     if args.strict and int(result.report["unresolved_count"]) > 0:
-        raise SystemExit(
-            f"unresolved lowercase collisions: {result.report['unresolved_count']}"
-        )
+        raise SystemExit(f"unresolved lowercase collisions: {result.report['unresolved_count']}")
     return 0
 
 

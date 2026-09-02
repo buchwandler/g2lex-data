@@ -14,7 +14,9 @@ from .validate import validate_all
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="g2lex-data", description="Build and publish G2Lex data assets")
+    parser = argparse.ArgumentParser(
+        prog="g2lex-data", description="Build and publish G2Lex data assets"
+    )
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -33,7 +35,6 @@ def main(argv: list[str] | None = None) -> int:
 
     p_download = sub.add_parser("download-source")
     p_download.add_argument("id")
-
 
     sub.add_parser("sources")
 

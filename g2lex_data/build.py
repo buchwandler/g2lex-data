@@ -32,9 +32,7 @@ def validate_source(record: AssetConfig, *, parse: bool = True) -> dict[str, obj
         raise ValueError(f"source SHA-256 mismatch for {record.id}")
     if not parse:
         return {}
-    parsed = g2lex.read_typed_lexicon(
-        path, format=record.source_format, source_id=record.source_id
-    )
+    parsed = g2lex.read_typed_lexicon(path, format=record.source_format, source_id=record.source_id)
     values = tuple(parsed.entries.values())
     if record.kind == "membership":
         if not values or any(value is not g2lex.WORD_ONLY for value in values):
@@ -68,9 +66,7 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
         transform_result = apply(record, record.source_path, Path(temp_name))
         input_path = transform_result.input_path if transform_result else record.source_path
         input_format = transform_result.input_format if transform_result else record.source_format
-        g2lex.read_typed_lexicon(
-            input_path, format=input_format, source_id=record.source_id
-        )
+        g2lex.read_typed_lexicon(input_path, format=input_format, source_id=record.source_id)
         g2lex.pack_file(
             input_path,
             asset_path,
@@ -156,7 +152,9 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
     return manifest
 
 
-def build(ids: list[str] | None = None, *, data_version: str = "unreleased") -> tuple[dict[str, object], ...]:
+def build(
+    ids: list[str] | None = None, *, data_version: str = "unreleased"
+) -> tuple[dict[str, object], ...]:
     config = load_config()
     records = config.assets if not ids else tuple(config.asset(identifier) for identifier in ids)
     return tuple(build_one(record, data_version=data_version) for record in records)

@@ -47,7 +47,8 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     report = temp_dir / f"{record.slug}.transform-report.json"
     cstr_de.report_json(result.report)
     report.write_text(
-        __import__("json").dumps(result.report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        __import__("json").dumps(result.report, ensure_ascii=False, sort_keys=True, indent=2)
+        + "\n",
         encoding="utf-8",
     )
     metadata = {

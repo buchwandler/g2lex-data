@@ -16,7 +16,7 @@ def validate_one(
     *,
     verify_transform: bool = True,
     verify_source: bool = True,
- ) -> None:
+) -> None:
     source_info = validate_source(record, parse=verify_source)
     asset_path = ASSET_DIR / record.asset_name
     manifest_path = MANIFEST_DIR / record.manifest_name
@@ -54,11 +54,16 @@ def validate_one(
 
 def validate_catalog(path: Path = CATALOG_PATH, *, ids: list[str] | None = None) -> None:
     catalog = read_json(path)
-    if catalog.get("catalog_version") != 1 or catalog.get("runtime_contract") != "g2lex-data.catalog.v1":
+    if (
+        catalog.get("catalog_version") != 1
+        or catalog.get("runtime_contract") != "g2lex-data.catalog.v1"
+    ):
         raise ValueError("unsupported catalog contract")
     artifacts = catalog.get("artifacts")
     config = load_config()
-    records = config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    records = (
+        config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    )
     if not isinstance(artifacts, list) or len(artifacts) != len(records):
         raise ValueError("catalog must contain exactly one artifact per configured asset")
     expected_ids = {record.id for record in records}
@@ -95,12 +100,12 @@ def validate_all(
     ids: list[str] | None = None,
     verify_transform: bool = True,
     verify_source: bool = True,
- ) -> None:
+) -> None:
     config = load_config()
-    records = config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    records = (
+        config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    )
     for record in records:
-        validate_one(
-            record, verify_transform=verify_transform, verify_source=verify_source
-        )
+        validate_one(record, verify_transform=verify_transform, verify_source=verify_source)
     if catalog:
         validate_catalog(ids=ids)
