@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import json
+from pathlib import Path
 
 from . import __version__
 from .build import build
 from .catalog import build_catalog
-from .download import download_source
+from .download import download_source, validate_sources
+from .parity import compare_german
 from .release import prepare_release
 from .validate import validate_all
 
@@ -31,6 +34,12 @@ def main(argv: list[str] | None = None) -> int:
     p_download = sub.add_parser("download-source")
     p_download.add_argument("id")
 
+
+    sub.add_parser("sources")
+
+    p_parity = sub.add_parser("parity")
+    p_parity.add_argument("--baseline", type=Path)
+    p_parity.add_argument("--baseline-dir", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.command == "build":
         manifests = build(args.ids)
@@ -46,6 +55,18 @@ def main(argv: list[str] | None = None) -> int:
         print(prepare_release(args.data_version))
     elif args.command == "download-source":
         download_source(args.id)
+    elif args.command == "sources":
+        validate_sources()
+        print("sources OK")
+    elif args.command == "parity":
+        result = (
+            compare_german(args.baseline, baseline_dir=args.baseline_dir)
+            if args.baseline
+            else compare_german(baseline_dir=args.baseline_dir)
+        )
+        print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+        if not result["ok"]:
+            return 1
     return 0
 
 

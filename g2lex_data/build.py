@@ -1,14 +1,18 @@
 from __future__ import annotations
 
+import tempfile
 from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
 
 import g2lex
 
 from . import __version__
 from .common import ASSET_DIR, MANIFEST_DIR, sha256_file, write_json
 from .config import AssetConfig, load_config
+from .transforms import TransformResult, apply
 
-GENERATOR_CONTRACT = 1
+MANIFEST_SCHEMA_VERSION = 1
+GENERATOR_CONTRACT = 2
 
 
 def _g2lex_version() -> str:
@@ -18,7 +22,7 @@ def _g2lex_version() -> str:
         return getattr(g2lex, "__version__", "0+unknown")
 
 
-def validate_source(record: AssetConfig) -> None:
+def validate_source(record: AssetConfig, *, parse: bool = True) -> dict[str, object]:
     path = record.source_path
     if not path.is_file():
         raise FileNotFoundError(f"missing source for {record.id}: {path}")
@@ -26,72 +30,112 @@ def validate_source(record: AssetConfig) -> None:
         raise ValueError(f"source size mismatch for {record.id}")
     if sha256_file(path) != record.source_sha256:
         raise ValueError(f"source SHA-256 mismatch for {record.id}")
+    if not parse:
+        return {}
+    parsed = g2lex.read_typed_lexicon(
+        path, format=record.source_format, source_id=record.source_id
+    )
+    values = tuple(parsed.entries.values())
+    if record.kind == "membership":
+        if not values or any(value is not g2lex.WORD_ONLY for value in values):
+            raise ValueError(f"membership source is not WORD_ONLY: {path}")
+    elif any(value is g2lex.WORD_ONLY for value in values):
+        raise ValueError(f"pronunciation source contains WORD_ONLY: {path}")
+    return {
+        "entry_count": len(parsed),
+        "logical_sha256": parsed.logical_sha256,
+        "format": record.source_format,
+    }
 
 
-def build_one(record: AssetConfig) -> dict[str, object]:
-    validate_source(record)
+def _transform_metadata(result: TransformResult | None) -> dict[str, object]:
+    if result is None:
+        return {}
+    return {
+        "id": result.metadata.get("transform"),
+        "inputs": result.metadata.get("transform_inputs", {}),
+        "report_sha256": result.metadata.get("transform_report_sha256"),
+    }
+
+
+def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[str, object]:
+    source_info = validate_source(record)
     ASSET_DIR.mkdir(parents=True, exist_ok=True)
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     asset_path = ASSET_DIR / record.asset_name
-    metadata: dict[str, object] = {
-        "catalog_id": record.id,
-        "source_id": record.source_id,
-        "display_name": record.display_name,
-        "language": record.language,
-        "locale": record.language,
-        "provider": record.provider,
-        "revision": record.revision,
-        "pronunciation_alphabet": record.phoneme_encoding,
-        "license_expression": record.license_expression,
-        "license_url": record.license_url,
-        "attribution": record.attribution,
-        "data_kind": record.kind,
-        "parser_id": record.source_format,
-        "parser_version": "1",
-        "producer": "g2lex-data",
-        "producer_version": __version__,
-    }
-    if record.source_url:
-        metadata["source_url"] = record.source_url
 
-    packed = g2lex.pack_file(
-        record.source_path,
-        asset_path,
-        input_format=record.source_format,
-        source_id=record.source_id,
-        metadata=metadata,
-    )
-    verified = g2lex.verify_file(
-        record.source_path,
-        asset_path,
-        input_format=record.source_format,
-    )
-    if not verified.get("lossless"):
-        raise ValueError(f"lossless verification failed for {record.id}: {verified}")
-    inspected = g2lex.inspect_file(asset_path)
+    with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
+        transform_result = apply(record, record.source_path, Path(temp_name))
+        input_path = transform_result.input_path if transform_result else record.source_path
+        input_format = transform_result.input_format if transform_result else record.source_format
+        g2lex.read_typed_lexicon(
+            input_path, format=input_format, source_id=record.source_id
+        )
+        g2lex.pack_file(
+            input_path,
+            asset_path,
+            input_format=input_format,
+            source_id=record.source_id,
+            metadata={
+                "schema_version": 1,
+                "contract_version": 1,
+                "catalog_id": record.id,
+                "language": record.language,
+                "name": record.name,
+                "display_name": record.display_name,
+                "kind": record.kind,
+                "phoneme_encoding": record.phoneme_encoding,
+                "source_id": record.source_id,
+                "source_format": record.source_format,
+                "provider": record.provider,
+                "revision": record.revision,
+                "source_url": record.source_url,
+                "license_expression": record.license_expression,
+                "license_url": record.license_url,
+                "attribution": record.attribution,
+                "data_version": data_version,
+                "producer": "g2lex-data",
+                "producer_version": __version__,
+                "g2lex_version": _g2lex_version(),
+                "transform": _transform_metadata(transform_result),
+            },
+        )
+        verification = g2lex.verify_file(input_path, asset_path, input_format=input_format)
+        if not verification.get("lossless"):
+            raise ValueError(f"lossless verification failed for {record.id}: {verification}")
+        inspected = g2lex.inspect_file(asset_path)
+
     manifest: dict[str, object] = {
-        "manifest_version": 1,
+        "manifest_version": MANIFEST_SCHEMA_VERSION,
+        "contract_version": 1,
         "id": record.id,
         "language": record.language,
         "name": record.name,
         "display_name": record.display_name,
         "kind": record.kind,
         "phoneme_encoding": record.phoneme_encoding,
+        "data_version": data_version,
+        "producer": {"name": "g2lex-data", "version": __version__},
+        "g2lex": {"version": _g2lex_version(), "generator_contract": GENERATOR_CONTRACT},
         "source": {
+            "id": record.source_id,
             "path": record.source,
             "format": record.source_format,
-            "source_id": record.source_id,
+            "url": record.source_url,
+            "revision": record.revision,
             "sha256": record.source_sha256,
             "size": record.source_size,
+            "entry_count": source_info["entry_count"],
+            "logical_sha256": source_info["logical_sha256"],
             "provider": record.provider,
-            "revision": record.revision,
-            "url": record.source_url,
             "license_expression": record.license_expression,
             "license_url": record.license_url,
             "attribution": record.attribution,
         },
+        "transform": _transform_metadata(transform_result),
         "asset": {
             "name": record.asset_name,
+            "filename": record.asset_name,
             "sha256": sha256_file(asset_path),
             "size": asset_path.stat().st_size,
             "format": inspected["format"],
@@ -99,20 +143,20 @@ def build_one(record: AssetConfig) -> dict[str, object]:
             "entry_count": inspected["entry_count"],
             "logical_sha256": inspected["logical_sha256"],
         },
-        "build": {
-            "g2lex_version": _g2lex_version(),
-            "producer_version": __version__,
-            "generator_contract": GENERATOR_CONTRACT,
-            "deterministic": True,
-            "self_verified": bool(packed.get("self_verified")),
+        "verification": {
+            "source_integrity": True,
+            "transform_deterministic": True,
             "lossless": True,
+            "typed_values_preserved": True,
+            "variant_order_preserved": True,
+            "generated_from_validated_output": True,
         },
     }
     write_json(MANIFEST_DIR / record.manifest_name, manifest)
     return manifest
 
 
-def build(ids: list[str] | None = None) -> tuple[dict[str, object], ...]:
+def build(ids: list[str] | None = None, *, data_version: str = "unreleased") -> tuple[dict[str, object], ...]:
     config = load_config()
     records = config.assets if not ids else tuple(config.asset(identifier) for identifier in ids)
-    return tuple(build_one(record) for record in records)
+    return tuple(build_one(record, data_version=data_version) for record in records)

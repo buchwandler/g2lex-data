@@ -1,0 +1,97 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+import g2lex
+
+from .common import ASSET_DIR, sha256_file
+from .config import load_config
+
+BASELINE_PATH = Path(__file__).resolve().parents[1] / "baseline" / "kokoro-german.json"
+
+
+def load_baseline(path: Path = BASELINE_PATH) -> dict[str, Any]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("schema_version") != 1 or data.get("producer") != "KokoroG2P":
+        raise ValueError("unsupported Kokoro baseline format")
+    if not isinstance(data.get("assets"), dict):
+        raise TypeError("baseline assets must be an object")
+    return data
+
+
+def _baseline_asset_path(root: Path, name: str) -> Path:
+    candidates = (root / name, root / "kokorog2p" / "lexicons" / "data" / name)
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    raise FileNotFoundError(f"baseline asset not found: {name}")
+
+
+def _value_difference(actual: Any, expected: Any) -> bool:
+    if actual == expected:
+        return False
+    if hasattr(actual, "items") and hasattr(expected, "items"):
+        return dict(actual.items) != dict(expected.items)
+    return True
+
+
+def compare_asset(actual_path: Path, baseline_path: Path, expected: dict[str, Any]) -> dict[str, object]:
+    actual_hash = sha256_file(actual_path)
+    with g2lex.open(actual_path) as actual, g2lex.open(baseline_path) as baseline:
+        result: dict[str, object] = {
+            "entry_count": len(actual),
+            "expected_entry_count": expected["entry_count"],
+            "logical_sha256": actual.metadata.get("logical_sha256"),
+            "expected_logical_sha256": expected["logical_sha256"],
+            "asset_sha256": actual_hash,
+            "expected_asset_sha256": expected["asset_sha256"],
+        }
+        if result["logical_sha256"] == expected["logical_sha256"] and len(actual) == expected["entry_count"]:
+            result["ok"] = True
+            result["comparison"] = "logical-hash"
+            return result
+        actual_keys = set(actual)
+        baseline_keys = set(baseline)
+        missing = sorted(baseline_keys - actual_keys)
+        extra = sorted(actual_keys - baseline_keys)
+        mismatch = None
+        for key in sorted(actual_keys & baseline_keys):
+            if _value_difference(actual.get(key), baseline.get(key)):
+                mismatch = key
+                break
+        result.update(
+            {
+                "missing_keys": missing[:20],
+                "extra_keys": extra[:20],
+                "value_mismatch": mismatch,
+                "ok": not missing and not extra and mismatch is None,
+                "comparison": "logical-content",
+            }
+        )
+        return result
+
+
+def compare_german(
+    baseline_path: Path = BASELINE_PATH,
+    *,
+    baseline_dir: Path,
+) -> dict[str, object]:
+    baseline = load_baseline(baseline_path)
+    results: dict[str, object] = {}
+    for record in load_config().assets:
+        if not record.id.startswith("de-de:"):
+            continue
+        expected = baseline["assets"].get(record.id)
+        if expected is None:
+            continue
+        if not isinstance(expected, dict):
+            raise TypeError(f"invalid baseline record for {record.id}")
+        results[record.id] = compare_asset(
+            ASSET_DIR / record.asset_name,
+            _baseline_asset_path(baseline_dir, str(expected["asset_name"])),
+            expected,
+        )
+    failed = [identifier for identifier, result in results.items() if not result["ok"]]
+    return {"baseline": str(baseline_path), "assets": results, "ok": not failed}

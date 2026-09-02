@@ -2,14 +2,62 @@
 
 ## Ownership
 
-`g2lex-data` owns producer-side concerns: source acquisition, pinned revisions and hashes, source adapters, deterministic compilation, source-to-G2Lex parity checks, provenance, licenses, manifests, releases, and catalog publication.
+`g2lex-data` is the authoritative producer for generic lexicon data. It owns source
+inventory and acquisition, immutable revisions and hashes, source adapters, versioned
+semantic transforms, deterministic G2Lex compilation, source-to-transformed-input
+verification, manifests, provenance, releases, and catalog publication.
 
-It does not own tokenization, pronunciation lookup policy, fallback engines, POS tagging, IPA conversion for a speech model, or application-specific lexicon priority.
+Lexphon owns installation, caching, lookup policy, and phonemization. KokoroG2P owns
+Kokoro-specific IPA conversion, ratings, runtime precedence, and fallback behavior.
+Those responsibilities are not duplicated here.
 
-## Release rule
+## Production pipeline
 
-A data release is immutable. Updating an upstream source creates a new data version; old catalog records must continue to resolve to the historical release assets.
+```text
+pinned source + provenance
+          |
+          v
+source integrity and parser
+          |
+          v
+versioned transform registry
+          |
+          v
+validated generic G2Lex input
+          |
+          v
+G2Lex asset + manifest
+          |
+          v
+immutable release + catalog v1
+          |
+          v
+Lexphon installation
+```
 
-## Catalog consumer
+Transform IDs are immutable contracts. Unknown IDs fail, and semantic changes require a
+new ID and data release. Crane uses the documented LexHint entry/POS/pronunciation
+interface only while building. CSTR German sources use the `cstr-de-ipa-v1` adapter,
+which removes one outer delimiter pair, skips only the documented header, preserves
+internal slashes and variant order, and ignores only optional source annotations.
 
-The catalog is deliberately generic. Runtime policy belongs to Lexphon or another consumer. In particular, it must not encode Kokoro ratings, model vocabulary rules, or fallback decisions.
+## Artifact contracts
+
+Every manifest records the schema and contract versions, stable ID, language, name, kind,
+encoding, data and producer versions, G2Lex version, source identity and provenance,
+transform inputs and report hash, actual asset hash and size, logical hash, and entry
+counts. Build validation checks source integrity, transformed-input losslessness, typed and
+ordered values, deterministic rebuilds, and manifest/file consistency.
+
+The v1 catalog contains one current artifact per ID and exposes immutable asset and
+manifest URLs, hashes, sizes, logical hash, release tag, encoding, and provider/license
+summary. Releases are data-versioned independently from Python tooling and existing
+versions cannot be overwritten.
+
+## Compatibility boundary
+
+The current German Kokoro assets are frozen in `baseline/kokoro-german.json`. A parity
+command can compare a supplied KokoroG2P checkout by logical hash and, when needed, by
+complete key membership and values including tagged selectors and ordered variants. This
+is a migration gate only. No KokoroG2P runtime asset or behavior is changed by this
+repository.

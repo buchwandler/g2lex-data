@@ -10,7 +10,7 @@ import g2lex
 from g2lex_data import __version__
 from g2lex_data.build import build_one
 from g2lex_data.catalog import build_catalog
-from g2lex_data.common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR
+from g2lex_data.common import ASSET_DIR, CATALOG_PATH
 from g2lex_data.config import ROOT, load_config
 from g2lex_data.release import prepare_release
 from g2lex_data.validate import validate_all, validate_one
@@ -56,23 +56,28 @@ def test_membership_asset_round_trips() -> None:
 
 
 def test_catalog_supports_production_and_local_release_roots(tmp_path: Path) -> None:
-    for record in load_config().assets:
-        build_one(record)
-    catalog = build_catalog("0.1.0")
+    demo_ids = ["de-de:demo", "en-us:demo-cmu", "ja-jp:demo-words"]
+    for identifier in demo_ids:
+        build_one(load_config().asset(identifier))
+    catalog = build_catalog("0.1.0", ids=demo_ids)
     assert catalog["release_tag"] == "data-0.1.0"
     for artifact in catalog["artifacts"]:
         assert "/releases/download/data-0.1.0/" in artifact["asset"]["url"]
 
-    local = build_catalog("0.1.0", base_url=tmp_path.as_uri(), output=tmp_path / "catalog.json")
+    local = build_catalog(
+        "0.1.0", base_url=tmp_path.as_uri(), output=tmp_path / "catalog.json", ids=demo_ids
+    )
     assert all(item["asset"]["url"].startswith("file://") for item in local["artifacts"])
 
 
 def test_release_is_self_contained() -> None:
-    release_dir = prepare_release("0.1.0")
+    demo_ids = ["de-de:demo", "en-us:demo-cmu", "ja-jp:demo-words"]
+    release_dir = prepare_release("0.1.0", ids=demo_ids)
     release = json.loads((release_dir / "release.json").read_text(encoding="utf-8"))
     assert release["asset_count"] == 3
     assert (release_dir / "catalog.json").is_file()
-    validate_all(catalog=True)
-    for record in load_config().assets:
+    validate_all(catalog=True, ids=demo_ids)
+    for identifier in demo_ids:
+        record = load_config().asset(identifier)
         assert (release_dir / record.asset_name).is_file()
         assert (release_dir / record.manifest_name).is_file()

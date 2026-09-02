@@ -1,0 +1,42 @@
+{
+  "assets": {
+    "de-de:crane": {
+      "asset_name": "de_crane.g2lex",
+      "asset_sha256": "c1282dd43439347f32e7c9fb2bf5c658d9dd9d08937447b89426cd63c37ea6ca",
+      "entry_count": 826871,
+      "logical_sha256": "2381391dc5c0ea083816c1d3cac9002d16750e05038dc3ac97690115b9007efa",
+      "source_entry_count": 837539,
+      "source_sha256": "04a3909f07cd08615157393814188b420a7c3c5035cf7a0608d31be07892be29",
+      "source_transform": "de-crane-lowercase-lexhint-v1"
+    },
+    "de-de:espeak": {
+      "asset_name": "de_espeak.g2lex",
+      "asset_sha256": "ef1b8954172332c2c8871b43dc24537c19c791aa896d103da7a70fa60b2474d4",
+      "entry_count": 667295,
+      "logical_sha256": "4c975e8348d2e8cb288f9b9530dcf26d7ac1527fec2d43457fa77481d562279d",
+      "source_entry_count": 667295,
+      "source_sha256": "190b62f1ddcf6616b62214173f05b09804635b170f75b9877eceab20b1624dbf",
+      "source_transform": null
+    },
+    "de-de:gold": {
+      "asset_name": "de_gold.g2lex",
+      "asset_sha256": "00afc53e8d550f7fdafa2ca6dfad418d4a38bac75729c89e3ee206b5beed617c",
+      "entry_count": 738427,
+      "logical_sha256": "530f4787a2accd9824526749b90f43d4edaf2506f0aa385056a83913cb6ee48a",
+      "source_entry_count": 738427,
+      "source_sha256": "2c30bcbb0a9a4fa172943026eea572f1e4ba82a799920b9d96e6ace59d273639",
+      "source_transform": null
+    },
+    "de-de:olaph": {
+      "asset_name": "de_olaph.g2lex",
+      "asset_sha256": "92c994c52f691d3f1869d31116c035c2d2c4b2cf1170895af63d9f86e46e9fc3",
+      "entry_count": 965839,
+      "logical_sha256": "c0dc2c87cf6f229ae88e66c2f4b3c03876f9f95df615e82c0133f0e3778c296d",
+      "source_entry_count": 965839,
+      "source_sha256": "aa70d85ce245c8a8f1db2cc109a0f3da6594eaba5b414a61bcd28f1ccc40ca46",
+      "source_transform": null
+    }
+  },
+  "producer": "KokoroG2P",
+  "schema_version": 1
+}

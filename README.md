@@ -1,64 +1,47 @@
 # g2lex-data
 
-Reproducible source acquisition, provenance, validation, release packaging, and catalog publication for lexicons compiled with [G2Lex](https://github.com/buchwandler/g2lex).
+`g2lex-data` is the reproducible producer and publisher for generic [G2Lex](https://github.com/buchwandler/g2lex) pronunciation and membership assets. The runtime consumer is [Lexphon](https://github.com/buchwandler/lexphon).
 
-`g2lex-data` is a **producer repository**. It does not phonemize text and it does not contain Kokoro-specific policy. The intended runtime consumer is [Lexphon](https://github.com/buchwandler/lexphon).
+## Ownership boundary
 
-## Architecture
+This repository owns source inventories, immutable source pins, acquisition checks,
+source-specific transforms, deterministic compilation, lossless verification, manifests,
+licenses, immutable data releases, and catalog publication. It does not own tokenization,
+lexicon precedence, Kokoro conversion or ratings, sentence phonemization, or runtime
+fallback behavior.
 
-```text
-upstream dictionaries / LexHint / project-owned data
-                     |
-                     v
-                 g2lex-data
-       source pinning + transformation
-       deterministic G2Lex compilation
-       exact lossless verification
-       manifests + licenses + attribution
-       immutable data releases + catalog
-                     |
-                     v
-                   lexphon
-       install/cache + lookup + phonemization
-                     |
-                     v
-                 applications
-```
+## Configured production assets
 
-## Dynamic versioning
+The first production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`,
+`de-de:olaph`, and `en-us:cmudict`. The demo fixtures remain for fast contract tests.
+Generic pronunciation encodings are `ipa` and `arpabet`; membership assets use `none`.
+Kokoro-specific `kokoro-v1` assets are deliberately excluded.
 
-The Python tooling uses a small dependency-free Git-derived version helper, exposed through `project.dynamic = ["version"]`. A repository tag such as `v0.2.0` produces version `0.2.0`; commits after a tag receive a derived development/post version. Source snapshots without Git metadata use the fallback `0.1.0`, and an environment variable can override the build version.
+Source provenance and redistribution status are documented in [DATA_SOURCES.md](DATA_SOURCES.md).
 
-Data artifacts are independently versioned by `--data-version` and released under tags such as `data-0.1.0`.
-
-## MVP
-
-The fixtures cover three different data contracts:
-
-- `de-de:demo`: typed/tagged IPA values and ordered pronunciation variants;
-- `en-us:demo-cmu`: CMU-style ARPABET with multiple pronunciations for `read`;
-- `ja-jp:demo-words`: membership-only lexicon.
+## Build and validate
 
 ```bash
 python -m pip install -e ".[dev]"
-g2lex-data build
-g2lex-data validate
-g2lex-data catalog --data-version 0.1.0
-g2lex-data release --data-version 0.1.0
+python -m g2lex_data sources
+python -m g2lex_data build
+python -m g2lex_data validate --catalog
+python -m g2lex_data parity --baseline-dir /path/to/kokorog2p
 pytest
+ruff check .
 ```
 
-Release staging is written to `dist/data-<version>/`.
+The parity command accepts either a KokoroG2P checkout root or its
+`kokorog2p/lexicons/data` directory. Normal builds never import KokoroG2P.
 
-## Catalog contract
+## Immutable releases
 
-`catalog/catalog.json` is a discovery index, not the detailed provenance record. Each entry carries:
+Data versions are independent from the Python package version. A release such as
+`data-2026.09.0` stages all configured assets, manifests, `catalog.json`, and
+`release.json` under `dist/data-2026.09.0/`. Existing release directories are never
+replaced. Catalog entries contain the stable ID, language, encoding, release tag, asset
+and manifest URLs, hashes, sizes, logical hash, and license summary needed by Lexphon.
 
-- stable dataset id and BCP-47 language;
-- pronunciation encoding (`ipa`, `arpabet`, or `none`);
-- immutable asset and manifest URLs;
-- SHA-256 and byte size;
-- G2Lex format/schema, logical hash and entry count;
-- data version, release tag, provider, revision, and license summary.
-
-Lexphon verifies the downloaded bytes against this catalog before making an asset visible in its local store.
+```bash
+python -m g2lex_data release --data-version data-2026.09.0
+```

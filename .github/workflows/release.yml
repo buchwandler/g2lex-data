@@ -24,7 +24,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="data-${{ inputs.data_version }}"
+          version="${{ inputs.data_version }}"
+          case "$version" in
+            data-*) tag="$version" ;;
+            *) tag="data-$version" ;;
+          esac
           gh release create "$tag" dist/"$tag"/* \
             --title "$tag" \
             --notes "Deterministic G2Lex data release $tag"

@@ -1,12 +1,11 @@
 schema_version = 1
+contract_version = 1
 repository = "buchwandler/g2lex-data"
 catalog_version = 1
 runtime_contract = "g2lex-data.catalog.v1"
 release_tag_prefix = "data-"
 
-# Tiny self-owned fixtures prove typed IPA, ARPABET variants, and membership.
-# Production records should point at revision-pinned upstream sources.
-
+# Small self-owned fixtures remain part of the fast test contract.
 [[asset]]
 id = "de-de:demo"
 language = "de-DE"
@@ -60,3 +59,115 @@ revision = "mvp-fixture-2"
 license_expression = "CC0-1.0"
 license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
 attribution = "MVP fixture authored for buchwandler/g2lex-data"
+
+[[asset]]
+id = "de-de:gold"
+language = "de-DE"
+name = "gold"
+display_name = "German gold IPA lexicon"
+kind = "pronunciation"
+source = "sources/de/de_gold.json"
+source_format = "kokoro-json"
+source_id = "de-de:gold"
+source_sha256 = "2c30bcbb0a9a4fa172943026eea572f1e4ba82a799920b9d96e6ace59d273639"
+source_size = 31254760
+phoneme_encoding = "ipa"
+provider = "KokoroG2P German gold source"
+revision = "kokorog2p-0.9.0"
+license_expression = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+attribution = "KokoroG2P German gold lexicon contributors"
+source_url = "https://github.com/buchwandler/kokorog2p/tree/0.9.0/lexicons/sources/de/de_gold.json"
+
+[[asset]]
+id = "de-de:crane"
+language = "de-DE"
+name = "crane"
+display_name = "German Crane IPA lexicon"
+kind = "pronunciation"
+source = "sources/de/crane_wiktionary.tsv"
+source_format = "tsv"
+source_id = "de-de:crane"
+source_sha256 = "04a3909f07cd08615157393814188b420a7c3c5035cf7a0608d31be07892be29"
+source_size = 32367922
+phoneme_encoding = "ipa"
+provider = "crane-local-ai"
+revision = "bfd51698069a30e1b20bbf54479b55af50b4161d"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "German Wiktionary contributors; dataset extraction/publishing by Crane Local AI"
+source_url = "https://huggingface.co/datasets/crane-local-ai/g2p-lexicons/blob/bfd51698069a30e1b20bbf54479b55af50b4161d/de/de.tsv"
+transform = "de-crane-lowercase-lexhint-v1"
+[asset.transform_inputs]
+lexhint_language = "de"
+lexhint_artifact = "de/dictionary/s10/2026.08.28/lexhint.sqlite3"
+lexhint_artifact_sha256 = "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
+lexhint_version = "0.4.2"
+key_normalization = "NFC+lower"
+
+[[asset]]
+id = "de-de:espeak"
+language = "de-DE"
+name = "espeak"
+display_name = "German eSpeak-derived IPA lexicon"
+kind = "pronunciation"
+source = "sources/de/espeak_de.tsv"
+source_format = "ipa-tsv"
+source_id = "de-de:espeak"
+source_sha256 = "190b62f1ddcf6616b62214173f05b09804635b170f75b9877eceab20b1624dbf"
+source_size = 23829981
+phoneme_encoding = "ipa"
+provider = "cstr/g2p-dicts"
+revision = "eeac6ffc9271838fd63464a83d4b784ac75fc95b"
+license_expression = "CC-BY-SA-3.0"
+license_url = "https://creativecommons.org/licenses/by-sa/3.0/"
+attribution = "German word inventory from open-dict-data/Wiktionary-derived data; IPA generated with eSpeak tooling and redistributed by cstr/g2p-dicts"
+source_url = "https://huggingface.co/datasets/cstr/g2p-dicts/blob/eeac6ffc9271838fd63464a83d4b784ac75fc95b/espeak_de.tsv"
+transform = "cstr-de-ipa-v1"
+[asset.transform_inputs]
+header = "word\tespeak_ipa"
+strip_outer_delimiters = true
+preserve_internal_slashes = true
+
+[[asset]]
+id = "de-de:olaph"
+language = "de-DE"
+name = "olaph"
+display_name = "German OLaPh IPA lexicon"
+kind = "pronunciation"
+source = "sources/de/olaph_de.txt"
+source_format = "ipa-tsv"
+source_id = "de-de:olaph"
+source_sha256 = "aa70d85ce245c8a8f1db2cc109a0f3da6594eaba5b414a61bcd28f1ccc40ca46"
+source_size = 41709849
+phoneme_encoding = "ipa"
+provider = "cstr/g2p-dicts"
+revision = "cedb4ada41a288549db36c53f9a1e6858a668624"
+license_expression = "MIT"
+license_url = "https://opensource.org/license/mit/"
+attribution = "OLaPh (Optimal Language Phonemizer), IISYS Hof; source redistributed by cstr/g2p-dicts"
+source_url = "https://huggingface.co/datasets/cstr/g2p-dicts/blob/cedb4ada41a288549db36c53f9a1e6858a668624/olaph_de.txt"
+transform = "cstr-de-ipa-v1"
+[asset.transform_inputs]
+strip_outer_delimiters = true
+preserve_internal_slashes = true
+retain_optional_annotations = true
+
+[[asset]]
+id = "en-us:cmudict"
+language = "en-US"
+name = "cmudict"
+display_name = "English CMUdict ARPABET lexicon"
+kind = "pronunciation"
+source = "sources/en/cmudict.dict"
+source_format = "cmudict"
+source_id = "en-us:cmudict"
+source_sha256 = "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+source_size = 3618488
+phoneme_encoding = "arpabet"
+provider = "cmusphinx/cmudict"
+revision = "74790861f652b15e4ac49015a90074ad62a27690"
+license_expression = "BSD-3-Clause"
+license_url = "https://github.com/cmusphinx/cmudict/blob/master/LICENSE"
+attribution = "CMU Pronouncing Dictionary contributors"
+source_url = "https://raw.githubusercontent.com/cmusphinx/cmudict/74790861f652b15e4ac49015a90074ad62a27690/cmudict.dict"
