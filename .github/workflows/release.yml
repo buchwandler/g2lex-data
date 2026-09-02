@@ -18,6 +18,7 @@ jobs:
         with:
           python-version: "3.13"
       - run: python -m pip install -e ".[dev]"
+      - run: lexhint dataset download de --variant dictionary --version 2026.08.28
       - run: pytest
       - run: g2lex-data release --data-version "${{ inputs.data_version }}"
       - name: Create immutable GitHub release

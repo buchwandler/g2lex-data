@@ -23,6 +23,7 @@ Source provenance and redistribution status are documented in [DATA_SOURCES.md](
 
 ```bash
 python -m pip install -e ".[dev]"
+lexhint dataset download de --variant dictionary --version 2026.08.28
 python -m g2lex_data sources
 python -m g2lex_data build
 python -m g2lex_data validate --catalog
