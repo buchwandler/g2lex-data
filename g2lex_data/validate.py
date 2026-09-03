@@ -8,6 +8,7 @@ import g2lex
 from .build import validate_source
 from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, read_json, sha256_file
 from .config import AssetConfig, load_config
+from .sources import resolve_source
 from .transforms import apply
 
 
@@ -17,7 +18,10 @@ def validate_one(
     verify_transform: bool = True,
     verify_source: bool = True,
 ) -> None:
-    source_info = validate_source(record, parse=verify_source)
+    resolved_source = resolve_source(record)
+    source_info = validate_source(
+        record, parse=verify_source, resolved_source=resolved_source
+    )
     asset_path = ASSET_DIR / record.asset_name
     manifest_path = MANIFEST_DIR / record.manifest_name
     if not asset_path.is_file() or not manifest_path.is_file():
@@ -36,8 +40,8 @@ def validate_one(
         raise ValueError(f"asset entry count mismatch for {record.id}")
     if verify_transform:
         with tempfile.TemporaryDirectory(prefix=f".{record.slug}.validate.") as temp_name:
-            result = apply(record, record.source_path, Path(temp_name))
-            input_path = result.input_path if result else record.source_path
+            result = apply(record, resolved_source.path, Path(temp_name))
+            input_path = result.input_path if result else resolved_source.path
             input_format = result.input_format if result else record.source_format
             verification = g2lex.verify_file(input_path, asset_path, input_format=input_format)
             if not verification.get("lossless"):

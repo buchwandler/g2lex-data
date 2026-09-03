@@ -11,6 +11,43 @@ from .config import load_config
 
 BASELINE_PATH = Path(__file__).resolve().parents[1] / "baseline" / "kokoro-german.json"
 
+def benchmark_asset(actual_path: Path, oracle_path: Path, target_path: Path) -> dict[str, object]:
+    import time
+
+    with g2lex.open(target_path) as target, g2lex.open(oracle_path) as oracle:
+        target_keys = tuple(target)
+        started = time.perf_counter()
+        with g2lex.open(actual_path) as actual:
+            open_time = time.perf_counter() - started
+            selected_values = [actual.lookup(key) for key in target_keys]
+            selected_exact = sum(
+                value is not None and value == oracle.lookup(key)
+                for key, value in zip(target_keys, selected_values, strict=True)
+            )
+            oracle_variant_exact = sum(
+                value is not None and value in oracle.lookup_all(key)
+                for key, value in zip(target_keys, selected_values, strict=True)
+            )
+            started = time.perf_counter()
+            for key in target_keys:
+                actual.get(key)
+            lookup_seconds = time.perf_counter() - started
+        actual_values = selected_values
+
+    usable = sum(isinstance(value, str) and bool(value) for value in actual_values)
+    coverage = sum(value is not None for value in actual_values)
+    return {
+        "coverage": coverage / len(target_keys) if target_keys else 0.0,
+        "usable_first_pronunciation": usable / len(target_keys) if target_keys else 0.0,
+        "invalid_first_pronunciation": 1.0 - usable / len(target_keys) if target_keys else 0.0,
+        "target_vocabulary_validity": coverage / len(target_keys) if target_keys else 0.0,
+        "lookup_throughput": len(target_keys) / lookup_seconds if lookup_seconds else 0.0,
+        "selected_exact": selected_exact / len(target_keys) if target_keys else 0.0,
+        "oracle_variant_exact": oracle_variant_exact / len(target_keys) if target_keys else 0.0,
+        "cold_open_seconds": open_time,
+        "asset_bytes": actual_path.stat().st_size,
+    }
+
 
 def load_baseline(path: Path = BASELINE_PATH) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -98,5 +135,12 @@ def compare_german(
             _baseline_asset_path(baseline_dir, str(expected["asset_name"])),
             expected,
         )
+    benchmarks: dict[str, object] = {}
+    lexhint_record = next((record for record in load_config().assets if record.id == "de-de:lexhint"), None)
+    crane_expected = baseline["assets"].get("de-de:crane")
+    lexhint_path = (ASSET_DIR / lexhint_record.asset_name) if lexhint_record else None
+    if lexhint_path and lexhint_path.is_file() and isinstance(crane_expected, dict):
+        crane_path = _baseline_asset_path(baseline_dir, str(crane_expected["asset_name"]))
+        benchmarks["de-de:lexhint"] = benchmark_asset(lexhint_path, crane_path, crane_path)
     failed = [identifier for identifier, result in results.items() if not result["ok"]]
-    return {"baseline": str(baseline_path), "assets": results, "ok": not failed}
+    return {"baseline": str(baseline_path), "assets": results, "benchmarks": benchmarks, "ok": not failed}

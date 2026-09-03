@@ -6,7 +6,12 @@ from pathlib import Path
 from typing import Any
 
 from . import cstr_de
-from .crane import TRANSFORM_VERSION, serialize_entries, transform_crane
+from .crane import TRANSFORM_VERSION as CRANE_TRANSFORM_VERSION
+from .crane import serialize_entries, transform_crane
+from .lexhint_pronunciations import TRANSFORM_VERSION as LEXHINT_TRANSFORM_VERSION
+from .lexhint_pronunciations import serialize_entries as serialize_lexhint_entries
+from .lexhint_pronunciations import transform_lexhint
+from .lexhint_pronunciations import write_report as write_lexhint_report
 
 Transform = Callable[[Any, Path, Path], "TransformResult"]
 
@@ -52,7 +57,7 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
         encoding="utf-8",
     )
     metadata = {
-        "transform": TRANSFORM_VERSION,
+        "transform": CRANE_TRANSFORM_VERSION,
         "transform_inputs": {
             "crane_sha256": _sha256(source),
             "lexhint_sha256": actual_hash,
@@ -67,6 +72,52 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
         "transform_report": result.report,
     }
     return TransformResult(intermediate, "kokoro-json", metadata, report)
+
+def _lexhint(record: Any, source: Path, temp_dir: Path) -> TransformResult:
+    from lexhint import Lexicon
+
+    expected = record.transform_inputs or {}
+    language = str(expected.get("lexhint_language", record.language.split("-", 1)[0]))
+    locale = expected.get("lexhint_locale")
+    include_neutral = bool(expected.get("include_neutral", True))
+    lexicon = Lexicon.from_path(
+        source,
+        language=language,
+        locale=locale if isinstance(locale, str) else None,
+    )
+    source_metadata = {
+        "language": language,
+        "variant": expected.get("lexhint_variant"),
+        "dataset_version": expected.get("lexhint_dataset_version"),
+        "schema_version": expected.get("lexhint_schema_version"),
+        "locale": locale,
+        "include_neutral": include_neutral,
+    }
+    result = transform_lexhint(
+        lexicon.iter_pronunciations(include_neutral=include_neutral),
+        source_metadata=source_metadata,
+    )
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    intermediate = temp_dir / f"{record.slug}.json"
+    intermediate.write_text(serialize_lexhint_entries(result.entries), encoding="utf-8")
+    report_path = temp_dir / f"{record.slug}.transform-report.json"
+    write_lexhint_report(result.report, report_path)
+    metadata = {
+        "transform": LEXHINT_TRANSFORM_VERSION,
+        "transform_inputs": dict(expected),
+        "transform_report_sha256": _sha256(report_path),
+        "transform_report": result.report,
+        "source_sha256": _sha256(source),
+        "source_size": source.stat().st_size,
+        "lexhint_language": language,
+        "lexhint_variant": expected.get("lexhint_variant"),
+        "lexhint_dataset_version": expected.get("lexhint_dataset_version"),
+        "lexhint_schema_version": expected.get("lexhint_schema_version"),
+        "lexhint_locale": locale,
+        "include_neutral": include_neutral,
+    }
+    return TransformResult(intermediate, "json-map", metadata, report_path)
+
 
 
 def _cstr(record: Any, source: Path, temp_dir: Path) -> TransformResult:
@@ -88,7 +139,8 @@ def _cstr(record: Any, source: Path, temp_dir: Path) -> TransformResult:
 
 
 REGISTRY: dict[str, Transform] = {
-    TRANSFORM_VERSION: _crane,
+    CRANE_TRANSFORM_VERSION: _crane,
+    LEXHINT_TRANSFORM_VERSION: _lexhint,
     cstr_de.TRANSFORM_ID: _cstr,
 }
 

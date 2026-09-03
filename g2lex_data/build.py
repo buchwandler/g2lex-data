@@ -9,6 +9,7 @@ import g2lex
 from . import __version__
 from .common import ASSET_DIR, MANIFEST_DIR, sha256_file, write_json
 from .config import AssetConfig, load_config
+from .sources import ResolvedSource, resolve_source
 from .transforms import TransformResult, apply
 
 MANIFEST_SCHEMA_VERSION = 1
@@ -22,14 +23,25 @@ def _g2lex_version() -> str:
         return getattr(g2lex, "__version__", "0+unknown")
 
 
-def validate_source(record: AssetConfig, *, parse: bool = True) -> dict[str, object]:
-    path = record.source_path
+def validate_source(
+    record: AssetConfig, *, parse: bool = True, resolved_source: ResolvedSource | None = None
+) -> dict[str, object]:
+    resolved = resolved_source or resolve_source(record)
+    path = resolved.path
     if not path.is_file():
         raise FileNotFoundError(f"missing source for {record.id}: {path}")
     if path.stat().st_size != record.source_size:
         raise ValueError(f"source size mismatch for {record.id}")
     if sha256_file(path) != record.source_sha256:
         raise ValueError(f"source SHA-256 mismatch for {record.id}")
+    if record.source_provider == "lexhint":
+        return {
+            "entry_count": None,
+            "logical_sha256": None,
+            "format": record.source_format,
+            "provider": record.source_provider,
+            "resolved": dict(resolved.metadata),
+        }
     if not parse:
         return {}
     parsed = g2lex.read_typed_lexicon(path, format=record.source_format, source_id=record.source_id)
@@ -43,6 +55,8 @@ def validate_source(record: AssetConfig, *, parse: bool = True) -> dict[str, obj
         "entry_count": len(parsed),
         "logical_sha256": parsed.logical_sha256,
         "format": record.source_format,
+        "provider": record.source_provider,
+        "resolved": dict(resolved.metadata),
     }
 
 
@@ -57,14 +71,15 @@ def _transform_metadata(result: TransformResult | None) -> dict[str, object]:
 
 
 def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[str, object]:
-    source_info = validate_source(record)
+    resolved_source = resolve_source(record)
+    source_info = validate_source(record, resolved_source=resolved_source)
     ASSET_DIR.mkdir(parents=True, exist_ok=True)
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     asset_path = ASSET_DIR / record.asset_name
 
     with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
-        transform_result = apply(record, record.source_path, Path(temp_name))
-        input_path = transform_result.input_path if transform_result else record.source_path
+        transform_result = apply(record, resolved_source.path, Path(temp_name))
+        input_path = transform_result.input_path if transform_result else resolved_source.path
         input_format = transform_result.input_format if transform_result else record.source_format
         g2lex.read_typed_lexicon(input_path, format=input_format, source_id=record.source_id)
         g2lex.pack_file(
@@ -115,6 +130,7 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
         "g2lex": {"version": _g2lex_version(), "generator_contract": GENERATOR_CONTRACT},
         "source": {
             "id": record.source_id,
+            "provider_type": record.source_provider,
             "path": record.source,
             "format": record.source_format,
             "url": record.source_url,
@@ -127,6 +143,7 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
             "license_expression": record.license_expression,
             "license_url": record.license_url,
             "attribution": record.attribution,
+            "resolved": source_info["resolved"],
         },
         "transform": _transform_metadata(transform_result),
         "asset": {

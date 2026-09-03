@@ -15,6 +15,9 @@ PRODUCTION_IDS = {
     "de-de:espeak",
     "de-de:olaph",
     "en-us:cmudict",
+    "en-us:lexhint",
+    "en-gb:lexhint",
+    "de-de:lexhint",
 }
 
 
@@ -25,6 +28,17 @@ def test_production_configuration_contract() -> None:
     assert all(record.phoneme_encoding != "kokoro-v1" for record in config.assets)
     assert config.asset("de-de:crane").transform == "de-crane-lowercase-lexhint-v1"
     assert config.asset("de-de:espeak").transform == "cstr-de-ipa-v1"
+    for identifier in ("en-us:lexhint", "en-gb:lexhint", "de-de:lexhint"):
+        record = config.asset(identifier)
+        assert record.source_provider == "lexhint"
+        assert record.phoneme_encoding == "ipa"
+        assert record.transform == "lexhint-pronunciation-lowercase-v1"
+    assert config.asset("en-us:lexhint").source_sha256 == config.asset("en-gb:lexhint").source_sha256
+    assert config.asset("en-us:lexhint").source_size == config.asset("en-gb:lexhint").source_size
+    assert config.asset("en-us:lexhint").transform_inputs["lexhint_locale"] == "en_US"
+    assert config.asset("en-gb:lexhint").transform_inputs["lexhint_locale"] == "en_GB"
+    assert config.asset("en-us:lexhint").transform_inputs["include_neutral"] is True
+    assert "lexhint_locale" not in (config.asset("de-de:lexhint").transform_inputs or {})
 
 
 def test_cstr_transform_skips_only_header_and_strips_outer_delimiters(tmp_path: Path) -> None:
@@ -63,4 +77,8 @@ def test_baseline_is_compact_and_complete() -> None:
 
 
 def test_transform_registry_has_stable_ids() -> None:
-    assert set(REGISTRY) == {"de-crane-lowercase-lexhint-v1", "cstr-de-ipa-v1"}
+    assert set(REGISTRY) == {
+        "de-crane-lowercase-lexhint-v1",
+        "lexhint-pronunciation-lowercase-v1",
+        "cstr-de-ipa-v1",
+    }

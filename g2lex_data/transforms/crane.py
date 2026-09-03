@@ -14,49 +14,8 @@ from typing import Any
 
 TRANSFORM_VERSION = "de-crane-lowercase-lexhint-v1"
 
-SELECTOR_ORDER = (
-    "DEFAULT",
-    "DET",
-    "PRON",
-    "NOUN",
-    "PROPN",
-    "VERB",
-    "AUX",
-    "ADJ",
-    "ADV",
-    "ADP",
-    "NUM",
-    "CCONJ",
-    "SCONJ",
-    "PART",
-    "INTJ",
-    "X",
-)
-
-_LEXHINT_TO_G2LEX_POS = {
-    "determiner": "DET",
-    "det": "DET",
-    "pronoun": "PRON",
-    "pron": "PRON",
-    "noun": "NOUN",
-    "proper noun": "PROPN",
-    "proper_noun": "PROPN",
-    "propn": "PROPN",
-    "verb": "VERB",
-    "auxiliary": "AUX",
-    "aux": "AUX",
-    "adjective": "ADJ",
-    "adj": "ADJ",
-    "adverb": "ADV",
-    "adv": "ADV",
-    "adposition": "ADP",
-    "preposition": "ADP",
-    "postposition": "ADP",
-    "numeral": "NUM",
-    "num": "NUM",
-    "particle": "PART",
-    "interjection": "INTJ",
-}
+from .common import LEXHINT_TO_G2LEX_POS as _LEXHINT_TO_G2LEX_POS
+from .common import SELECTOR_ORDER, normalize_key
 
 REVIEWED_COLLISION_POLICIES: Mapping[str, Mapping[str, object]] = {
     "die": {
@@ -95,10 +54,6 @@ class CraneTransformResult:
     entries: dict[str, object]
     report: dict[str, object]
 
-
-def normalize_key(word: str) -> str:
-    """Normalize a Crane runtime key without aggressive case folding."""
-    return unicodedata.normalize("NFC", word).lower()
 
 
 def comparable_ipa(value: str) -> str:
@@ -145,7 +100,6 @@ def normalize_pos(value: str) -> str:
     """Map LexHint's universal POS labels to G2Lex selectors."""
     normalized = unicodedata.normalize("NFC", value).strip().lower().replace("-", " ")
     return _LEXHINT_TO_G2LEX_POS.get(normalized, normalized.upper())
-
 
 def collect_lexhint_candidates(lexicon: Any, word: str) -> tuple[Any, ...]:
     """Query all LexHint case variants for one ambiguous lowercase spelling."""

@@ -7,7 +7,7 @@ from pathlib import Path
 from . import __version__
 from .build import build
 from .catalog import build_catalog
-from .download import download_source, validate_sources
+from .download import download_source, source_statuses
 from .parity import compare_german
 from .release import prepare_release
 from .validate import validate_all
@@ -57,8 +57,17 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "download-source":
         download_source(args.id)
     elif args.command == "sources":
-        validate_sources()
-        print("sources OK")
+        for status in source_statuses():
+            print(status["id"])
+            print(f"  provider: {status['provider']}")
+            if status["provider"] == "lexhint":
+                print(f"  base-language: {status['base_language']}")
+                print(f"  variant: {status['variant']}")
+                print(f"  dataset-version: {status['dataset_version']}")
+                print(f"  locale: {status['locale'] or 'none'}")
+            print(f"  path: {status['path']}")
+            print(f"  installed: {'yes' if status['installed'] else 'no'}")
+            print(f"  sha256: {status['sha256']}")
     elif args.command == "parity":
         result = (
             compare_german(args.baseline, baseline_dir=args.baseline_dir)

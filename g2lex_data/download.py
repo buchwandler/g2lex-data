@@ -32,13 +32,50 @@ def validate_source_file(record: AssetConfig, path=None) -> None:
         raise ValueError(f"source SHA-256 mismatch for {record.id}")
 
 
-def validate_sources() -> None:
+def source_statuses() -> tuple[dict[str, object], ...]:
+    statuses: list[dict[str, object]] = []
     for record in load_config().assets:
-        validate_source_file(record)
+        if record.source_provider == "lexhint":
+            from .sources import resolve_source
+            resolved = resolve_source(record)
+            inputs = record.transform_inputs or {}
+            statuses.append(
+                {
+                    "id": record.id,
+                    "provider": "lexhint",
+                    "base_language": inputs.get("lexhint_language"),
+                    "variant": inputs.get("lexhint_variant"),
+                    "dataset_version": inputs.get("lexhint_dataset_version"),
+                    "locale": inputs.get("lexhint_locale"),
+                    "path": str(resolved.path),
+                    "installed": True,
+                    "sha256": "ok",
+                }
+            )
+        else:
+            validate_source_file(record)
+            statuses.append(
+                {
+                    "id": record.id,
+                    "provider": "file",
+                    "path": str(record.source_path),
+                    "installed": True,
+                    "sha256": "ok",
+                }
+            )
+    return tuple(statuses)
 
+
+def validate_sources() -> None:
+    source_statuses()
 
 def download_source(identifier: str) -> None:
     record = load_config().asset(identifier)
+    if record.source_provider == "lexhint":
+        raise ValueError(
+            f"{identifier} is managed by LexHint; install it explicitly with "
+            f"lexhint dataset download {record.transform_inputs['lexhint_language']} --variant {record.transform_inputs['lexhint_variant']} --version {record.transform_inputs['lexhint_dataset_version']}"
+        )
     url = _download_url(record)
     record.source_path.parent.mkdir(parents=True, exist_ok=True)
     fd, temp_name = tempfile.mkstemp(

@@ -12,10 +12,8 @@ fallback behavior.
 
 ## Configured production assets
 
-The first production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`,
-`de-de:olaph`, and `en-us:cmudict`. The demo fixtures remain for fast contract tests.
-Generic pronunciation encodings are `ipa` and `arpabet`; membership assets use `none`.
-Kokoro-specific `kokoro-v1` assets are deliberately excluded.
+The production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`, `de-de:olaph`, `en-us:cmudict`, `en-us:lexhint`, `en-gb:lexhint`, and `de-de:lexhint`. The demo fixtures remain for fast contract tests.
+Generic pronunciation encodings are `ipa` and `arpabet`; membership assets use `none`. LexHint assets are generic IPA outputs. Kokoro-specific `kokoro-v1` assets are deliberately excluded.
 
 Source provenance and redistribution status are documented in [DATA_SOURCES.md](DATA_SOURCES.md).
 
@@ -24,6 +22,7 @@ Source provenance and redistribution status are documented in [DATA_SOURCES.md](
 ```bash
 python -m pip install -e ".[dev]"
 lexhint dataset download de --variant dictionary --version 2026.08.28
+lexhint dataset download en --variant dictionary --version 2026.08.28
 python -m g2lex_data sources
 python -m g2lex_data build
 python -m g2lex_data validate --catalog

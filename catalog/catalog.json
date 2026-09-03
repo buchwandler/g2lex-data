@@ -295,6 +295,117 @@
         "provider": "cmusphinx/cmudict",
         "revision": "74790861f652b15e4ac49015a90074ad62a27690"
       }
+    },
+    {
+      "asset": {
+        "entry_count": 88933,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "6460ee2c06aa08f226b265a67855328fddb6cf6be81214323fd2e7089b7abf7b",
+        "name": "g2lex-en-us-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "2c1c413853bdbd5b27992719486f78bf8664b6d10c08af33ab9868a58db0c080",
+        "size": 1565124,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.0-lexhint-test-2/g2lex-en-us-lexhint.g2lex"
+      },
+      "data_version": "data-2026.09.0-lexhint-test-2",
+      "display_name": "English (US) LexHint IPA lexicon",
+      "id": "en-us:lexhint",
+      "kind": "pronunciation",
+      "language": "en-US",
+      "license": {
+        "attribution": "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-en-us-lexhint.manifest.json",
+        "sha256": "e4c9499b6210ecc2ffeae823945363521440c7138024ed8004ae3d1d3f5d0301",
+        "size": 2769,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.0-lexhint-test-2/g2lex-en-us-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.0-lexhint-test-2",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-en-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 89688,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "d6603af1166f88c51a61d628e56de8ce96b7b7c1080fea8f3db35d0267037356",
+        "name": "g2lex-en-gb-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "3482f50cf910f7efc3bf2da0f31f57a84bb1031326b7717ae3e39a828d695e19",
+        "size": 1570932,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.0-lexhint-test-2/g2lex-en-gb-lexhint.g2lex"
+      },
+      "data_version": "data-2026.09.0-lexhint-test-2",
+      "display_name": "English (GB) LexHint IPA lexicon",
+      "id": "en-gb:lexhint",
+      "kind": "pronunciation",
+      "language": "en-GB",
+      "license": {
+        "attribution": "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-en-gb-lexhint.manifest.json",
+        "sha256": "289dd53a4b4bfabb9af48e4fd13f513faabf18645de96069cfeebc7c6121c9d0",
+        "size": 2769,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.0-lexhint-test-2/g2lex-en-gb-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.0-lexhint-test-2",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-en-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 941071,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "95d1b3cd9367a5d8cf15070a2a8dfd6fff9501dd5b834489bfb0c7b63a4c6369",
+        "name": "g2lex-de-de-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "afee0f3490406ec7886c27fb7a0808a01466e4b5f374b9b7db0d9545cca5b97a",
+        "size": 11855716,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.0-lexhint-test-2/g2lex-de-de-lexhint.g2lex"
+      },
+      "data_version": "data-2026.09.0-lexhint-test-2",
+      "display_name": "German LexHint IPA lexicon",
+      "id": "de-de:lexhint",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-lexhint.manifest.json",
+        "sha256": "668dda1ec72bb04b6a9c271115aa02906edafea266021d72d2ee1d5a42d9f491",
+        "size": 2731,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.0-lexhint-test-2/g2lex-de-de-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.0-lexhint-test-2",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-de-2026.08.28"
+      }
     }
   ],
   "catalog_version": 1,

@@ -3,7 +3,7 @@ output = "context_g2lex_data.md"
 keep_docstrings = true
 dedupe = true
 respect_gitignore = true
-exclude = ["*/.venv/*", "context_g2lex_data.*"]
+exclude = ["*/.venv/*", "context_g2lex_data.*", "**/sources/**"]
 include = [
   "**/*.py",
   "**/*.toml",

@@ -25,7 +25,9 @@ SUPPORTED_FORMATS = {
     "mfa",
     "pls",
     "gruut-sqlite",
+    "lexhint-dictionary",
 }
+SUPPORTED_SOURCE_PROVIDERS = {"file", "lexhint"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,6 +51,7 @@ class AssetConfig:
     source_url: str | None = None
     transform: str | None = None
     transform_inputs: dict[str, object] | None = None
+    source_provider: str = "file"
 
     @property
     def source_path(self) -> Path:
@@ -131,6 +134,9 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
         if not isinstance(values, dict):
             raise TypeError("asset records must be TOML tables")
         label = f"asset[{index}]"
+        source_provider = values.get("source_provider", "file")
+        if source_provider not in SUPPORTED_SOURCE_PROVIDERS:
+            raise ValueError(f"unsupported {label}.source_provider: {source_provider}")
         identifier = _text(values, "id", label)
         if identifier in seen:
             raise ValueError(f"duplicate asset id: {identifier}")
@@ -175,6 +181,7 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
                 source_url=source_url,
                 transform=transform.strip() if isinstance(transform, str) else None,
                 transform_inputs=_transform_inputs(values.get("transform_inputs"), label),
+                source_provider=source_provider,
             )
         )
 
