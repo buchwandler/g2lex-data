@@ -37,6 +37,7 @@ def source_statuses() -> tuple[dict[str, object], ...]:
     for record in load_config().assets:
         if record.source_provider == "lexhint":
             from .sources import resolve_source
+
             resolved = resolve_source(record)
             inputs = record.transform_inputs or {}
             statuses.append(
@@ -68,6 +69,7 @@ def source_statuses() -> tuple[dict[str, object], ...]:
 
 def validate_sources() -> None:
     source_statuses()
+
 
 def download_source(identifier: str) -> None:
     record = load_config().asset(identifier)

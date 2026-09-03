@@ -33,7 +33,9 @@ def test_production_configuration_contract() -> None:
         assert record.source_provider == "lexhint"
         assert record.phoneme_encoding == "ipa"
         assert record.transform == "lexhint-pronunciation-lowercase-v1"
-    assert config.asset("en-us:lexhint").source_sha256 == config.asset("en-gb:lexhint").source_sha256
+    assert (
+        config.asset("en-us:lexhint").source_sha256 == config.asset("en-gb:lexhint").source_sha256
+    )
     assert config.asset("en-us:lexhint").source_size == config.asset("en-gb:lexhint").source_size
     assert config.asset("en-us:lexhint").transform_inputs["lexhint_locale"] == "en_US"
     assert config.asset("en-gb:lexhint").transform_inputs["lexhint_locale"] == "en_GB"

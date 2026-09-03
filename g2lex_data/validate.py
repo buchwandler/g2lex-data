@@ -19,9 +19,7 @@ def validate_one(
     verify_source: bool = True,
 ) -> None:
     resolved_source = resolve_source(record)
-    source_info = validate_source(
-        record, parse=verify_source, resolved_source=resolved_source
-    )
+    source_info = validate_source(record, parse=verify_source, resolved_source=resolved_source)
     asset_path = ASSET_DIR / record.asset_name
     manifest_path = MANIFEST_DIR / record.manifest_name
     if not asset_path.is_file() or not manifest_path.is_file():

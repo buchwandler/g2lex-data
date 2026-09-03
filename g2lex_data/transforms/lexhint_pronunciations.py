@@ -22,7 +22,9 @@ class LexHintTransformResult:
 
 def normalize_ipa(value: str) -> str:
     value = unicodedata.normalize("NFC", value).strip()
-    if len(value) >= 2 and ((value[0] == "[" and value[-1] == "]") or (value[0] == "/" and value[-1] == "/")):
+    if len(value) >= 2 and (
+        (value[0] == "[" and value[-1] == "]") or (value[0] == "/" and value[-1] == "/")
+    ):
         value = value[1:-1]
     return value.strip()
 
@@ -118,7 +120,9 @@ def _audit_group(item: Any, value: object) -> dict[str, object]:
     default = value.get("DEFAULT") if isinstance(value, Mapping) else value
     return {
         "key": normalize_key(item.key),
-        "groups": {key: plain_value(values) for key, values in ordered_selectors(groups).items() if values},
+        "groups": {
+            key: plain_value(values) for key, values in ordered_selectors(groups).items() if values
+        },
         "default": default,
     }
 
@@ -173,7 +177,9 @@ def transform_lexhint(
 
 def write_report(report: Mapping[str, object], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
 
 __all__ = [

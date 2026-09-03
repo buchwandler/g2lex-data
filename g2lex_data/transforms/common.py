@@ -61,7 +61,9 @@ def normalize_pos(value: str) -> str:
 
 def ordered_selectors(selectors: Mapping[str, object]) -> dict[str, object]:
     order = {selector: index for index, selector in enumerate(SELECTOR_ORDER)}
-    return dict(sorted(selectors.items(), key=lambda item: (order.get(item[0], len(order)), item[0])))
+    return dict(
+        sorted(selectors.items(), key=lambda item: (order.get(item[0], len(order)), item[0]))
+    )
 
 
 def plain_value(pronunciations: list[str]) -> str | tuple[str, ...]:

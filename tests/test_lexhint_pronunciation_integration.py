@@ -42,7 +42,9 @@ def _build_fixture(tmp_path: Path) -> Path:
         },
     ]
     source.write_text("\n".join(json.dumps(record) for record in records) + "\n", encoding="utf-8")
-    artifact, _ = build_dictionary("en", source, output=tmp_path / "lexhint.sqlite3", no_frequency=True)
+    artifact, _ = build_dictionary(
+        "en", source, output=tmp_path / "lexhint.sqlite3", no_frequency=True
+    )
     return artifact
 
 
@@ -78,7 +80,11 @@ def test_one_artifact_can_derive_locale_outputs(tmp_path: Path) -> None:
     }
     assert json.loads(gb.input_path.read_text(encoding="utf-8"))["live"] == "ˈlɪv"
     assert us.metadata["transform_inputs"] != gb.metadata["transform_inputs"]
-    assert us.metadata["source_sha256"] == gb.metadata["source_sha256"] == hashlib.sha256(artifact.read_bytes()).hexdigest()
+    assert (
+        us.metadata["source_sha256"]
+        == gb.metadata["source_sha256"]
+        == hashlib.sha256(artifact.read_bytes()).hexdigest()
+    )
 
 
 def test_neutral_pronunciation_survives_locale_filtering(tmp_path: Path) -> None:
@@ -96,4 +102,7 @@ def test_transformed_values_round_trip_through_g2lex(tmp_path: Path) -> None:
     with g2lex.open(asset) as lexicon:
         assert lexicon.lookup("live", tag="ADJ") == "ˈlaɪv"
         assert lexicon.lookup_all("neutral") == ("ˈnjuːtrəl",)
-    assert Lexicon.from_path(artifact, language="en", locale="en_US").metadata["schema_version"] == "10"
+    assert (
+        Lexicon.from_path(artifact, language="en", locale="en_US").metadata["schema_version"]
+        == "10"
+    )

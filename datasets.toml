@@ -102,7 +102,7 @@ transform = "de-crane-lowercase-lexhint-v1"
 lexhint_language = "de"
 lexhint_artifact = "de/dictionary/s10/2026.08.28/lexhint.sqlite3"
 lexhint_artifact_sha256 = "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
-lexhint_version = "0.4.2"
+lexhint_version = "0.4.3"
 key_normalization = "NFC+lower"
 
 [[asset]]
@@ -200,7 +200,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "en_US"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.2"
+lexhint_version = "0.4.3"
 
 [[asset]]
 id = "en-gb:lexhint"
@@ -230,7 +230,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "en_GB"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.2"
+lexhint_version = "0.4.3"
 
 [[asset]]
 id = "de-de:lexhint"
@@ -259,4 +259,4 @@ lexhint_dataset_version = "2026.08.28"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.2"
+lexhint_version = "0.4.3"

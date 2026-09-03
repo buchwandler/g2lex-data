@@ -73,6 +73,7 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     }
     return TransformResult(intermediate, "kokoro-json", metadata, report)
 
+
 def _lexhint(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     from lexhint import Lexicon
 
@@ -117,7 +118,6 @@ def _lexhint(record: Any, source: Path, temp_dir: Path) -> TransformResult:
         "include_neutral": include_neutral,
     }
     return TransformResult(intermediate, "json-map", metadata, report_path)
-
 
 
 def _cstr(record: Any, source: Path, temp_dir: Path) -> TransformResult:

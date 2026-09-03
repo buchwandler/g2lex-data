@@ -43,7 +43,7 @@ def test_schema_mismatch_fails_closed(monkeypatch: pytest.MonkeyPatch, tmp_path:
         metadata: ClassVar[dict[str, str]] = {
             "schema_version": "9",
             "language": "en",
-            "lexhint_version": "0.4.2",
+            "lexhint_version": "0.4.3",
         }
 
         def __init__(self, *args: object, **kwargs: object) -> None:
@@ -63,11 +63,13 @@ def test_resolver_does_not_download(monkeypatch: pytest.MonkeyPatch) -> None:
     assert resolve_source(_record()).metadata["provider"] == "lexhint"
 
 
-
 def test_missing_artifact_message_is_actionable(monkeypatch: pytest.MonkeyPatch) -> None:
     def missing(*args: object, **kwargs: object) -> None:
         raise LexiconNotInstalled("not installed")
 
     monkeypatch.setattr("g2lex_data.sources.Lexicon", missing)
-    with pytest.raises(FileNotFoundError, match="lexhint dataset download en --variant dictionary --version 2026.08.28"):
+    with pytest.raises(
+        FileNotFoundError,
+        match="lexhint dataset download en --variant dictionary --version 2026.08.28",
+    ):
         resolve_source(_record())

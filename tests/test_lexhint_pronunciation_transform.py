@@ -57,14 +57,21 @@ def test_multi_variant_pos_remains_tuple() -> None:
 
 
 def test_case_collision_preserves_all_evidence() -> None:
-    item = entry("die", group("det", "[diː]", word="die"), group("pron", "[diː]", word="die"), group("noun", "[daɪ]", word="Die"))
+    item = entry(
+        "die",
+        group("det", "[diː]", word="die"),
+        group("pron", "[diː]", word="die"),
+        group("noun", "[daɪ]", word="Die"),
+    )
     result = transform_lexhint([item])
     assert result.entries == {"die": {"DEFAULT": "diː", "DET": "diː", "PRON": "diː", "NOUN": "daɪ"}}
     assert result.report["case_collision_count"] == 1
 
 
 def test_default_prefers_exact_lowercase_display_form() -> None:
-    item = entry("live", group("verb", "[title]", word="Live"), group("noun", "[lower]", word="live"))
+    item = entry(
+        "live", group("verb", "[title]", word="Live"), group("noun", "[lower]", word="live")
+    )
     assert collapse_entry(item)["DEFAULT"] == "lower"  # type: ignore[index]
 
 
@@ -75,7 +82,7 @@ def test_unknown_pos_is_preserved_and_counted() -> None:
 
 
 def test_empty_ipa_is_skipped_and_counted() -> None:
-    result = transform_lexhint([entry("word", group("noun", "[]", "[a]") )])
+    result = transform_lexhint([entry("word", group("noun", "[]", "[a]"))])
     assert result.entries == {"word": "a"}
     assert result.report["empty_ipa_count"] == 1
 
@@ -87,7 +94,10 @@ def test_live_fixture() -> None:
             PronunciationGroup("verb", (Pronunciation("[ˈlɪv]", ()),), word="live"),
             PronunciationGroup(
                 "adj",
-                (Pronunciation("[ˈlaɪ̯v]", ()), Pronunciation("[ˈlaːv]", ("General-South-African",))),
+                (
+                    Pronunciation("[ˈlaɪ̯v]", ()),
+                    Pronunciation("[ˈlaːv]", ("General-South-African",)),
+                ),
                 word="live",
             ),
             PronunciationGroup("adv", (Pronunciation("[ˈlaɪ̯v]", ()),), word="live"),

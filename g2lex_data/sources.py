@@ -78,7 +78,9 @@ def _resolve_lexhint(record: AssetConfig) -> ResolvedSource:
     expected_schema = _required_input(record, "lexhint_schema_version")
     actual_schema = str(metadata.get("schema_version", lexicon.schema_version))
     if actual_schema != expected_schema:
-        raise ValueError(f"LexHint schema mismatch for {record.id}: expected {expected_schema}, got {actual_schema}")
+        raise ValueError(
+            f"LexHint schema mismatch for {record.id}: expected {expected_schema}, got {actual_schema}"
+        )
     if str(metadata.get("language")) != language.strip().lower():
         raise ValueError(f"LexHint language mismatch for {record.id}")
     if lexicon.variant != variant or lexicon.dataset_version != dataset_version:
@@ -111,7 +113,9 @@ def _resolve_lexhint(record: AssetConfig) -> ResolvedSource:
 
 def resolve_source(record: AssetConfig) -> ResolvedSource:
     if record.source_provider == "file":
-        return ResolvedSource(record.source_path, {"provider": "file", "path": str(record.source_path)})
+        return ResolvedSource(
+            record.source_path, {"provider": "file", "path": str(record.source_path)}
+        )
     if record.source_provider == "lexhint":
         return _resolve_lexhint(record)
     raise ValueError(f"unsupported source provider: {record.source_provider}")

@@ -55,7 +55,6 @@ class CraneTransformResult:
     report: dict[str, object]
 
 
-
 def comparable_ipa(value: str) -> str:
     """Strip only common IPA delimiters for evidence matching."""
     value = unicodedata.normalize("NFC", value).strip()
@@ -100,6 +99,7 @@ def normalize_pos(value: str) -> str:
     """Map LexHint's universal POS labels to G2Lex selectors."""
     normalized = unicodedata.normalize("NFC", value).strip().lower().replace("-", " ")
     return _LEXHINT_TO_G2LEX_POS.get(normalized, normalized.upper())
+
 
 def collect_lexhint_candidates(lexicon: Any, word: str) -> tuple[Any, ...]:
     """Query all LexHint case variants for one ambiguous lowercase spelling."""
