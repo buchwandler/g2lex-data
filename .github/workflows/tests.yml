@@ -22,5 +22,7 @@ jobs:
       - run: lexhint dataset download zh --variant dictionary --version 2026.09.03
       - run: g2lex-data sources
       - run: ruff check .
+      - run: >-
+          g2lex-data build --id ja:lexhint --id ko:lexhint --id pt:lexhint --id ru:lexhint --id th:lexhint --id vi:lexhint --id zh:lexhint
       - run: pytest
       - run: g2lex-data release --data-version data-2026.09.0-test

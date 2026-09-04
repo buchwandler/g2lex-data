@@ -27,6 +27,8 @@ jobs:
       - run: lexhint dataset download th --variant dictionary --version 2026.09.03
       - run: lexhint dataset download vi --variant dictionary --version 2026.09.03
       - run: lexhint dataset download zh --variant dictionary --version 2026.09.03
+      - run: >-
+          g2lex-data build --id ja:lexhint --id ko:lexhint --id pt:lexhint --id ru:lexhint --id th:lexhint --id vi:lexhint --id zh:lexhint
       - run: pytest
       - run: g2lex-data release --data-version "${{ inputs.data_version }}"
       - name: Create immutable GitHub release
