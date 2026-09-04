@@ -165,7 +165,9 @@ def compare_german(
     )
     benchmarks: dict[str, object] = {}
     config = load_config()
-    lexhint_record = next((record for record in config.assets if record.id == "de-de:lexhint"), None)
+    lexhint_record = next(
+        (record for record in config.assets if record.id == "de-de:lexhint"), None
+    )
     crane_expected = load_baseline(baseline_path)["assets"].get("de-de:crane")
     lexhint_path = (ASSET_DIR / lexhint_record.asset_name) if lexhint_record else None
     if lexhint_path and lexhint_path.is_file() and isinstance(crane_expected, dict):

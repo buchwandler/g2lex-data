@@ -69,6 +69,7 @@ def test_swedish_nst_configuration_contract() -> None:
     assert record.provider == "Joakim/kokoro-sv-g2p"
     assert record.revision == "d19dd10"
 
+
 @pytest.mark.parametrize("language", ("ja", "ko", "pt", "ru", "th", "vi", "zh"))
 def test_multilingual_lexhint_configuration_contract(language: str) -> None:
     record = load_config().asset(f"{language}:lexhint")

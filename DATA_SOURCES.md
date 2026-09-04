@@ -13,7 +13,7 @@ files, run eSpeak, or import KokoroG2P.
 | `de-de:crane`   | Crane Local AI German `de/de.tsv`, `bfd51698069b30e1b20bbf54479b55af50b4161d` | TSV            | CC-BY-SA-4.0 | `de-crane-lowercase-lexhint-v1`      |
 | `de-de:espeak`  | CSTR `espeak_de.tsv`, `eeac6ffc9271838fd63464a83d4b784ac75fc95b`              | IPA TSV        | CC-BY-SA-3.0 | `cstr-de-ipa-v1`                     |
 | `de-de:olaph`   | CSTR `olaph_de.txt`, `cedb4ada41a288549db36c53f9a1e6858a668624`               | IPA TSV        | MIT          | `cstr-de-ipa-v1`                     |
-| `sv-se:nst`   | Joakim/kokoro-sv-g2p `g2p/lexicon.tsv`, `d19dd10`                       | TSV            | Apache-2.0   | none                                 |
+| `sv-se:nst`     | Joakim/kokoro-sv-g2p `g2p/lexicon.tsv`, `d19dd10`                             | TSV            | Apache-2.0   | none                                 |
 | `en-us:cmudict` | CMUdict, `74790861f652b15e4ac49015a90074ad62a27690`                           | CMUdict        | BSD-3-Clause | none                                 |
 | `en-us:lexhint` | LexHint datasets English dictionary, `data-en-2026.08.28`                     | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 | `en-gb:lexhint` | Same pinned English artifact, locale-derived `en_GB`                          | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
@@ -27,12 +27,12 @@ files, run eSpeak, or import KokoroG2P.
 | `vi:lexhint` | LexHint datasets Vietnamese dictionary, `data-vi-2026.09.03` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 | `zh:lexhint` | LexHint datasets Chinese dictionary, `data-zh-2026.09.03` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 
-
 ## Swedish NST ownership migration
 
 The stable ID `sv-se:nst` contains 812,343 parsed IPA entries from the immutable `d19dd10` revision of `Joakim/kokoro-sv-g2p`. The source is exactly 38,008,908 bytes with SHA-256 `65eb3aae9c737f6d04c22a44b2ab836d1ec01f682b1cdee07bb2209852355296`. It uses the generic TSV parser and no semantic transform.
 
 Canonical source and generated G2Lex ownership moved from KokoroG2P to `g2lex-data`. The migration is gated by logical parity with the former `sv_nst.g2lex` asset. Existing Apache-2.0 provider, revision, URL, and attribution metadata are preserved pending any separately required NST provenance notice.
+
 ## Frozen German migration release
 
 The four German migration assets are available in the immutable `data-2026.09.02` release. The published catalog and manifests were verified against the KokoroG2P baseline on 2026-09-03. All four records use locale `de-DE`, kind `pronunciation`, and IPA encoding.
