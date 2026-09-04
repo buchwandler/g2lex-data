@@ -7,11 +7,11 @@
         "logical_sha256": "e2263f3aebeb27d289767f9d7ca2a90f26a0251967fd400c3f56f0d3848140a5",
         "name": "g2lex-de-de-demo.g2lex",
         "schema": 1,
-        "sha256": "7da19480283972229157ea79c47175a2901319c4b0f4b685cc338617c5bac305",
-        "size": 2180,
+        "sha256": "355dc9a1ede66af9c526c2ec46010abf689317908d82817f15cdd508089911cf",
+        "size": 2172,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-demo.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "German typed IPA demo",
       "id": "de-de:demo",
       "kind": "pronunciation",
@@ -23,8 +23,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-demo.manifest.json",
-        "sha256": "26d2f4f6a69f53210703ba22538676ec50c9e11beda996420cea7852dee21c58",
-        "size": 1741,
+        "sha256": "4cad89c42f668f436779941ac17919ec5f354095d41f7aee35aea44f7e95951a",
+        "size": 1736,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-demo.manifest.json"
       },
       "name": "demo",
@@ -44,11 +44,11 @@
         "logical_sha256": "08aedd3ba7c8c39d7c7c20f6fbf5f9b612b7673aed83463df9fe8512d857397e",
         "name": "g2lex-en-us-demo-cmu.g2lex",
         "schema": 1,
-        "sha256": "a206e455a2c0ff18acabe2e57c82576a9fd9e36197fb3893328f709635fa9589",
-        "size": 2092,
+        "sha256": "1fbb6d50abb84ed4f13de2f74655ff38b15ce35d872bc6c4071939d9e6974abb",
+        "size": 2084,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-demo-cmu.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "English CMU/ARPABET demo",
       "id": "en-us:demo-cmu",
       "kind": "pronunciation",
@@ -60,8 +60,8 @@
       },
       "manifest": {
         "name": "g2lex-en-us-demo-cmu.manifest.json",
-        "sha256": "3d63124b32ddb702975cdb5bb92012727ab6bfa97cbd18c8e4b970524ca17589",
-        "size": 1764,
+        "sha256": "8d264497db88df94712114d9513e00b58cd5361d33e5102a9030f71702c62ff9",
+        "size": 1759,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-demo-cmu.manifest.json"
       },
       "name": "demo-cmu",
@@ -81,11 +81,11 @@
         "logical_sha256": "a9b932f6d07c9e9b8ecaba19ce79e5bdaf578f48e38ba285b785867c5f1b651e",
         "name": "g2lex-ja-jp-demo-words.g2lex",
         "schema": 1,
-        "sha256": "0241dfdddf7f921ad87bfe3ff56387a0e8aec25f89aff9933f90e5d8b3eb6681",
+        "sha256": "44f3b0cd0a39ace78911766402b23739366793f43a08865e653b2b2d54d2559c",
         "size": 2052,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-jp-demo-words.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Japanese membership demo",
       "id": "ja-jp:demo-words",
       "kind": "membership",
@@ -97,8 +97,8 @@
       },
       "manifest": {
         "name": "g2lex-ja-jp-demo-words.manifest.json",
-        "sha256": "c181605045330f90a52c8a0418c513d5d9257b1ff8bf949221d437593eed5121",
-        "size": 1769,
+        "sha256": "e0d6c2c18d5c680b6374583ff941d9a89046ff92240dea501edb41dbb4ffb639",
+        "size": 1764,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-jp-demo-words.manifest.json"
       },
       "name": "demo-words",
@@ -118,11 +118,11 @@
         "logical_sha256": "530f4787a2accd9824526749b90f43d4edaf2506f0aa385056a83913cb6ee48a",
         "name": "g2lex-de-de-gold.g2lex",
         "schema": 1,
-        "sha256": "f0a2114271c92aaf182c89fbc4544ac396a2b391621c47ff7b13db413155847a",
-        "size": 8552236,
+        "sha256": "af71ae183f076843328c962b7be038abcd68f78d94e25300122aa383dda58194",
+        "size": 8552228,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-gold.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "German gold IPA lexicon",
       "id": "de-de:gold",
       "kind": "pronunciation",
@@ -134,8 +134,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-gold.manifest.json",
-        "sha256": "e4c274c2a09e18391d7dbbdcd82dd7a8c3cc1b7b316bf420f56463b2bbae68b9",
-        "size": 1856,
+        "sha256": "b2fbf0b5c90338dfc764fb15e90aa07793290ad35e1945cf5c2054b1d9e64264",
+        "size": 1851,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-gold.manifest.json"
       },
       "name": "gold",
@@ -155,11 +155,11 @@
         "logical_sha256": "2381391dc5c0ea083816c1d3cac9002d16750e05038dc3ac97690115b9007efa",
         "name": "g2lex-de-de-crane.g2lex",
         "schema": 1,
-        "sha256": "2b1931f1125a15f1801927b96cddfb396286e972aa1f7f46700dc8f448148205",
-        "size": 10243364,
+        "sha256": "4d2066385b625e6568d9318b1c6d3feae2a9bb2556e1e395b083afb0660f7a0a",
+        "size": 10243356,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-crane.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "German Crane IPA lexicon",
       "id": "de-de:crane",
       "kind": "pronunciation",
@@ -171,8 +171,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-crane.manifest.json",
-        "sha256": "749aaa8568a839bf2ff1ad8bc3624069c63656805103f5d30646b217b0c09881",
-        "size": 2328,
+        "sha256": "9845ec5790552c652363713af0ac308f169968044c218ad102a00baa39d69843",
+        "size": 2323,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-crane.manifest.json"
       },
       "name": "crane",
@@ -192,11 +192,11 @@
         "logical_sha256": "4c975e8348d2e8cb288f9b9530dcf26d7ac1527fec2d43457fa77481d562279d",
         "name": "g2lex-de-de-espeak.g2lex",
         "schema": 1,
-        "sha256": "20a4d448837927586f65730cdf9b7b9478208e7f7cd5fea18064ca6a8c3efeb0",
+        "sha256": "d44b5c9a4a421ca4af57e6143629750c61d635a8cf4c2ef6990000e1be5740f4",
         "size": 7781636,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-espeak.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "German eSpeak-derived IPA lexicon",
       "id": "de-de:espeak",
       "kind": "pronunciation",
@@ -208,8 +208,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-espeak.manifest.json",
-        "sha256": "0a02a16d2f1a04ec2c3eadf6dd4b4078e49ad5304c685fe98532bfa86b5f5841",
-        "size": 2263,
+        "sha256": "13a7a85ea3b30b69ebddb7fbefd7a3c25cb1c7247fead877ddafc22780c1f5d5",
+        "size": 2258,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-espeak.manifest.json"
       },
       "name": "espeak",
@@ -229,11 +229,11 @@
         "logical_sha256": "c0dc2c87cf6f229ae88e66c2f4b3c03876f9f95df615e82c0133f0e3778c296d",
         "name": "g2lex-de-de-olaph.g2lex",
         "schema": 1,
-        "sha256": "c4910491b07ec151376e3bd8cf0d25b40e006adf669c7ac85bee44cead4c4046",
+        "sha256": "f047d45afcf67f2ad185d7c5438152bde150143caee5bf31e742485cd8b279a2",
         "size": 12898468,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-olaph.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "German OLaPh IPA lexicon",
       "id": "de-de:olaph",
       "kind": "pronunciation",
@@ -245,8 +245,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-olaph.manifest.json",
-        "sha256": "769940aad54a7ed766e4b77b09f053588314286904cfda6b0003c4faa349aa32",
-        "size": 2183,
+        "sha256": "1193837d6bcc8a07628da7a2e405e17d07990be375fc26962175579260ca17ce",
+        "size": 2178,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-olaph.manifest.json"
       },
       "name": "olaph",
@@ -266,11 +266,11 @@
         "logical_sha256": "98e4cedc408dd0477fc2158be676bda9156a93dd0568b776efa89427d8e70ee3",
         "name": "g2lex-en-us-cmudict.g2lex",
         "schema": 1,
-        "sha256": "98d4aaf8be5e4f2b6ac7e2237ff7eebde0a95aaf4b2edf2a1cb2d3105a88a7f4",
+        "sha256": "a25883cd5ab3cfe5fcde38b6a70b34f8c6237424eea9f2f10d89184f74a5180b",
         "size": 1645788,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-cmudict.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "English CMUdict ARPABET lexicon",
       "id": "en-us:cmudict",
       "kind": "pronunciation",
@@ -282,8 +282,8 @@
       },
       "manifest": {
         "name": "g2lex-en-us-cmudict.manifest.json",
-        "sha256": "29268d622146c970bc8db0d40985bb9a97b53643b09c35f892c8c1e8703468a2",
-        "size": 1925,
+        "sha256": "0a9799d64d6887a3553ec1da54a40ba7cb11a24c4a14616942559ba2a7a078a3",
+        "size": 1920,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-cmudict.manifest.json"
       },
       "name": "cmudict",
@@ -303,11 +303,11 @@
         "logical_sha256": "6460ee2c06aa08f226b265a67855328fddb6cf6be81214323fd2e7089b7abf7b",
         "name": "g2lex-en-us-lexhint.g2lex",
         "schema": 1,
-        "sha256": "474e356dab96027f03274d4a1aae3c194370502556f5071d28c3c946c529ca7d",
+        "sha256": "cf3c8c81eabdd20e178b1cdd5d094198abb0d19dfb21d1ce6808c78f103dcfd1",
         "size": 1565124,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "English (US) LexHint IPA lexicon",
       "id": "en-us:lexhint",
       "kind": "pronunciation",
@@ -319,8 +319,8 @@
       },
       "manifest": {
         "name": "g2lex-en-us-lexhint.manifest.json",
-        "sha256": "82839e5ff9dff9054c9a9bddfde8b56be3ead5e0afe09e79d95c7ca90619801d",
-        "size": 2774,
+        "sha256": "67b98b518f2b1ee4f11097129e15725f4deea1917d403fe82a5102a26a6e375e",
+        "size": 2765,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -340,11 +340,11 @@
         "logical_sha256": "d6603af1166f88c51a61d628e56de8ce96b7b7c1080fea8f3db35d0267037356",
         "name": "g2lex-en-gb-lexhint.g2lex",
         "schema": 1,
-        "sha256": "6cb77d3c18c987642ec8418b2353ccf7a8d8f2cb3465b11a09b2820764d03425",
+        "sha256": "c3dcac2d5a59b31bcd163c734a97677d8ce22b09da01c60a10bf641dcdd8d17f",
         "size": 1570932,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-gb-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "English (GB) LexHint IPA lexicon",
       "id": "en-gb:lexhint",
       "kind": "pronunciation",
@@ -356,8 +356,8 @@
       },
       "manifest": {
         "name": "g2lex-en-gb-lexhint.manifest.json",
-        "sha256": "88f757345904fb89d537073655fc8b907c6c6f5abc218c4e60ec89a49d1977f6",
-        "size": 2774,
+        "sha256": "bdba49cf7609bcc30a3368e140890af289b35103767ddf85f5441dad597ef46a",
+        "size": 2765,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-gb-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -377,11 +377,11 @@
         "logical_sha256": "95d1b3cd9367a5d8cf15070a2a8dfd6fff9501dd5b834489bfb0c7b63a4c6369",
         "name": "g2lex-de-de-lexhint.g2lex",
         "schema": 1,
-        "sha256": "6ef2170d7872506cb966cee17d8aca8f6e2be68c142f19bb6dd51eb82ee52c6c",
-        "size": 11855724,
+        "sha256": "3819a9403700f1f8710437ecf225b3908c0d80b04fb6896122b45a857a62c04e",
+        "size": 11855716,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "German LexHint IPA lexicon",
       "id": "de-de:lexhint",
       "kind": "pronunciation",
@@ -393,8 +393,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-lexhint.manifest.json",
-        "sha256": "359fce13b6b0b29654c9c4fc77b99158406a5618359226a22fa8f3d514ae0c1c",
-        "size": 2736,
+        "sha256": "c3b05f92c068191afa3ee52b3d6e41eecbed869297c238396a5f92eb8833770b",
+        "size": 2727,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -414,11 +414,11 @@
         "logical_sha256": "8046e8034e836a61af2a8a710afbcfe15c4248129b9360215da92c86226a3142",
         "name": "g2lex-ja-lexhint.g2lex",
         "schema": 1,
-        "sha256": "f70a6036c33574052d7cbf1639233bb54d2c648d7c159d895606847774640c86",
+        "sha256": "3a3330516846f4d6d06bb4e7ce37bc6807a11ec14989d0cff03704124bf6e94a",
         "size": 301356,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Japanese LexHint IPA lexicon",
       "id": "ja:lexhint",
       "kind": "pronunciation",
@@ -430,8 +430,8 @@
       },
       "manifest": {
         "name": "g2lex-ja-lexhint.manifest.json",
-        "sha256": "19ab0a6e1f15944c168e7828e46cab626cd5b8fcc675a0f11d39d755268eda52",
-        "size": 2735,
+        "sha256": "524f88114e9445ef9a8da4f836fe387b6a92a0ea0bb9407ca42672b817756fac",
+        "size": 2726,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -451,11 +451,11 @@
         "logical_sha256": "64a11a15b34138ccfef6f4caf7a76b6528f03f82adec73d070fb87b1845e62a1",
         "name": "g2lex-ko-lexhint.g2lex",
         "schema": 1,
-        "sha256": "05bbbcbb752b67d0e1f8af7050e6d66e933137f4f712cf687781f5ba324548b4",
+        "sha256": "b111c83a2d3771fdd5bae6bd981872eb42b7619efe7631d6b4515c0bec7322f8",
         "size": 526636,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ko-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Korean LexHint IPA lexicon",
       "id": "ko:lexhint",
       "kind": "pronunciation",
@@ -467,8 +467,8 @@
       },
       "manifest": {
         "name": "g2lex-ko-lexhint.manifest.json",
-        "sha256": "e243e90bbdd668c7d7e698c52004ec4f2659902285a092e56848685c6475492f",
-        "size": 2733,
+        "sha256": "e2d1872c78af893b8d3d0a4b0c9e5cd085304d557923b5b7ff7f9a1b894b5a89",
+        "size": 2724,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ko-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -488,11 +488,11 @@
         "logical_sha256": "d74a19c11e6a71d8b260caea8a5fecbc823ef59f1a01d86026cb2aabf9777f54",
         "name": "g2lex-pt-lexhint.g2lex",
         "schema": 1,
-        "sha256": "9441c6e80a2af1f7855e256ba370faf12c2e0d57b33180dbff05d354ca86aa51",
-        "size": 386876,
+        "sha256": "91982f0e4e3a20aebb685318f3f39e65e78759ee733d187871ab34f7214e1e9b",
+        "size": 386868,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-pt-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Portuguese LexHint IPA lexicon",
       "id": "pt:lexhint",
       "kind": "pronunciation",
@@ -504,8 +504,8 @@
       },
       "manifest": {
         "name": "g2lex-pt-lexhint.manifest.json",
-        "sha256": "e470e31ef4f1aef1d1775ea08dce98d386d24315b48377bfb54b1706671b1b5c",
-        "size": 2739,
+        "sha256": "f1b88fd59192bfe435f71d220e46dddcd2f13958455ed645d1a78847e941be2b",
+        "size": 2730,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-pt-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -525,11 +525,11 @@
         "logical_sha256": "1ae67b06bb58647a802e677e3396e52fdb3315f7b1ad38aced4666b48f8e104a",
         "name": "g2lex-ru-lexhint.g2lex",
         "schema": 1,
-        "sha256": "e615c35aef7e3fae255240a117869f6662278a1801569140342d71a34ffefe0b",
-        "size": 7074164,
+        "sha256": "ebd81f2008f91380360de64cfe6c93d156df8b03c0c8803e159a094ab40773a3",
+        "size": 7074156,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ru-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Russian LexHint IPA lexicon",
       "id": "ru:lexhint",
       "kind": "pronunciation",
@@ -541,8 +541,8 @@
       },
       "manifest": {
         "name": "g2lex-ru-lexhint.manifest.json",
-        "sha256": "3274a36eb5e30ef24319bfe4e5e311e74612c20821c8fa6cb58ac4133067820f",
-        "size": 2740,
+        "sha256": "ab35f363f91bfcd62956d6aed8852ca804009105a7932516d8854c4240d616d9",
+        "size": 2731,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ru-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -562,11 +562,11 @@
         "logical_sha256": "e423891b48d5eb08ed66e8ed7ac821f450e09aee415235a821cdec3b1c625fc2",
         "name": "g2lex-th-lexhint.g2lex",
         "schema": 1,
-        "sha256": "69f93263e52ce0fa0ebfa567d136c9135fd0c9d65c74eebc80b068bff3767976",
-        "size": 594012,
+        "sha256": "a34eaaf7b832b58e854bd988fea4b3041a4a7949c906044b7f04e66ec71e7c5c",
+        "size": 594004,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-th-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Thai LexHint IPA lexicon",
       "id": "th:lexhint",
       "kind": "pronunciation",
@@ -578,8 +578,8 @@
       },
       "manifest": {
         "name": "g2lex-th-lexhint.manifest.json",
-        "sha256": "ed02904f2e5a9307840d6a5c239340de4c3cc468441a6e75bb3c170be1c2d7ee",
-        "size": 2731,
+        "sha256": "74072df3d5db4c96fe0383207c8c205df42d00c5a05c5b042c00ca18daa67dda",
+        "size": 2722,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-th-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -599,11 +599,11 @@
         "logical_sha256": "312bb35cbc3419b2c1ebd4e000938faae2f51ebd30e23a37e09576f039619789",
         "name": "g2lex-vi-lexhint.g2lex",
         "schema": 1,
-        "sha256": "a1348c20983472d4050a1ca73d76f1bf925cd533f0be56c09afc942eb10a5712",
-        "size": 1353508,
+        "sha256": "e373eca42c041bd3b5f0acc14ca724c7909a6f79e755622890fc5d91fc49df7b",
+        "size": 1353500,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-vi-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Vietnamese LexHint IPA lexicon",
       "id": "vi:lexhint",
       "kind": "pronunciation",
@@ -615,8 +615,8 @@
       },
       "manifest": {
         "name": "g2lex-vi-lexhint.manifest.json",
-        "sha256": "d3ac0e42be0a52dc92dc978fffbf20f93a4e5e4932edd0fd1db8f88ecbfa3aa2",
-        "size": 2738,
+        "sha256": "f95fac73853d388828d407a076ac95441401861aad503679eaca22f5f279fa02",
+        "size": 2729,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-vi-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -636,11 +636,11 @@
         "logical_sha256": "3f4d9a74028f6ddb152acf49833a461dabe2e276e1f590afcf52093d77be98b8",
         "name": "g2lex-zh-lexhint.g2lex",
         "schema": 1,
-        "sha256": "b558f909ee85a888a08bbcd2a8f8941843000e589acda403265ec2d243e3ff41",
+        "sha256": "762e86f4273ff263d3eabb086cee11c3195d602d142682f724ba2beed8aae490",
         "size": 2401332,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-zh-lexhint.g2lex"
       },
-      "data_version": "data-2026.09.04",
+      "data_version": "2026.09.04",
       "display_name": "Chinese LexHint IPA lexicon",
       "id": "zh:lexhint",
       "kind": "pronunciation",
@@ -652,8 +652,8 @@
       },
       "manifest": {
         "name": "g2lex-zh-lexhint.manifest.json",
-        "sha256": "0c532795851d9b88613d35ffe80b8d9d73d61b7e98ef705777d9a44b44ba705e",
-        "size": 2737,
+        "sha256": "71e125ec1e7bf420279f5db78ec62dad559711a2ffd1ef77a24169530d0f42ec",
+        "size": 2728,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-zh-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -668,7 +668,7 @@
     }
   ],
   "catalog_version": 1,
-  "data_version": "data-2026.09.04",
+  "data_version": "2026.09.04",
   "release_tag": "data-2026.09.04",
   "repository": "buchwandler/g2lex-data",
   "runtime_contract": "g2lex-data.catalog.v1"
