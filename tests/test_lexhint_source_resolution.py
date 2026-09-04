@@ -25,6 +25,19 @@ def test_resolves_pinned_installed_lexhint_artifact() -> None:
     assert resolved.metadata["size"] == 859484160
 
 
+@pytest.mark.parametrize("language", ("ja", "ko", "pt", "ru", "th", "vi", "zh"))
+def test_resolves_multilingual_base_language_artifacts(language: str) -> None:
+    record = load_config().asset(f"{language}:lexhint")
+    resolved = resolve_source(record)
+    assert resolved.metadata["provider"] == "lexhint"
+    assert resolved.metadata["language"] == language
+    assert resolved.metadata["variant"] == "dictionary"
+    assert resolved.metadata["dataset_version"] == "2026.09.03"
+    assert resolved.metadata["schema_version"] == "10"
+    assert resolved.metadata["lexhint_version"] == "0.4.4"
+    assert resolved.metadata["locale"] is None
+
+
 def test_source_hash_mismatch_fails_closed() -> None:
     record = replace(_record(), source_sha256="0" * 64)
     with pytest.raises(ValueError, match="SHA-256 mismatch"):
@@ -43,7 +56,7 @@ def test_schema_mismatch_fails_closed(monkeypatch: pytest.MonkeyPatch, tmp_path:
         metadata: ClassVar[dict[str, str]] = {
             "schema_version": "9",
             "language": "en",
-            "lexhint_version": "0.4.3",
+            "lexhint_version": "0.4.4",
         }
 
         def __init__(self, *args: object, **kwargs: object) -> None:

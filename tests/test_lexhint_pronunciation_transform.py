@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pytest
 from lexhint import Pronunciation, PronunciationEntry, PronunciationGroup
 
 from g2lex_data.transforms.lexhint_pronunciations import (
@@ -24,6 +25,49 @@ def test_normalization() -> None:
     assert normalize_key("Straße") == "straße"
     assert normalize_ipa("[ˈlɪv]") == "ˈlɪv"
     assert normalize_ipa("/ˈlɪv/") == "ˈlɪv"
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    (
+        ("家", "家"),
+        ("집", "집"),
+        ("AÇÃO", "ação"),
+        ("ДОМ", "дом"),
+        ("บ้าน", "บ้าน"),
+        ("NHÀ", "nhà"),
+        ("NHA\u0300", "nhà"),
+        ("A\u0327O\u0303", "a̧õ"),
+    ),
+)
+def test_multilingual_key_normalization(source: str, expected: str) -> None:
+    assert normalize_key(source) == expected
+
+
+def test_multilingual_ipa_and_pos_evidence_is_preserved() -> None:
+    result = transform_lexhint(
+        [
+            entry("家", group("noun", "[ka\u0303]", "[kaː]")),
+            entry("집", group("noun", "[tɕipː]")),
+            entry("AÇÃO", group("noun", "[aˈsɐ̃w]")),
+            entry(
+                "ДОМ",
+                group("noun", "[ˈdom]", word="дом"),
+                group("verb", "[doːm]", word="ДОМ"),
+            ),
+            entry("บ้าน", group("noun", "[baːn˥]")),
+            entry("NHÀ", group("noun", "[naː˧˩]")),
+        ]
+    )
+
+    assert result.entries["家"] == ("kã", "kaː")
+    assert result.entries["집"] == "tɕipː"
+    assert result.entries["ação"] == "aˈsɐ̃w"
+    assert result.entries["дом"] == {"DEFAULT": "ˈdom", "NOUN": "ˈdom", "VERB": "doːm"}
+    assert result.entries["บ้าน"] == "baːn˥"
+    assert result.entries["nhà"] == "naː˧˩"
+    assert result.report["case_collision_count"] == 1
+    assert result.report["output_entry_count"] == 6
     assert normalize_ipa("[/a/b/]") == "/a/b/"
 
 

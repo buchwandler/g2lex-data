@@ -20,6 +20,13 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - run: lexhint dataset download de --variant dictionary --version 2026.08.28
       - run: lexhint dataset download en --variant dictionary --version 2026.08.28
+      - run: lexhint dataset download ja --variant dictionary --version 2026.09.03
+      - run: lexhint dataset download ko --variant dictionary --version 2026.09.03
+      - run: lexhint dataset download pt --variant dictionary --version 2026.09.03
+      - run: lexhint dataset download ru --variant dictionary --version 2026.09.03
+      - run: lexhint dataset download th --variant dictionary --version 2026.09.03
+      - run: lexhint dataset download vi --variant dictionary --version 2026.09.03
+      - run: lexhint dataset download zh --variant dictionary --version 2026.09.03
       - run: pytest
       - run: g2lex-data release --data-version "${{ inputs.data_version }}"
       - name: Create immutable GitHub release

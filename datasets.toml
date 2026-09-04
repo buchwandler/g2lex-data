@@ -102,7 +102,7 @@ transform = "de-crane-lowercase-lexhint-v1"
 lexhint_language = "de"
 lexhint_artifact = "de/dictionary/s10/2026.08.28/lexhint.sqlite3"
 lexhint_artifact_sha256 = "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
-lexhint_version = "0.4.3"
+lexhint_version = "0.4.4"
 key_normalization = "NFC+lower"
 
 [[asset]]
@@ -200,7 +200,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "en_US"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.3"
+lexhint_version = "0.4.4"
 
 [[asset]]
 id = "en-gb:lexhint"
@@ -230,7 +230,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "en_GB"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.3"
+lexhint_version = "0.4.4"
 
 [[asset]]
 id = "de-de:lexhint"
@@ -259,4 +259,214 @@ lexhint_dataset_version = "2026.08.28"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.3"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "ja:lexhint"
+language = "ja"
+name = "lexhint"
+display_name = "Japanese LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:ja:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:ja:dictionary:s10:2026.09.03"
+source_sha256 = "a09eb9ee47e19ba3a165327b35569e281384d9f57fa1b741b17dbc94e38a2321"
+source_size = 64274432
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-ja-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-ja-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "ja"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "ko:lexhint"
+language = "ko"
+name = "lexhint"
+display_name = "Korean LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:ko:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:ko:dictionary:s10:2026.09.03"
+source_sha256 = "6bf984411802828a5eb577d2696e64c5fb327e0815dcfd5b99b8f429bcd6f4ae"
+source_size = 26775552
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-ko-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-ko-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "ko"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "pt:lexhint"
+language = "pt"
+name = "lexhint"
+display_name = "Portuguese LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:pt:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:pt:dictionary:s10:2026.09.03"
+source_sha256 = "a15fa5c70a36c176b45197682fb82b5e512ed355405fd996633effb3693a4e18"
+source_size = 202817536
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-pt-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-pt-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "pt"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "ru:lexhint"
+language = "ru"
+name = "lexhint"
+display_name = "Russian LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:ru:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:ru:dictionary:s10:2026.09.03"
+source_sha256 = "23ebc98cf9282ca70ccfe1f96f47b2317f7cddfa352bf86e42b10f0f8c2be186"
+source_size = 1194717184
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-ru-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-ru-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "ru"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "th:lexhint"
+language = "th"
+name = "lexhint"
+display_name = "Thai LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:th:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:th:dictionary:s10:2026.09.03"
+source_sha256 = "81178c001e9a925e226f248b7598b35543befe7495ae2822e1c19623066912da"
+source_size = 19566592
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-th-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-th-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "th"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "vi:lexhint"
+language = "vi"
+name = "lexhint"
+display_name = "Vietnamese LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:vi:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:vi:dictionary:s10:2026.09.03"
+source_sha256 = "856328de5ee232ed2e0d133537ca1c888445d8295c07294c134c080f6ec90c14"
+source_size = 27983872
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-vi-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-vi-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "vi"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "zh:lexhint"
+language = "zh"
+name = "lexhint"
+display_name = "Chinese LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:zh:dictionary:s10:2026.09.03"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:zh:dictionary:s10:2026.09.03"
+source_sha256 = "34400ee009be4a26675c441e90b41f762935178e71689ef07690ea8f8b7b3f48"
+source_size = 112721920
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-zh-2026.09.03"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-zh-2026.09.03"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "zh"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.03"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"

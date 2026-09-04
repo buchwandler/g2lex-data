@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 license = "Apache-2.0"
 authors = [{name = "Holger Nahrstaedt"}]
 dynamic = ["version"]
-dependencies = ["g2lex>=0.1.8,<0.2", "lexhint==0.4.3"]
+dependencies = ["g2lex>=0.1.8,<0.2", "lexhint==0.4.4"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.16", "build>=1", "tomli>=2; python_version < '3.11'"]
