@@ -2,10 +2,10 @@
   "artifacts": [
     {
       "asset": {
-        "entry_count": 6,
+        "entry_count": 812343,
         "format": "g2lex.lexicon.v1",
-        "logical_sha256": "e2263f3aebeb27d289767f9d7ca2a90f26a0251967fd400c3f56f0d3848140a5",
-        "name": "g2lex-de-de-demo.g2lex",
+        "logical_sha256": "c583677e9ed2e60300924bca4a8514dfed0bbe3de05d7083024ab6901647c2da",
+        "name": "g2lex-sv-se-nst.g2lex",
         "schema": 1,
         "sha256": "355dc9a1ede66af9c526c2ec46010abf689317908d82817f15cdd508089911cf",
         "size": 2172,
@@ -15,7 +15,7 @@
       "display_name": "German typed IPA demo",
       "id": "de-de:demo",
       "kind": "pronunciation",
-      "language": "de-DE",
+      "language": "sv-SE",
       "license": {
         "attribution": "MVP fixture authored for buchwandler/g2lex-data",
         "expression": "CC0-1.0",
@@ -138,9 +138,9 @@
         "size": 1851,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-gold.manifest.json"
       },
-      "name": "gold",
+      "name": "nst",
       "phoneme_encoding": "ipa",
-      "provider": "KokoroG2P German gold source",
+      "provider": "Joakim/kokoro-sv-g2p",
       "release_tag": "data-2026.09.04",
       "source": {
         "license_expression": "Apache-2.0",

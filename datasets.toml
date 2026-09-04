@@ -470,3 +470,22 @@ lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
 lexhint_version = "0.4.4"
+
+[[asset]]
+id = "sv-se:nst"
+language = "sv-SE"
+name = "nst"
+display_name = "Swedish NST IPA lexicon"
+kind = "pronunciation"
+source = "sources/sv/sv_nst.tsv"
+source_format = "tsv"
+source_id = "sv-se:nst"
+source_sha256 = "65eb3aae9c737f6d04c22a44b2ab836d1ec01f682b1cdee07bb2209852355296"
+source_size = 38008908
+phoneme_encoding = "ipa"
+provider = "Joakim/kokoro-sv-g2p"
+revision = "d19dd10"
+license_expression = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+attribution = "Joakim; NST Swedish pronunciation lexicon published in kokoro-sv-g2p"
+source_url = "https://huggingface.co/Joakim/kokoro-sv-g2p/blob/d19dd10/g2p/lexicon.tsv"

@@ -8,7 +8,7 @@ from . import __version__
 from .build import build
 from .catalog import build_catalog
 from .download import download_source, source_statuses
-from .parity import compare_german
+from .parity import BASELINE_PATH, compare_baseline
 from .release import prepare_release
 from .validate import validate_all
 
@@ -69,10 +69,9 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  installed: {'yes' if status['installed'] else 'no'}")
             print(f"  sha256: {status['sha256']}")
     elif args.command == "parity":
-        result = (
-            compare_german(args.baseline, baseline_dir=args.baseline_dir)
-            if args.baseline
-            else compare_german(baseline_dir=args.baseline_dir)
+        result = compare_baseline(
+            args.baseline or BASELINE_PATH,
+            baseline_dir=args.baseline_dir,
         )
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
         if not result["ok"]:

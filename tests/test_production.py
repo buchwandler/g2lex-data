@@ -14,6 +14,7 @@ PRODUCTION_IDS = {
     "de-de:crane",
     "de-de:espeak",
     "de-de:olaph",
+    "sv-se:nst",
     "en-us:cmudict",
     "en-us:lexhint",
     "en-gb:lexhint",
@@ -49,6 +50,24 @@ def test_production_configuration_contract() -> None:
     assert config.asset("en-us:lexhint").transform_inputs["include_neutral"] is True
     assert "lexhint_locale" not in (config.asset("de-de:lexhint").transform_inputs or {})
 
+
+def test_swedish_nst_configuration_contract() -> None:
+    record = load_config().asset("sv-se:nst")
+
+    assert record.language == "sv-SE"
+    assert record.name == "nst"
+    assert record.kind == "pronunciation"
+    assert record.source_provider == "file"
+    assert record.source_format == "tsv"
+    assert record.source_id == "sv-se:nst"
+    assert record.phoneme_encoding == "ipa"
+    assert record.transform is None
+    assert record.source_size == 38008908
+    assert record.source_sha256 == (
+        "65eb3aae9c737f6d04c22a44b2ab836d1ec01f682b1cdee07bb2209852355296"
+    )
+    assert record.provider == "Joakim/kokoro-sv-g2p"
+    assert record.revision == "d19dd10"
 
 @pytest.mark.parametrize("language", ("ja", "ko", "pt", "ru", "th", "vi", "zh"))
 def test_multilingual_lexhint_configuration_contract(language: str) -> None:

@@ -71,7 +71,7 @@ def _value_difference(actual: Any, expected: Any) -> bool:
     if actual == expected:
         return False
     if hasattr(actual, "items") and hasattr(expected, "items"):
-        return dict(actual.items) != dict(expected.items)
+        return dict(actual.items()) != dict(expected.items())
     return True
 
 
@@ -109,6 +109,12 @@ def compare_asset(
                 "missing_keys": missing[:20],
                 "extra_keys": extra[:20],
                 "value_mismatch": mismatch,
+                "missing_count": len(missing),
+                "extra_count": len(extra),
+                "value_mismatch_count": sum(
+                    _value_difference(actual.get(key), baseline.get(key))
+                    for key in actual_keys & baseline_keys
+                ),
                 "ok": not missing and not extra and mismatch is None,
                 "comparison": "logical-content",
             }
@@ -116,39 +122,54 @@ def compare_asset(
         return result
 
 
+def compare_baseline(
+    baseline_path: Path,
+    *,
+    baseline_dir: Path,
+    ids: set[str] | None = None,
+) -> dict[str, object]:
+    baseline = load_baseline(baseline_path)
+    baseline_assets = baseline["assets"]
+    assert isinstance(baseline_assets, dict)
+    selected_ids = set(baseline_assets) if ids is None else set(ids)
+    config = load_config()
+    results: dict[str, object] = {}
+    for identifier in sorted(selected_ids):
+        expected = baseline_assets.get(identifier)
+        if not isinstance(expected, dict):
+            raise TypeError(f"invalid baseline record for {identifier}")
+        record = config.asset(identifier)
+        results[identifier] = compare_asset(
+            ASSET_DIR / record.asset_name,
+            _baseline_asset_path(baseline_dir, str(expected["asset_name"])),
+            expected,
+        )
+    failed = [identifier for identifier, result in results.items() if not result["ok"]]
+    return {
+        "baseline": str(baseline_path),
+        "assets": results,
+        "benchmarks": {},
+        "ok": not failed,
+    }
+
+
 def compare_german(
     baseline_path: Path = BASELINE_PATH,
     *,
     baseline_dir: Path,
 ) -> dict[str, object]:
-    baseline = load_baseline(baseline_path)
-    results: dict[str, object] = {}
-    for record in load_config().assets:
-        if not record.id.startswith("de-de:"):
-            continue
-        expected = baseline["assets"].get(record.id)
-        if expected is None:
-            continue
-        if not isinstance(expected, dict):
-            raise TypeError(f"invalid baseline record for {record.id}")
-        results[record.id] = compare_asset(
-            ASSET_DIR / record.asset_name,
-            _baseline_asset_path(baseline_dir, str(expected["asset_name"])),
-            expected,
-        )
-    benchmarks: dict[str, object] = {}
-    lexhint_record = next(
-        (record for record in load_config().assets if record.id == "de-de:lexhint"), None
+    result = compare_baseline(
+        baseline_path,
+        baseline_dir=baseline_dir,
+        ids={"de-de:gold", "de-de:crane", "de-de:espeak", "de-de:olaph"},
     )
-    crane_expected = baseline["assets"].get("de-de:crane")
+    benchmarks: dict[str, object] = {}
+    config = load_config()
+    lexhint_record = next((record for record in config.assets if record.id == "de-de:lexhint"), None)
+    crane_expected = load_baseline(baseline_path)["assets"].get("de-de:crane")
     lexhint_path = (ASSET_DIR / lexhint_record.asset_name) if lexhint_record else None
     if lexhint_path and lexhint_path.is_file() and isinstance(crane_expected, dict):
         crane_path = _baseline_asset_path(baseline_dir, str(crane_expected["asset_name"]))
         benchmarks["de-de:lexhint"] = benchmark_asset(lexhint_path, crane_path, crane_path)
-    failed = [identifier for identifier, result in results.items() if not result["ok"]]
-    return {
-        "baseline": str(baseline_path),
-        "assets": results,
-        "benchmarks": benchmarks,
-        "ok": not failed,
-    }
+    result["benchmarks"] = benchmarks
+    return result

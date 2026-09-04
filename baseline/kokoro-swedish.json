@@ -1,0 +1,15 @@
+{
+  "assets": {
+    "sv-se:nst": {
+      "asset_name": "sv_nst.g2lex",
+      "asset_sha256": "40e823bd01333bb1e329d8d43ca99250b0b9c1c088138b23c2141520c041c329",
+      "entry_count": 812343,
+      "logical_sha256": "c583677e9ed2e60300924bca4a8514dfed0bbe3de05d7083024ab6901647c2da",
+      "source_entry_count": 812343,
+      "source_sha256": "65eb3aae9c737f6d04c22a44b2ab836d1ec01f682b1cdee07bb2209852355296",
+      "source_transform": null
+    }
+  },
+  "producer": "KokoroG2P",
+  "schema_version": 1
+}
