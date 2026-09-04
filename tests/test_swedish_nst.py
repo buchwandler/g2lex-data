@@ -5,6 +5,7 @@ from pathlib import Path
 
 import g2lex
 
+from g2lex_data.build import build_one
 from g2lex_data.config import load_config
 
 
@@ -22,6 +23,7 @@ def test_swedish_nst_source_contract() -> None:
 
 def test_swedish_nst_build_manifest_contract() -> None:
     record = load_config().asset("sv-se:nst")
+    build_one(record)
     manifest = json.loads(
         (Path("build/manifests") / record.manifest_name).read_text(encoding="utf-8")
     )

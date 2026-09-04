@@ -2,20 +2,20 @@
   "artifacts": [
     {
       "asset": {
-        "entry_count": 812343,
+        "entry_count": 6,
         "format": "g2lex.lexicon.v1",
-        "logical_sha256": "c583677e9ed2e60300924bca4a8514dfed0bbe3de05d7083024ab6901647c2da",
-        "name": "g2lex-sv-se-nst.g2lex",
+        "logical_sha256": "e2263f3aebeb27d289767f9d7ca2a90f26a0251967fd400c3f56f0d3848140a5",
+        "name": "g2lex-de-de-demo.g2lex",
         "schema": 1,
-        "sha256": "355dc9a1ede66af9c526c2ec46010abf689317908d82817f15cdd508089911cf",
-        "size": 2172,
+        "sha256": "592cf2bab8159c4378783d9264c7c4d62e8dab219486ae3eccb6b9ba4b37738f",
+        "size": 2164,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-demo.g2lex"
       },
       "data_version": "2026.09.04",
       "display_name": "German typed IPA demo",
       "id": "de-de:demo",
       "kind": "pronunciation",
-      "language": "sv-SE",
+      "language": "de-DE",
       "license": {
         "attribution": "MVP fixture authored for buchwandler/g2lex-data",
         "expression": "CC0-1.0",
@@ -23,8 +23,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-demo.manifest.json",
-        "sha256": "4cad89c42f668f436779941ac17919ec5f354095d41f7aee35aea44f7e95951a",
-        "size": 1736,
+        "sha256": "d515beae9e45fa8874784721bdfd7ac789fde881dc31ef330d8a35725619719c",
+        "size": 1731,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-demo.manifest.json"
       },
       "name": "demo",
@@ -44,7 +44,7 @@
         "logical_sha256": "08aedd3ba7c8c39d7c7c20f6fbf5f9b612b7673aed83463df9fe8512d857397e",
         "name": "g2lex-en-us-demo-cmu.g2lex",
         "schema": 1,
-        "sha256": "1fbb6d50abb84ed4f13de2f74655ff38b15ce35d872bc6c4071939d9e6974abb",
+        "sha256": "5f5c74d302a6704ea2320b32813b7c42f4e27959fd1393cb5928ef71f2e7e064",
         "size": 2084,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-demo-cmu.g2lex"
       },
@@ -60,8 +60,8 @@
       },
       "manifest": {
         "name": "g2lex-en-us-demo-cmu.manifest.json",
-        "sha256": "8d264497db88df94712114d9513e00b58cd5361d33e5102a9030f71702c62ff9",
-        "size": 1759,
+        "sha256": "0ea5a3c0ac2baaefd33dfd507c935aec4d9be639ae6b4ac40091c88545e9c198",
+        "size": 1754,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-demo-cmu.manifest.json"
       },
       "name": "demo-cmu",
@@ -81,8 +81,8 @@
         "logical_sha256": "a9b932f6d07c9e9b8ecaba19ce79e5bdaf578f48e38ba285b785867c5f1b651e",
         "name": "g2lex-ja-jp-demo-words.g2lex",
         "schema": 1,
-        "sha256": "44f3b0cd0a39ace78911766402b23739366793f43a08865e653b2b2d54d2559c",
-        "size": 2052,
+        "sha256": "8b2796035a827a7e868fd58b4c2e0a5c649a2173531f95de838810dc5f9044e5",
+        "size": 2044,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-jp-demo-words.g2lex"
       },
       "data_version": "2026.09.04",
@@ -97,8 +97,8 @@
       },
       "manifest": {
         "name": "g2lex-ja-jp-demo-words.manifest.json",
-        "sha256": "e0d6c2c18d5c680b6374583ff941d9a89046ff92240dea501edb41dbb4ffb639",
-        "size": 1764,
+        "sha256": "f70e308dbe501b93c76fd52e5753bbd7c1ed8554f30ce0b2fcc9487e5038c4a4",
+        "size": 1759,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-jp-demo-words.manifest.json"
       },
       "name": "demo-words",
@@ -118,7 +118,7 @@
         "logical_sha256": "530f4787a2accd9824526749b90f43d4edaf2506f0aa385056a83913cb6ee48a",
         "name": "g2lex-de-de-gold.g2lex",
         "schema": 1,
-        "sha256": "af71ae183f076843328c962b7be038abcd68f78d94e25300122aa383dda58194",
+        "sha256": "5a5aae993678ac5ec6035959a8f014003b9a22def12be12350ac41f8c9b66d0a",
         "size": 8552228,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-gold.g2lex"
       },
@@ -134,13 +134,13 @@
       },
       "manifest": {
         "name": "g2lex-de-de-gold.manifest.json",
-        "sha256": "b2fbf0b5c90338dfc764fb15e90aa07793290ad35e1945cf5c2054b1d9e64264",
+        "sha256": "52d974551d33f441c47c9fe3fe330fa82a32d69a18f2233be5ca997f2d1661b3",
         "size": 1851,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-gold.manifest.json"
       },
-      "name": "nst",
+      "name": "gold",
       "phoneme_encoding": "ipa",
-      "provider": "Joakim/kokoro-sv-g2p",
+      "provider": "KokoroG2P German gold source",
       "release_tag": "data-2026.09.04",
       "source": {
         "license_expression": "Apache-2.0",
@@ -155,7 +155,7 @@
         "logical_sha256": "2381391dc5c0ea083816c1d3cac9002d16750e05038dc3ac97690115b9007efa",
         "name": "g2lex-de-de-crane.g2lex",
         "schema": 1,
-        "sha256": "4d2066385b625e6568d9318b1c6d3feae2a9bb2556e1e395b083afb0660f7a0a",
+        "sha256": "8a7c30e8e6014e23bd4e831af1c6af60e76aeb283224b526a5eb3b960d25a4e0",
         "size": 10243356,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-crane.g2lex"
       },
@@ -171,7 +171,7 @@
       },
       "manifest": {
         "name": "g2lex-de-de-crane.manifest.json",
-        "sha256": "9845ec5790552c652363713af0ac308f169968044c218ad102a00baa39d69843",
+        "sha256": "00509a2033dcc29d236e7a600b7e435d77050858d4a1f9e0c6d96b849330d89f",
         "size": 2323,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-crane.manifest.json"
       },
@@ -192,7 +192,7 @@
         "logical_sha256": "4c975e8348d2e8cb288f9b9530dcf26d7ac1527fec2d43457fa77481d562279d",
         "name": "g2lex-de-de-espeak.g2lex",
         "schema": 1,
-        "sha256": "d44b5c9a4a421ca4af57e6143629750c61d635a8cf4c2ef6990000e1be5740f4",
+        "sha256": "d9397875da0a2065a5859d8745feea11adcb677334b5e363a0d74eadb8b87b9e",
         "size": 7781636,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-espeak.g2lex"
       },
@@ -208,7 +208,7 @@
       },
       "manifest": {
         "name": "g2lex-de-de-espeak.manifest.json",
-        "sha256": "13a7a85ea3b30b69ebddb7fbefd7a3c25cb1c7247fead877ddafc22780c1f5d5",
+        "sha256": "8de9cb6cbc43f7a356e2aa7c277466a926f3503575a99ed683c2e840f61a6371",
         "size": 2258,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-espeak.manifest.json"
       },
@@ -229,7 +229,7 @@
         "logical_sha256": "c0dc2c87cf6f229ae88e66c2f4b3c03876f9f95df615e82c0133f0e3778c296d",
         "name": "g2lex-de-de-olaph.g2lex",
         "schema": 1,
-        "sha256": "f047d45afcf67f2ad185d7c5438152bde150143caee5bf31e742485cd8b279a2",
+        "sha256": "b642d21b072de0eaf1559ab571d70fb2f194a8d7034e69ceb70352f65c3e8525",
         "size": 12898468,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-olaph.g2lex"
       },
@@ -245,7 +245,7 @@
       },
       "manifest": {
         "name": "g2lex-de-de-olaph.manifest.json",
-        "sha256": "1193837d6bcc8a07628da7a2e405e17d07990be375fc26962175579260ca17ce",
+        "sha256": "9e0063483453e120882cb58e464a5915d088ca0eb28181ae43a15b78d0bbb608",
         "size": 2178,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-olaph.manifest.json"
       },
@@ -266,7 +266,7 @@
         "logical_sha256": "98e4cedc408dd0477fc2158be676bda9156a93dd0568b776efa89427d8e70ee3",
         "name": "g2lex-en-us-cmudict.g2lex",
         "schema": 1,
-        "sha256": "a25883cd5ab3cfe5fcde38b6a70b34f8c6237424eea9f2f10d89184f74a5180b",
+        "sha256": "0ba7cf00970301161f5c38d1b94c2221441f18e277277c1ec46e11c10e0345c1",
         "size": 1645788,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-cmudict.g2lex"
       },
@@ -282,7 +282,7 @@
       },
       "manifest": {
         "name": "g2lex-en-us-cmudict.manifest.json",
-        "sha256": "0a9799d64d6887a3553ec1da54a40ba7cb11a24c4a14616942559ba2a7a078a3",
+        "sha256": "56001367e7016f7fcec8291f692616cb557e62c167a83e0a679673a371950cd6",
         "size": 1920,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-cmudict.manifest.json"
       },
@@ -303,7 +303,7 @@
         "logical_sha256": "6460ee2c06aa08f226b265a67855328fddb6cf6be81214323fd2e7089b7abf7b",
         "name": "g2lex-en-us-lexhint.g2lex",
         "schema": 1,
-        "sha256": "cf3c8c81eabdd20e178b1cdd5d094198abb0d19dfb21d1ce6808c78f103dcfd1",
+        "sha256": "7621bfac3a8005d5f5df405c6745e115ed6e43e10ebb5fce78c380f2b52a051f",
         "size": 1565124,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-lexhint.g2lex"
       },
@@ -319,8 +319,8 @@
       },
       "manifest": {
         "name": "g2lex-en-us-lexhint.manifest.json",
-        "sha256": "67b98b518f2b1ee4f11097129e15725f4deea1917d403fe82a5102a26a6e375e",
-        "size": 2765,
+        "sha256": "9cdbfb54571165aaa9483cc86f91daba3e6196568996fa622ae07f03bab9e30c",
+        "size": 2769,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-us-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -340,7 +340,7 @@
         "logical_sha256": "d6603af1166f88c51a61d628e56de8ce96b7b7c1080fea8f3db35d0267037356",
         "name": "g2lex-en-gb-lexhint.g2lex",
         "schema": 1,
-        "sha256": "c3dcac2d5a59b31bcd163c734a97677d8ce22b09da01c60a10bf641dcdd8d17f",
+        "sha256": "95a400b987258a83ea3cbb3c3de3ce191f680e118669a20810c4e0dac32174e2",
         "size": 1570932,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-gb-lexhint.g2lex"
       },
@@ -356,8 +356,8 @@
       },
       "manifest": {
         "name": "g2lex-en-gb-lexhint.manifest.json",
-        "sha256": "bdba49cf7609bcc30a3368e140890af289b35103767ddf85f5441dad597ef46a",
-        "size": 2765,
+        "sha256": "89ff0b6aaf5db156d986987211520ba26aa90a1f0974c95e5cb08faa4b05dcf2",
+        "size": 2769,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-en-gb-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -377,7 +377,7 @@
         "logical_sha256": "95d1b3cd9367a5d8cf15070a2a8dfd6fff9501dd5b834489bfb0c7b63a4c6369",
         "name": "g2lex-de-de-lexhint.g2lex",
         "schema": 1,
-        "sha256": "3819a9403700f1f8710437ecf225b3908c0d80b04fb6896122b45a857a62c04e",
+        "sha256": "49e30284e4dd810d80d8e8eef30a854bedbf8fa8eb7f0ed1d175f113d5fce64f",
         "size": 11855716,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-lexhint.g2lex"
       },
@@ -393,8 +393,8 @@
       },
       "manifest": {
         "name": "g2lex-de-de-lexhint.manifest.json",
-        "sha256": "c3b05f92c068191afa3ee52b3d6e41eecbed869297c238396a5f92eb8833770b",
-        "size": 2727,
+        "sha256": "bed5c66de370f2104d8177840b55b60e03a84c3cae00cc4c5c8fdbe167309eb6",
+        "size": 2731,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-de-de-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -414,7 +414,7 @@
         "logical_sha256": "8046e8034e836a61af2a8a710afbcfe15c4248129b9360215da92c86226a3142",
         "name": "g2lex-ja-lexhint.g2lex",
         "schema": 1,
-        "sha256": "3a3330516846f4d6d06bb4e7ce37bc6807a11ec14989d0cff03704124bf6e94a",
+        "sha256": "1f9ced174f4abbdf05b8fd9aa49ed895fb49cb7c7552cb2ea21ab165bd33b269",
         "size": 301356,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-lexhint.g2lex"
       },
@@ -430,8 +430,8 @@
       },
       "manifest": {
         "name": "g2lex-ja-lexhint.manifest.json",
-        "sha256": "524f88114e9445ef9a8da4f836fe387b6a92a0ea0bb9407ca42672b817756fac",
-        "size": 2726,
+        "sha256": "cc9bc4e8bebe426f45cf31da9b2b3a9d64c094af60ac037e2488b0eeeab1a8cf",
+        "size": 2730,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ja-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -451,7 +451,7 @@
         "logical_sha256": "64a11a15b34138ccfef6f4caf7a76b6528f03f82adec73d070fb87b1845e62a1",
         "name": "g2lex-ko-lexhint.g2lex",
         "schema": 1,
-        "sha256": "b111c83a2d3771fdd5bae6bd981872eb42b7619efe7631d6b4515c0bec7322f8",
+        "sha256": "41d278e36a95eef9a9c0b2aaacf6fe18c995d37cf98b5384b436515ff02b5d5e",
         "size": 526636,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ko-lexhint.g2lex"
       },
@@ -467,8 +467,8 @@
       },
       "manifest": {
         "name": "g2lex-ko-lexhint.manifest.json",
-        "sha256": "e2d1872c78af893b8d3d0a4b0c9e5cd085304d557923b5b7ff7f9a1b894b5a89",
-        "size": 2724,
+        "sha256": "7a27bb2084301cabcafdfc976a9d110e50df6eff5c1c5a60cf769376d4a715a6",
+        "size": 2728,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ko-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -488,7 +488,7 @@
         "logical_sha256": "d74a19c11e6a71d8b260caea8a5fecbc823ef59f1a01d86026cb2aabf9777f54",
         "name": "g2lex-pt-lexhint.g2lex",
         "schema": 1,
-        "sha256": "91982f0e4e3a20aebb685318f3f39e65e78759ee733d187871ab34f7214e1e9b",
+        "sha256": "167d9f5e4b0363706c0139d91a07c61c7f44239e7c894b556603889732d47aef",
         "size": 386868,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-pt-lexhint.g2lex"
       },
@@ -504,8 +504,8 @@
       },
       "manifest": {
         "name": "g2lex-pt-lexhint.manifest.json",
-        "sha256": "f1b88fd59192bfe435f71d220e46dddcd2f13958455ed645d1a78847e941be2b",
-        "size": 2730,
+        "sha256": "c4d70891ae7f51e3a7119d43a14d9b1c9ca086d3cdbbcbb9d642666b81a3521c",
+        "size": 2734,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-pt-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -525,7 +525,7 @@
         "logical_sha256": "1ae67b06bb58647a802e677e3396e52fdb3315f7b1ad38aced4666b48f8e104a",
         "name": "g2lex-ru-lexhint.g2lex",
         "schema": 1,
-        "sha256": "ebd81f2008f91380360de64cfe6c93d156df8b03c0c8803e159a094ab40773a3",
+        "sha256": "690bd5b7ed39ede8bad5a0b3fb09de507b2879306a5f8c9be96eeab16513d1fc",
         "size": 7074156,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ru-lexhint.g2lex"
       },
@@ -541,8 +541,8 @@
       },
       "manifest": {
         "name": "g2lex-ru-lexhint.manifest.json",
-        "sha256": "ab35f363f91bfcd62956d6aed8852ca804009105a7932516d8854c4240d616d9",
-        "size": 2731,
+        "sha256": "bd463014e205f4f28f4da7e81924cad6f6343cf990615dfcd6949606902bbd9c",
+        "size": 2735,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-ru-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -562,7 +562,7 @@
         "logical_sha256": "e423891b48d5eb08ed66e8ed7ac821f450e09aee415235a821cdec3b1c625fc2",
         "name": "g2lex-th-lexhint.g2lex",
         "schema": 1,
-        "sha256": "a34eaaf7b832b58e854bd988fea4b3041a4a7949c906044b7f04e66ec71e7c5c",
+        "sha256": "3b6de0cef6376cfa1a7bfedce9352a724a98db67f5e493c3800305fc41147a91",
         "size": 594004,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-th-lexhint.g2lex"
       },
@@ -578,8 +578,8 @@
       },
       "manifest": {
         "name": "g2lex-th-lexhint.manifest.json",
-        "sha256": "74072df3d5db4c96fe0383207c8c205df42d00c5a05c5b042c00ca18daa67dda",
-        "size": 2722,
+        "sha256": "9d09edbcff4550c313ed63531a631123563bf8a13d901ed4bf7d94d6dc5b0c5a",
+        "size": 2726,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-th-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -599,7 +599,7 @@
         "logical_sha256": "312bb35cbc3419b2c1ebd4e000938faae2f51ebd30e23a37e09576f039619789",
         "name": "g2lex-vi-lexhint.g2lex",
         "schema": 1,
-        "sha256": "e373eca42c041bd3b5f0acc14ca724c7909a6f79e755622890fc5d91fc49df7b",
+        "sha256": "2e54156fe208144ee4b9101e588cdbb9e84e60ae072db4ec399f1288211067fb",
         "size": 1353500,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-vi-lexhint.g2lex"
       },
@@ -615,8 +615,8 @@
       },
       "manifest": {
         "name": "g2lex-vi-lexhint.manifest.json",
-        "sha256": "f95fac73853d388828d407a076ac95441401861aad503679eaca22f5f279fa02",
-        "size": 2729,
+        "sha256": "c8a03cffbc8655781e1f4e68865a6b7d54f36155814938bf105a9278f361d606",
+        "size": 2733,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-vi-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -636,7 +636,7 @@
         "logical_sha256": "3f4d9a74028f6ddb152acf49833a461dabe2e276e1f590afcf52093d77be98b8",
         "name": "g2lex-zh-lexhint.g2lex",
         "schema": 1,
-        "sha256": "762e86f4273ff263d3eabb086cee11c3195d602d142682f724ba2beed8aae490",
+        "sha256": "409a429351f7e89352b34872a653b1b481b60cce6e5eaae82cdfb3453d0a71db",
         "size": 2401332,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-zh-lexhint.g2lex"
       },
@@ -652,8 +652,8 @@
       },
       "manifest": {
         "name": "g2lex-zh-lexhint.manifest.json",
-        "sha256": "71e125ec1e7bf420279f5db78ec62dad559711a2ffd1ef77a24169530d0f42ec",
-        "size": 2728,
+        "sha256": "dff28a6d51bb1349b2b9f493052a10fb9f405e99b6f078b5db280b324abc94ed",
+        "size": 2732,
         "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-zh-lexhint.manifest.json"
       },
       "name": "lexhint",
@@ -664,6 +664,43 @@
         "license_expression": "CC-BY-SA-4.0",
         "provider": "buchwandler/lexhint-datasets",
         "revision": "data-zh-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 812343,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "c583677e9ed2e60300924bca4a8514dfed0bbe3de05d7083024ab6901647c2da",
+        "name": "g2lex-sv-se-nst.g2lex",
+        "schema": 1,
+        "sha256": "6091df84aba2fd86b07250a1760c08e565158a156288f91d073c0eaaa0a5f83c",
+        "size": 10200948,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-sv-se-nst.g2lex"
+      },
+      "data_version": "2026.09.04",
+      "display_name": "Swedish NST IPA lexicon",
+      "id": "sv-se:nst",
+      "kind": "pronunciation",
+      "language": "sv-SE",
+      "license": {
+        "attribution": "Joakim; NST Swedish pronunciation lexicon published in kokoro-sv-g2p",
+        "expression": "Apache-2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "manifest": {
+        "name": "g2lex-sv-se-nst.manifest.json",
+        "sha256": "56c283caf68fa2ea77a1785dae6e938922328459c8ff19e938cf54b4b1640c14",
+        "size": 1833,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.04/g2lex-sv-se-nst.manifest.json"
+      },
+      "name": "nst",
+      "phoneme_encoding": "ipa",
+      "provider": "Joakim/kokoro-sv-g2p",
+      "release_tag": "data-2026.09.04",
+      "source": {
+        "license_expression": "Apache-2.0",
+        "provider": "Joakim/kokoro-sv-g2p",
+        "revision": "d19dd10"
       }
     }
   ],
