@@ -32,7 +32,9 @@ def _record(identifier: str = "en-us:lexhint") -> object:
     return load_config().asset(identifier)
 
 
-def _install_fake(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, version: str = "2026.09.10") -> dict[str, object]:
+def _install_fake(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, version: str = "2026.09.10"
+) -> dict[str, object]:
     artifact = tmp_path / f"{version}.sqlite3"
     artifact.write_bytes(b"fixture")
     calls: dict[str, object] = {}

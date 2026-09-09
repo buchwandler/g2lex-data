@@ -100,6 +100,7 @@ def _integer(values: dict[str, Any], key: str, label: str) -> int:
         raise ValueError(f"{label}.{key} must be a non-negative integer")
     return value
 
+
 def _optional_integer(values: dict[str, Any], key: str, label: str) -> int | None:
     return None if values.get(key) is None else _integer(values, key, label)
 
@@ -112,9 +113,9 @@ def _sha256(value: object, label: str) -> str:
     return value
 
 
-
 def _optional_sha256(value: object, label: str) -> str | None:
     return None if value is None else _sha256(value, label)
+
 
 def _transform_inputs(value: object, label: str) -> dict[str, object] | None:
     if value is None:

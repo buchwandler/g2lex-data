@@ -101,6 +101,7 @@ def test_lexhint_configuration_contract(
     assert inputs["lexhint_version"] == "0.4.7"
     assert "lexhint_dataset_version" not in inputs
 
+
 def test_cstr_transform_skips_only_header_and_strips_outer_delimiters(tmp_path: Path) -> None:
     source = tmp_path / "source.tsv"
     output = tmp_path / "normalized.tsv"

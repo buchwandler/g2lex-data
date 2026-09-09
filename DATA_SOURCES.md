@@ -4,15 +4,15 @@ This repository redistributes generated G2Lex assets. The source records below d
 
 ## Production sources
 
-| Asset family | Source | License | Transform |
-|---|---|---|---|
-| `*:lexhint` | LexHint dictionary built from English Wiktionary, when available | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `*:lexhint-native` | LexHint dictionary built from the target language's native Wiktionary, where configured | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `en-us:lexhint`, `en-gb:lexhint` | One English-Wiktionary LexHint dictionary with locale filtering | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| CMUdict assets | CMU Pronouncing Dictionary | BSD-3-Clause | none |
-| Crane assets | Crane pronunciation data | See source release | `crane-pronunciation-v1` |
-| NST assets | NST pronunciation data | See source release | none |
-| Demo and membership assets | Repository fixtures | Repository terms | none |
+| Asset family                     | Source                                                                                  | License            | Transform                            |
+| -------------------------------- | --------------------------------------------------------------------------------------- | ------------------ | ------------------------------------ |
+| `*:lexhint`                      | LexHint dictionary built from English Wiktionary, when available                        | CC-BY-SA-4.0       | `lexhint-pronunciation-lowercase-v1` |
+| `*:lexhint-native`               | LexHint dictionary built from the target language's native Wiktionary, where configured | CC-BY-SA-4.0       | `lexhint-pronunciation-lowercase-v1` |
+| `en-us:lexhint`, `en-gb:lexhint` | One English-Wiktionary LexHint dictionary with locale filtering                         | CC-BY-SA-4.0       | `lexhint-pronunciation-lowercase-v1` |
+| CMUdict assets                   | CMU Pronouncing Dictionary                                                              | BSD-3-Clause       | none                                 |
+| Crane assets                     | Crane pronunciation data                                                                | See source release | `crane-pronunciation-v1`             |
+| NST assets                       | NST pronunciation data                                                                  | See source release | none                                 |
+| Demo and membership assets       | Repository fixtures                                                                     | Repository terms   | none                                 |
 
 LexHint dictionaries are derived from Wiktionary through Wiktextract and Kaikki. `g2lex-data` selects a source variant explicitly and resolves the newest installed dictionary compatible with the required schema. It does not embed a future dataset date in direct LexHint selectors. Build manifests record the exact resolved dataset version, release tag, release asset digest, SQLite digest and size, source variant, edition, schema, locale, and runtime version.
 

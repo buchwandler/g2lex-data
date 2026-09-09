@@ -99,16 +99,10 @@ def _lexhint(
     resolved = dict(source_metadata or {})
     transform_source_metadata = {
         "language": resolved.get("language", language),
-        "source_variant": resolved.get(
-            "source_variant", expected.get("lexhint_source_variant")
-        ),
+        "source_variant": resolved.get("source_variant", expected.get("lexhint_source_variant")),
         "variant": resolved.get("variant", expected.get("lexhint_variant")),
-        "dataset_version": resolved.get(
-            "dataset_version", expected.get("lexhint_dataset_version")
-        ),
-        "schema_version": resolved.get(
-            "schema_version", expected.get("lexhint_schema_version")
-        ),
+        "dataset_version": resolved.get("dataset_version", expected.get("lexhint_dataset_version")),
+        "schema_version": resolved.get("schema_version", expected.get("lexhint_schema_version")),
         "release_tag": resolved.get("release_tag"),
         "release_published_at": resolved.get("release_published_at"),
         "asset": resolved.get("asset"),

@@ -46,11 +46,8 @@ def lexhint_download_command(record: AssetConfig) -> str:
     variant = _required_input(record, "lexhint_variant")
     source_variant = _required_input(record, "lexhint_source_variant")
     return (
-        f"lexhint dataset download {language} "
-        f"--variant {variant} "
-        f"--source-variant {source_variant}"
+        f"lexhint dataset download {language} --variant {variant} --source-variant {source_variant}"
     )
-
 
 
 def _resolve_lexhint(record: AssetConfig) -> ResolvedSource:
