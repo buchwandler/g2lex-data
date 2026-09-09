@@ -108,7 +108,18 @@ def test_catalog_source_qualified_artifacts_are_unique_and_version_agnostic() ->
 def test_g2lex_asset_names_follow_source_matrix() -> None:
     config = load_config()
     records = {record.id: record for record in config.assets if record.source_provider == "lexhint"}
-    assert len(records) == 56
+    assert len(records) == 58
+    assert records["pt:lexhint"].transform_inputs["lexhint_source_variant"] == "english"
+    assert "lexhint_locale" not in records["pt:lexhint"].transform_inputs
+    assert records["pt-br:lexhint"].transform_inputs["lexhint_source_variant"] == "english"
+    assert records["pt-br:lexhint"].transform_inputs["lexhint_locale"] == "pt_BR"
+    assert records["pt-pt:lexhint"].transform_inputs["lexhint_source_variant"] == "english"
+    assert records["pt-pt:lexhint"].transform_inputs["lexhint_locale"] == "pt_PT"
+    assert (
+        records["pt-br:lexhint"].source_id
+        == records["pt-pt:lexhint"].source_id
+        == "lexhint:pt:english:dictionary"
+    )
     for language in ENGLISH_SOURCE_LANGUAGES:
         identifier = "de-de:lexhint" if language == "de" else f"{language}:lexhint"
         record = records[identifier]

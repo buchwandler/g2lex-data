@@ -35,9 +35,9 @@ immutable release + catalog
 
 Direct LexHint records select `variant=dictionary`, an explicit `source_variant`, and the required schema. They omit a dated dataset version. Resolution chooses the newest installed artifact compatible with that schema. If no compatible artifact is installed, the error contains a versionless command with the selected source variant. Native and English source variants cannot cross-resolve.
 
-The current catalog exposes 36 English-Wiktionary-derived physical pairs and 19 native-Wiktionary-derived physical pairs. English-source pairs use the logical name `*:lexhint`; native alternatives use `*:lexhint-native`. English keeps only `en-us:lexhint` and `en-gb:lexhint`, both locale projections of one English source artifact.
+The current catalog exposes 36 English-Wiktionary-derived physical pairs and 19 native-Wiktionary-derived physical pairs. English-source pairs use the logical name `*:lexhint`; native alternatives use `*:lexhint-native`. Locale-qualified G2Lex assets are projections of a base-language LexHint dictionary, not separate physical datasets. English derives `en-US` and `en-GB` projections from one English source artifact. Portuguese derives `pt-BR` and `pt-PT` projections from one Portuguese source artifact, while the locale-neutral `pt:lexhint` asset retains all regional evidence.
 
-The pronunciation transform calls the resolved LexHint API with the configured locale, preserves meaningful pronunciation variants, and records audit counters. Transform IDs are immutable contracts. Semantic changes require a new transform ID and data release.
+The pronunciation transform calls the resolved LexHint API with the configured locale, so locale filtering occurs before the G2Lex transform removes LexHint source region tags. A locale-neutral projection may contain variants from multiple regions; consumers that know the locale should select a locale-qualified catalog asset rather than expect runtime region selection inside one G2Lex asset. The transform preserves meaningful pronunciation variants and records audit counters. Transform IDs are immutable contracts. Semantic changes require a new transform ID and data release.
 
 ## Artifact contracts
 

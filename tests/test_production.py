@@ -46,6 +46,26 @@ def test_production_configuration_contract() -> None:
     assert config.asset("en-gb:lexhint").transform_inputs["lexhint_locale"] == "en_GB"
     assert config.asset("en-us:lexhint").transform_inputs["include_neutral"] is True
     assert "lexhint_locale" not in (config.asset("de-de:lexhint").transform_inputs or {})
+    assert "lexhint_locale" not in (config.asset("pt:lexhint").transform_inputs or {})
+    br = config.asset("pt-br:lexhint")
+    pt = config.asset("pt-pt:lexhint")
+    assert br.language == "pt-BR"
+    assert pt.language == "pt-PT"
+    assert br.source_provider == "lexhint"
+    assert pt.source_provider == "lexhint"
+    assert br.phoneme_encoding == "ipa"
+    assert pt.phoneme_encoding == "ipa"
+    assert br.transform == "lexhint-pronunciation-lowercase-v1"
+    assert pt.transform == "lexhint-pronunciation-lowercase-v1"
+    assert br.source_id == pt.source_id == "lexhint:pt:english:dictionary"
+    assert br.transform_inputs["lexhint_language"] == "pt"
+    assert pt.transform_inputs["lexhint_language"] == "pt"
+    assert br.transform_inputs["lexhint_source_variant"] == "english"
+    assert pt.transform_inputs["lexhint_source_variant"] == "english"
+    assert br.transform_inputs["lexhint_locale"] == "pt_BR"
+    assert pt.transform_inputs["lexhint_locale"] == "pt_PT"
+    assert br.transform_inputs["include_neutral"] is True
+    assert pt.transform_inputs["include_neutral"] is True
 
 
 def test_swedish_nst_configuration_contract() -> None:

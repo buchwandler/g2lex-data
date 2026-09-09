@@ -49,6 +49,41 @@ def _build_fixture(tmp_path: Path) -> Path:
     return artifact
 
 
+def _build_portuguese_fixture(tmp_path: Path) -> Path:
+    source = tmp_path / "pt-dictionary.jsonl"
+    record = {
+        "word": "leite",
+        "lang_code": "pt",
+        "pos": "noun",
+        "sounds": [
+            {"ipa": "[ˈlej.t͡ʃi]", "tags": ["Brazil"]},
+            {"ipa": "[ˈleɪ̯.t͡ʃi]", "tags": ["Brazil"]},
+            {"ipa": "[ˈlej.ti]", "tags": ["Northeast-Brazil"]},
+            {"ipa": "[ˈlɐj.tɨ]", "tags": ["Portugal"]},
+            {"ipa": "[ˈlej.tɨ]", "tags": ["Northern", "Portugal"]},
+            {"ipa": "[ˈle.tɨ]", "tags": ["Portugal", "Southern"]},
+        ],
+        "senses": [{"glosses": ["milk"]}],
+    }
+    source.write_text(json.dumps(record) + "\n", encoding="utf-8")
+    artifact, _ = build_dictionary("pt", source, output=tmp_path / "pt.sqlite3", no_frequency=True)
+    return artifact
+
+
+def _pt_record(locale: str | None) -> object:
+    base = load_config().asset("pt:lexhint")
+    inputs = dict(base.transform_inputs or {})
+    if locale is None:
+        inputs.pop("lexhint_locale", None)
+    else:
+        inputs["lexhint_locale"] = locale
+    return replace(
+        base,
+        id=f"pt:{locale or 'neutral'}",
+        transform_inputs=inputs,
+    )
+
+
 def _record(locale: str | None) -> object:
     base = load_config().asset("de-de:crane")
     return replace(
@@ -86,6 +121,62 @@ def test_one_artifact_can_derive_locale_outputs(tmp_path: Path) -> None:
         == gb.metadata["source_sha256"]
         == hashlib.sha256(artifact.read_bytes()).hexdigest()
     )
+
+
+def test_portuguese_locale_projections_share_one_artifact(tmp_path: Path) -> None:
+    artifact = _build_portuguese_fixture(tmp_path)
+    br = apply(_pt_record("pt_BR"), artifact, tmp_path / "br")
+    pt = apply(_pt_record("pt_PT"), artifact, tmp_path / "pt")
+    neutral = apply(_pt_record(None), artifact, tmp_path / "neutral")
+    br_values = json.loads(br.input_path.read_text(encoding="utf-8"))
+    pt_values = json.loads(pt.input_path.read_text(encoding="utf-8"))
+    neutral_values = json.loads(neutral.input_path.read_text(encoding="utf-8"))
+
+    assert br_values["leite"] == [
+        "ˈlej.t͡ʃi",
+        "ˈleɪ̯.t͡ʃi",
+        "ˈlej.ti",
+    ]
+    assert pt_values["leite"] == ["ˈlɐj.tɨ", "ˈlej.tɨ", "ˈle.tɨ"]
+    assert neutral_values["leite"] == [
+        "ˈlej.t͡ʃi",
+        "ˈleɪ̯.t͡ʃi",
+        "ˈlej.ti",
+        "ˈlɐj.tɨ",
+        "ˈlej.tɨ",
+        "ˈle.tɨ",
+    ]
+    assert br.input_path.read_bytes() != pt.input_path.read_bytes()
+    assert br.metadata["source_sha256"] == pt.metadata["source_sha256"]
+    assert br.metadata["source_sha256"] == hashlib.sha256(artifact.read_bytes()).hexdigest()
+    assert br.metadata["transform_inputs"] != pt.metadata["transform_inputs"]
+    assert br.metadata["transform_inputs"]["lexhint_locale"] == "pt_BR"
+    assert pt.metadata["transform_inputs"]["lexhint_locale"] == "pt_PT"
+
+
+def test_portuguese_regional_values_round_trip_through_g2lex(tmp_path: Path) -> None:
+    artifact = _build_portuguese_fixture(tmp_path)
+    br = apply(_pt_record("pt_BR"), artifact, tmp_path / "br")
+    pt = apply(_pt_record("pt_PT"), artifact, tmp_path / "pt")
+    br_asset = tmp_path / "pt-br.g2lex"
+    pt_asset = tmp_path / "pt-pt.g2lex"
+    g2lex.pack_file(br.input_path, br_asset, input_format=br.input_format, source_id="fixture")
+    g2lex.pack_file(pt.input_path, pt_asset, input_format=pt.input_format, source_id="fixture")
+
+    with g2lex.open(br_asset) as lexicon:
+        assert lexicon.lookup("leite") == "ˈlej.t͡ʃi"
+        assert lexicon.lookup_all("leite") == (
+            "ˈlej.t͡ʃi",
+            "ˈleɪ̯.t͡ʃi",
+            "ˈlej.ti",
+        )
+    with g2lex.open(pt_asset) as lexicon:
+        assert lexicon.lookup("leite") == "ˈlɐj.tɨ"
+        assert lexicon.lookup_all("leite") == (
+            "ˈlɐj.tɨ",
+            "ˈlej.tɨ",
+            "ˈle.tɨ",
+        )
 
 
 def test_neutral_pronunciation_survives_locale_filtering(tmp_path: Path) -> None:
