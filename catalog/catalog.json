@@ -7,11 +7,11 @@
         "logical_sha256": "e2263f3aebeb27d289767f9d7ca2a90f26a0251967fd400c3f56f0d3848140a5",
         "name": "g2lex-de-de-demo.g2lex",
         "schema": 1,
-        "sha256": "97b5ac3c4bc251d179e6c2d442db05cd613599adaf1331d515cee032b13ff8a0",
-        "size": 2164,
-        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-de-de-demo.g2lex"
+        "sha256": "a8d2ad531dc67f121942a2fc50b8c0e2da9d2a22d2b424dd1ff1cf1efc65da91",
+        "size": 2172,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-demo.g2lex"
       },
-      "data_version": "0.1.0",
+      "data_version": "2026.09.09",
       "display_name": "German typed IPA demo",
       "id": "de-de:demo",
       "kind": "pronunciation",
@@ -23,14 +23,14 @@
       },
       "manifest": {
         "name": "g2lex-de-de-demo.manifest.json",
-        "sha256": "7752b2d489a594059fe1e9da099e59cc860fd6f334743a8fecdd6e88f35ed82d",
-        "size": 1731,
-        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-de-de-demo.manifest.json"
+        "sha256": "b4866770c68102652e639c992470c5e8602e1ffe2401e0d75f102babb2ba6390",
+        "size": 1747,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-demo.manifest.json"
       },
       "name": "demo",
       "phoneme_encoding": "ipa",
       "provider": "buchwandler",
-      "release_tag": "data-0.1.0",
+      "release_tag": "data-2026.09.09",
       "source": {
         "license_expression": "CC0-1.0",
         "provider": "buchwandler",
@@ -44,11 +44,11 @@
         "logical_sha256": "08aedd3ba7c8c39d7c7c20f6fbf5f9b612b7673aed83463df9fe8512d857397e",
         "name": "g2lex-en-us-demo-cmu.g2lex",
         "schema": 1,
-        "sha256": "507740268d0be1d18dd03aaf14102f7b96fa1d128a5a0dfda6dfc26aa2d32ef3",
+        "sha256": "59ce9e90d2a400d05d51cfbac713f049f71982b494ce2a2ffc66147b27038e10",
         "size": 2084,
-        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-en-us-demo-cmu.g2lex"
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-demo-cmu.g2lex"
       },
-      "data_version": "0.1.0",
+      "data_version": "2026.09.09",
       "display_name": "English CMU/ARPABET demo",
       "id": "en-us:demo-cmu",
       "kind": "pronunciation",
@@ -60,14 +60,14 @@
       },
       "manifest": {
         "name": "g2lex-en-us-demo-cmu.manifest.json",
-        "sha256": "26f79a293a8c361f32107629cc0caa196ee8a73f0eb4ffd24b58ac6f7b28071c",
-        "size": 1754,
-        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-en-us-demo-cmu.manifest.json"
+        "sha256": "0ba52909f6590f0a0712f9ffa13ad9c3939cd3f3f53122651016df2bf5c01376",
+        "size": 1770,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-demo-cmu.manifest.json"
       },
       "name": "demo-cmu",
       "phoneme_encoding": "arpabet",
       "provider": "buchwandler",
-      "release_tag": "data-0.1.0",
+      "release_tag": "data-2026.09.09",
       "source": {
         "license_expression": "CC0-1.0",
         "provider": "buchwandler",
@@ -81,11 +81,11 @@
         "logical_sha256": "a9b932f6d07c9e9b8ecaba19ce79e5bdaf578f48e38ba285b785867c5f1b651e",
         "name": "g2lex-ja-jp-demo-words.g2lex",
         "schema": 1,
-        "sha256": "3e9cde48bd2e2a820b21757425b1c14e9cc7736b8d7c62b40ad24d9c30b7ccfc",
-        "size": 2044,
-        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-ja-jp-demo-words.g2lex"
+        "sha256": "5777519c9005c8ed2317a029c580046d9f9a68937cdf3384cc3f400d022f4012",
+        "size": 2052,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ja-jp-demo-words.g2lex"
       },
-      "data_version": "0.1.0",
+      "data_version": "2026.09.09",
       "display_name": "Japanese membership demo",
       "id": "ja-jp:demo-words",
       "kind": "membership",
@@ -97,24 +97,2503 @@
       },
       "manifest": {
         "name": "g2lex-ja-jp-demo-words.manifest.json",
-        "sha256": "04a213a06a66a237f09ee0c10c4d295ff29c01be542b6f6ff56ca54ef091e090",
-        "size": 1759,
-        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-0.1.0/g2lex-ja-jp-demo-words.manifest.json"
+        "sha256": "3d7e89f1d1abca626464c825c819b21fab8c7de055f414214f2b1df49791e9d7",
+        "size": 1775,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ja-jp-demo-words.manifest.json"
       },
       "name": "demo-words",
       "phoneme_encoding": "none",
       "provider": "buchwandler",
-      "release_tag": "data-0.1.0",
+      "release_tag": "data-2026.09.09",
       "source": {
         "license_expression": "CC0-1.0",
         "provider": "buchwandler",
         "revision": "mvp-fixture-2"
       }
+    },
+    {
+      "asset": {
+        "entry_count": 738427,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "530f4787a2accd9824526749b90f43d4edaf2506f0aa385056a83913cb6ee48a",
+        "name": "g2lex-de-de-gold.g2lex",
+        "schema": 1,
+        "sha256": "8b27b7e474eaea40ac6c73be7ca867af30ab4cfe441919da6eea6877ec15d84f",
+        "size": 8552228,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-gold.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "German gold IPA lexicon",
+      "id": "de-de:gold",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "KokoroG2P German gold lexicon contributors",
+        "expression": "Apache-2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-gold.manifest.json",
+        "sha256": "16e65b1b3858ab759376ee7f50e2108fde6a783b4f64683ba79e42c1bdbac7b3",
+        "size": 1862,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-gold.manifest.json"
+      },
+      "name": "gold",
+      "phoneme_encoding": "ipa",
+      "provider": "KokoroG2P German gold source",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "Apache-2.0",
+        "provider": "KokoroG2P German gold source",
+        "revision": "kokorog2p-0.9.0"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 826871,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "2381391dc5c0ea083816c1d3cac9002d16750e05038dc3ac97690115b9007efa",
+        "name": "g2lex-de-de-crane.g2lex",
+        "schema": 1,
+        "sha256": "6c2be3a899bf328168b4abbf0454dee3490f697abb98a1384d539123a5fd3ed9",
+        "size": 10243356,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-crane.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "German Crane IPA lexicon",
+      "id": "de-de:crane",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "German Wiktionary contributors; dataset extraction/publishing by Crane Local AI",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-crane.manifest.json",
+        "sha256": "5cde8699ae9e7e3b09cc87cf021be9c79dbf7022e15c3fc1147cb25ccd4b581b",
+        "size": 2334,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-crane.manifest.json"
+      },
+      "name": "crane",
+      "phoneme_encoding": "ipa",
+      "provider": "crane-local-ai",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "crane-local-ai",
+        "revision": "bfd51698069a30e1b20bbf54479b55af50b4161d"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 667295,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "4c975e8348d2e8cb288f9b9530dcf26d7ac1527fec2d43457fa77481d562279d",
+        "name": "g2lex-de-de-espeak.g2lex",
+        "schema": 1,
+        "sha256": "3cc1a6dd69b97f2bec0bef220abb842f63749fee8cbb6472f37c2bdd1905d3c4",
+        "size": 7781636,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-espeak.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "German eSpeak-derived IPA lexicon",
+      "id": "de-de:espeak",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "German word inventory from open-dict-data/Wiktionary-derived data; IPA generated with eSpeak tooling and redistributed by cstr/g2p-dicts",
+        "expression": "CC-BY-SA-3.0",
+        "url": "https://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-espeak.manifest.json",
+        "sha256": "f8925212621f2d2244a0e8c98396a3b681ea884f1d4912e541d7735338f4c73b",
+        "size": 2269,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-espeak.manifest.json"
+      },
+      "name": "espeak",
+      "phoneme_encoding": "ipa",
+      "provider": "cstr/g2p-dicts",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-3.0",
+        "provider": "cstr/g2p-dicts",
+        "revision": "eeac6ffc9271838fd63464a83d4b784ac75fc95b"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 965839,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "c0dc2c87cf6f229ae88e66c2f4b3c03876f9f95df615e82c0133f0e3778c296d",
+        "name": "g2lex-de-de-olaph.g2lex",
+        "schema": 1,
+        "sha256": "66a78d4e07c3753436fcfad90ba80503a8d90146d7d03bd0f66dba70e3c6c647",
+        "size": 12898468,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-olaph.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "German OLaPh IPA lexicon",
+      "id": "de-de:olaph",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "OLaPh (Optimal Language Phonemizer), IISYS Hof; source redistributed by cstr/g2p-dicts",
+        "expression": "MIT",
+        "url": "https://opensource.org/license/mit/"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-olaph.manifest.json",
+        "sha256": "fef8f2f0ae5874eda622bbc756c2be1be18b68925670cc3341514541f275156f",
+        "size": 2189,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-olaph.manifest.json"
+      },
+      "name": "olaph",
+      "phoneme_encoding": "ipa",
+      "provider": "cstr/g2p-dicts",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "MIT",
+        "provider": "cstr/g2p-dicts",
+        "revision": "cedb4ada41a288549db36c53f9a1e6858a668624"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 126052,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "98e4cedc408dd0477fc2158be676bda9156a93dd0568b776efa89427d8e70ee3",
+        "name": "g2lex-en-us-cmudict.g2lex",
+        "schema": 1,
+        "sha256": "65b7586f447f10f931fc945b9fd8e30ddb2d64ad6989421261cd259ce67b2913",
+        "size": 1645788,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-cmudict.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "English CMUdict ARPABET lexicon",
+      "id": "en-us:cmudict",
+      "kind": "pronunciation",
+      "language": "en-US",
+      "license": {
+        "attribution": "CMU Pronouncing Dictionary contributors",
+        "expression": "BSD-3-Clause",
+        "url": "https://github.com/cmusphinx/cmudict/blob/master/LICENSE"
+      },
+      "manifest": {
+        "name": "g2lex-en-us-cmudict.manifest.json",
+        "sha256": "4cf2eafaf62fd9acf1c5b767a215493d66d93373b63a6d2544f27cf847c94c8d",
+        "size": 1931,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-cmudict.manifest.json"
+      },
+      "name": "cmudict",
+      "phoneme_encoding": "arpabet",
+      "provider": "cmusphinx/cmudict",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "BSD-3-Clause",
+        "provider": "cmusphinx/cmudict",
+        "revision": "74790861f652b15e4ac49015a90074ad62a27690"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 88933,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "6460ee2c06aa08f226b265a67855328fddb6cf6be81214323fd2e7089b7abf7b",
+        "name": "g2lex-en-us-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "06c47e6272e700c367f5ff160cddd71f91de45e60da9790dd6ded8af57a86dcc",
+        "size": 1565044,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "English (US) LexHint IPA lexicon",
+      "id": "en-us:lexhint",
+      "kind": "pronunciation",
+      "language": "en-US",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-en-us-lexhint.manifest.json",
+        "sha256": "5b2ba69605f7c4cf9ec94bd765bb55e03772edf53c0cb20d43901345afac10b6",
+        "size": 3372,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-en-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 89688,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "d6603af1166f88c51a61d628e56de8ce96b7b7c1080fea8f3db35d0267037356",
+        "name": "g2lex-en-gb-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "13d4c0c463044c949cf765e502a8ea64b0a37fb75b65544bdbe019f17dee6c53",
+        "size": 1570852,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-gb-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "English (GB) LexHint IPA lexicon",
+      "id": "en-gb:lexhint",
+      "kind": "pronunciation",
+      "language": "en-GB",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-en-gb-lexhint.manifest.json",
+        "sha256": "29aa11f732370c4bb2f932cf219d0f49672e22885723f92ea1b9b22335329e23",
+        "size": 3372,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-gb-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-en-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 16528,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "d1db6049559aa0a4749e324e6ff008f3d36f181a3b6abeb3ed41c1df5e498347",
+        "name": "g2lex-ar-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "db8362694bb4db10992f4126b5984d627f93c921155a40d12354154041761fe6",
+        "size": 260900,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ar-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Arabic LexHint IPA lexicon",
+      "id": "ar:lexhint",
+      "kind": "pronunciation",
+      "language": "ar",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ar-lexhint.manifest.json",
+        "sha256": "d95788e11fa05c0a9cf153c52844926968f1efd37cabbc6814715c2d1b29b16c",
+        "size": 3361,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ar-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ar-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 6463,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "094c0385462705c6f3f6c28ffb00d4f142bac54b0e8bb6ba9abea874cbaa1a36",
+        "name": "g2lex-az-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "7aa12747cdecd3bd8774d9009742121f238fbfa3116ac3e1ed5d4dc18684ff31",
+        "size": 129148,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-az-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Azerbaijani LexHint IPA lexicon",
+      "id": "az:lexhint",
+      "kind": "pronunciation",
+      "language": "az",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-az-lexhint.manifest.json",
+        "sha256": "6a192075e4660415e490970d8dac77c8ab0b3bf0446f17319a45e9f2a9a41f63",
+        "size": 3365,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-az-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-az-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 49295,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "aa76ed1de2ec8bd2c75bd8a3872a6daba001817ee3ce75b9b93742aebaed9c9c",
+        "name": "g2lex-bg-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "3daa63fe1e37a9560f246690154bc93a029ea9419091790995532858e326750b",
+        "size": 667100,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-bg-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Bulgarian LexHint IPA lexicon",
+      "id": "bg:lexhint",
+      "kind": "pronunciation",
+      "language": "bg",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-bg-lexhint.manifest.json",
+        "sha256": "373ea92e1efef66f592bf3bdd4c93d772d12b399e49c0152cce0684a71767a75",
+        "size": 3361,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-bg-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-bg-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 43994,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "49c44079e8605307381a6549f023e289dc0f15ee177ec70d29457e7b04baefe4",
+        "name": "g2lex-ca-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "89cba06aa158d2be41694fd2dfe6ad9493df9011191f22f3a4c79f6305527fb5",
+        "size": 988372,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ca-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Catalan LexHint IPA lexicon",
+      "id": "ca:lexhint",
+      "kind": "pronunciation",
+      "language": "ca",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ca-lexhint.manifest.json",
+        "sha256": "0338a7e3eb88a2a83ac805129e8d79cb0f530536bdb129ec89bed4f002c8a7c0",
+        "size": 3362,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ca-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ca-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 4565,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "5361f228b40da43904fce8a687cd79db4ef9048d4c8f3bfecdc29b6571dfb0dd",
+        "name": "g2lex-ceb-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "fbf43e6fd447b4774a605918510eef62b3099959a8a9ad1f91a7f326a3f21beb",
+        "size": 104620,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ceb-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Cebuano LexHint IPA lexicon",
+      "id": "ceb:lexhint",
+      "kind": "pronunciation",
+      "language": "ceb",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ceb-lexhint.manifest.json",
+        "sha256": "2fff16dd20ee46ff30e3d77e0a84ac9454e257e362fc4049133304ea40da828d",
+        "size": 3368,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ceb-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ceb-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 67640,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "38cae9e618470f06117a35dc01650d8a054e3bd0d0efa08a2a1c992682e3ea95",
+        "name": "g2lex-cs-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "38caea9ca29c8a4eafd804feef607dbb23a73b73099a4b0322aef6bbea27edb4",
+        "size": 920772,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-cs-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Czech LexHint IPA lexicon",
+      "id": "cs:lexhint",
+      "kind": "pronunciation",
+      "language": "cs",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-cs-lexhint.manifest.json",
+        "sha256": "3f5472d8539d3d5514888dd3f75fec637bbd359af110f4af67961cc87234bd21",
+        "size": 3360,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-cs-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-cs-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 74630,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "a445ac17edf2045b20b29c0cf286e0da49df416e89e43dca87bc69fae0e3ef32",
+        "name": "g2lex-de-de-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "90f095b72b53f1ce186691cb5a4b105d8a3db656a1f19787f6b467d4cb88b3b8",
+        "size": 1354260,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "German LexHint IPA lexicon",
+      "id": "de-de:lexhint",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-lexhint.manifest.json",
+        "sha256": "b9f28a04bb12b5b48f64f77492b4abbf97793c2c15072dad6015b306947bc928",
+        "size": 3374,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-de-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 20152,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "62d73a0ee383aac8057d261b03ca91f3ddf335ba3a115246c1dd129108a0d280",
+        "name": "g2lex-el-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "4ea48b0bd866c276408c0cfacd510a8e078480b9a98534ab80e8719f0028b59f",
+        "size": 356604,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-el-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Greek LexHint IPA lexicon",
+      "id": "el:lexhint",
+      "kind": "pronunciation",
+      "language": "el",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-el-lexhint.manifest.json",
+        "sha256": "08a6bbb05d5f84ed4bb5ca3690942961e11e9078b37922f0ef3ba23fd2362f8c",
+        "size": 3360,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-el-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-el-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 144030,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "4cb83065901ca3fd24c26519de6cdcd25d226a2e240e88c7083e32c14aba9a77",
+        "name": "g2lex-es-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "d8e64d8b541b95f6fbec2a1b3c37779b26010f28481a3f2a486de46aefa85aa9",
+        "size": 3089940,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-es-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Spanish LexHint IPA lexicon",
+      "id": "es:lexhint",
+      "kind": "pronunciation",
+      "language": "es",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-es-lexhint.manifest.json",
+        "sha256": "1c2377fde0344bb5da236e9d8d0a4370d6d55c3f10c35dd9f8feb3ffcdfd50d8",
+        "size": 3364,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-es-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-es-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 119408,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "b381e9960e760074f44074c95a8c411c9ef12b9d476c0446f065cbbc6181e052",
+        "name": "g2lex-fr-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "ff6895d5fb5b50358fdff45dc1ac0559ed1ea9a2b345e48523302e8462a70629",
+        "size": 1692564,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-fr-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "French LexHint IPA lexicon",
+      "id": "fr:lexhint",
+      "kind": "pronunciation",
+      "language": "fr",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-fr-lexhint.manifest.json",
+        "sha256": "c412410070c243488b7018f48fadea3f3ad7b7e93f0d8695c3f15b6eeca7567b",
+        "size": 3363,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-fr-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-fr-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 11338,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "c3ce7d45fc40ecb510bede085ce9deb253ab9284a6c37143805a12e441d393d3",
+        "name": "g2lex-ga-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "ec31b090c4efb03d9e84b0c3233aa858fe7522fab0fde3c723f3ba58491e9c0b",
+        "size": 230588,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ga-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Irish LexHint IPA lexicon",
+      "id": "ga:lexhint",
+      "kind": "pronunciation",
+      "language": "ga",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ga-lexhint.manifest.json",
+        "sha256": "6a8f82b5ebdb1809fb3fcf1068579c7b61effe736eba9043fbef7ca5524984a8",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ga-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ga-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 3954,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "032ea1b3351db37a37452f2f8d4e6c892f14f75ca4e8011f39854eb4d53ac400",
+        "name": "g2lex-he-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "f9b66d0d3fe7dc1c515e1d4af9c11534470fe24e3896ea6f2f8c464f5d99da9b",
+        "size": 93324,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-he-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Hebrew LexHint IPA lexicon",
+      "id": "he:lexhint",
+      "kind": "pronunciation",
+      "language": "he",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-he-lexhint.manifest.json",
+        "sha256": "abee16ce8491e11f2d94940a18de1890fa3b99b28cdd4d52ad34c3f389ec902f",
+        "size": 3356,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-he-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-he-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 33762,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "af9e541d27ae277608789fdb4ecd889a727fa6b2c2d2e037efffe84d98398a09",
+        "name": "g2lex-hi-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "0880837bfbb889fb69fe70b7799272ec1fd0d2d4df890d9b1cf91bdf7e51dbb8",
+        "size": 772444,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-hi-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Hindi LexHint IPA lexicon",
+      "id": "hi:lexhint",
+      "kind": "pronunciation",
+      "language": "hi",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-hi-lexhint.manifest.json",
+        "sha256": "77c939b51bb19ef7e6d9e1a7306ba6e11367ec02a330dcb5bc2bc52ef9e12c53",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-hi-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-hi-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 67599,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "087b9c5cbe54ce4bcd9cbf072c4b294c4b6c04b1e0f687d948fbeb04e73583b1",
+        "name": "g2lex-hu-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "ba0b8d74b3f9fb5437842678470ae61db5ce459432e8f032cfdea3ea45dc9202",
+        "size": 912420,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-hu-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Hungarian LexHint IPA lexicon",
+      "id": "hu:lexhint",
+      "kind": "pronunciation",
+      "language": "hu",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-hu-lexhint.manifest.json",
+        "sha256": "bc1c70836f138ef8888030939eda6c6592155937c8143dd8d6ab4575923cb4d6",
+        "size": 3364,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-hu-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-hu-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 18931,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "5bc7a7b5a5c62c385311e52e30d4116052dbd892b0d9653c141e99144206c8e4",
+        "name": "g2lex-hy-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "4acaffa65d4d284da41676f78edf3a7af92a5212ddec0714c56a23c56d67a235",
+        "size": 579004,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-hy-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Armenian LexHint IPA lexicon",
+      "id": "hy:lexhint",
+      "kind": "pronunciation",
+      "language": "hy",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-hy-lexhint.manifest.json",
+        "sha256": "2245043b2f11dc191e37ca22d8a5b2a448b95f2e20ba5d579abe102e17d6eb4b",
+        "size": 3360,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-hy-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-hy-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 85678,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "e97ad5242aac9a1d8b97e71830cb207026c04bf6789e82e1afd51d33140c8f79",
+        "name": "g2lex-it-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "c6b364b5667338ef4bf7e8214c45cb3b1b343400c7639dbaabc83f990639d95e",
+        "size": 1168212,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-it-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Italian LexHint IPA lexicon",
+      "id": "it:lexhint",
+      "kind": "pronunciation",
+      "language": "it",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-it-lexhint.manifest.json",
+        "sha256": "e61bb1ad3b88cca713684c90dbdecb012ef8d5e2406d2d33baa48af0d4429f83",
+        "size": 3363,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-it-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-it-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 59249,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "338b5bb664e2102fe9e742ef1f269909cde723caf64f605f67305f1abffcb5ca",
+        "name": "g2lex-ja-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "582bd682694d210742a11817a7cf3ea6a3cbf1a20bfca3f6e86619655a8cbcfa",
+        "size": 950652,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ja-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Japanese LexHint IPA lexicon",
+      "id": "ja:lexhint",
+      "kind": "pronunciation",
+      "language": "ja",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ja-lexhint.manifest.json",
+        "sha256": "7fcec0197e6d5b8f37f9f1a022742731bc0fcb89a01e47fe6d738a4717d9d731",
+        "size": 3360,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ja-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ja-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 34595,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "f68b05bdf599ced624fe5d575dd3dc71bfd723a737675ad3c109e18004e84d62",
+        "name": "g2lex-ko-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "9f0f7c0d67cb0f2b7d7e32c0aa01374b98d7da5e49069449aea34f0a482c36c7",
+        "size": 576444,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ko-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Korean LexHint IPA lexicon",
+      "id": "ko:lexhint",
+      "kind": "pronunciation",
+      "language": "ko",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ko-lexhint.manifest.json",
+        "sha256": "9c2092eb4e83850e793efec9f6b9dc39b7ab29587c335d795082ade81fc60a56",
+        "size": 3358,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ko-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ko-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 72571,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "fa76114cfa42de75106c4adcd113282bc6b8c5bd8d05cde78967da4fd83d199b",
+        "name": "g2lex-la-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "237506e1a39ba32ecdde53e68b8ea94a3e06ec6505855e73e7b1e0a47436da84",
+        "size": 1383324,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-la-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Latin LexHint IPA lexicon",
+      "id": "la:lexhint",
+      "kind": "pronunciation",
+      "language": "la",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-la-lexhint.manifest.json",
+        "sha256": "52468c5b10940fc771f40c0a8005001c6bce7c56947c18463e0cea61e008cd70",
+        "size": 3361,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-la-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-la-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 25542,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "36761b82614f7c844cec4b4c1103cc249247b9c717a905b74bc13e08bb96ae23",
+        "name": "g2lex-lt-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "4fcd5758dcf2267cb592760558892978f4da770a8c8ef637fb754790ad74dd6b",
+        "size": 369076,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-lt-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Lithuanian LexHint IPA lexicon",
+      "id": "lt:lexhint",
+      "kind": "pronunciation",
+      "language": "lt",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-lt-lexhint.manifest.json",
+        "sha256": "24f2d305995a08f0d050ada9d606f088aff80d30eb9046809685ac4699d65673",
+        "size": 3362,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-lt-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-lt-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 1662,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "a3b0c8baa33c08de809a5eb7b5c43c17f522394497167cdcb48b49ef864ee145",
+        "name": "g2lex-lv-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "8e69b0057d19b8d94008f9b610bf53c794cedbd012af0356542d18a1845730c4",
+        "size": 28316,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-lv-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Latvian LexHint IPA lexicon",
+      "id": "lv:lexhint",
+      "kind": "pronunciation",
+      "language": "lv",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-lv-lexhint.manifest.json",
+        "sha256": "fb08f5bc1cb46dbed74720ec11ca77977104e207c8432c80f1d5b1472cae2561",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-lv-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-lv-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 4688,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "9894e0d2dc19edc5c4d51e8b75de3f1f4fde1bb55ddc642aba17d7722ba0b6f2",
+        "name": "g2lex-mr-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "dcb9da9f5a9c335f03a25d44f4e37468a32529d05597293c84cf4f28f418aa38",
+        "size": 94020,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-mr-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Marathi LexHint IPA lexicon",
+      "id": "mr:lexhint",
+      "kind": "pronunciation",
+      "language": "mr",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-mr-lexhint.manifest.json",
+        "sha256": "c05dda724606928e0474d4051443b226e675a0b084f4e339088e35a6411d8ee4",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-mr-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-mr-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 49945,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "02bfe81b92c0ab9abb3e993934686b3b4e36e976232d781cd1031dce4a0cca42",
+        "name": "g2lex-nl-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "1e273fec9bd637aaa93153f5c5c18bfec6b1aad0190f89c14917b69870436f93",
+        "size": 849140,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-nl-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Dutch LexHint IPA lexicon",
+      "id": "nl:lexhint",
+      "kind": "pronunciation",
+      "language": "nl",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-nl-lexhint.manifest.json",
+        "sha256": "90116b834eb27ab8daafbcb49aa552bdd80c5c59deb9d1ebdc8d9f7be5897bb9",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-nl-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-nl-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 172386,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "208dcc7ea2806f434d025b9218375dd0c5268e0f133405a0c7f91cc883abf58a",
+        "name": "g2lex-pl-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "c590c1aa41cfc9dae96f1d5fe0c63ea22bbc54a355227b064a9d6089b153364c",
+        "size": 2477484,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pl-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Polish LexHint IPA lexicon",
+      "id": "pl:lexhint",
+      "kind": "pronunciation",
+      "language": "pl",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-pl-lexhint.manifest.json",
+        "sha256": "b252f7d4b4d0bb18ab73c29a46f87b64262721116e6f27685b82d0375f41c30e",
+        "size": 3363,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pl-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-pl-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 64357,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "f8129d16280234d397dae19bb4e5a3f993a54d6b621091f9d1830831fcf39fb5",
+        "name": "g2lex-pt-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "ec58ebbff0498500d0ca19fbce566c659e012d00f6a15e55a6c075aa825cc984",
+        "size": 2240876,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Portuguese LexHint IPA lexicon",
+      "id": "pt:lexhint",
+      "kind": "pronunciation",
+      "language": "pt",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-pt-lexhint.manifest.json",
+        "sha256": "32e3721043cc6c0fbe72a2f5b70b8b2abd25c0e6e93236cf7a68477b60155755",
+        "size": 3366,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-pt-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 62992,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "baf78e9a95ae754eb3883da41939f119839740c9783186053561ad5427f3f96e",
+        "name": "g2lex-pt-br-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "22233eafbd56ba4580e513f8de8a01fa61adca9bcf8ecefbbd60a270ee4526ad",
+        "size": 1338708,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-br-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Portuguese (Brazil) LexHint IPA lexicon",
+      "id": "pt-br:lexhint",
+      "kind": "pronunciation",
+      "language": "pt-BR",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-pt-br-lexhint.manifest.json",
+        "sha256": "8ebde1a787e134dc4cc7d0eb8ced9f2d309c1177b5125e60708e59f7ff07cbf3",
+        "size": 3423,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-br-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-pt-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 61742,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "572a7ec90b77967930cf7f79ef3cc5755663e8db3dc56f43fa8a59908e5a047f",
+        "name": "g2lex-pt-pt-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "28227b0113f4f995a6bb52616eed7344865de29967375d3a618d128f2fdf354a",
+        "size": 1285340,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-pt-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Portuguese (Portugal) LexHint IPA lexicon",
+      "id": "pt-pt:lexhint",
+      "kind": "pronunciation",
+      "language": "pt-PT",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-pt-pt-lexhint.manifest.json",
+        "sha256": "ae1e476f494aa94bfe1a292e372ad4a48724d78215057d876f9196e73ac652d0",
+        "size": 3425,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-pt-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-pt-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 15804,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "64a3642c96d6bb506efb00777279d75c3fd0616cb99fd1776104e80ade39c1d8",
+        "name": "g2lex-ro-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "372e866a324dda26c9cedf121ed2b4aeb5fbf13b008862266d6c038583b89eaa",
+        "size": 216740,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ro-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Romanian LexHint IPA lexicon",
+      "id": "ro:lexhint",
+      "kind": "pronunciation",
+      "language": "ro",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ro-lexhint.manifest.json",
+        "sha256": "b35abf94f8aa674680d7f4dce6b1cfbf7da32d54daf4bce89ea3e66646bc5850",
+        "size": 3363,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ro-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ro-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 423766,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "73ac8ab7df033fc19fbd13998d8436d63f9c549735b0957d5074c19c171fc48c",
+        "name": "g2lex-ru-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "e28cd2946e2a6f82820594d439bf904dbe9715d35d950f507ca171e32952fd7f",
+        "size": 5741260,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ru-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Russian LexHint IPA lexicon",
+      "id": "ru:lexhint",
+      "kind": "pronunciation",
+      "language": "ru",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ru-lexhint.manifest.json",
+        "sha256": "512db6e6c7a75ff210439519dc9bb7861a14d233c94a6c74f7dacfc33fdd9f9c",
+        "size": 3364,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ru-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ru-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 5525,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "c199d330d9eba341321093f49e30ec948c0978d3f685e8fbf8ac683477d2b1ca",
+        "name": "g2lex-sv-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "9ed1d143979da449efac4983e92489eda10fe9a002f7bcf58ebf75e187e0139a",
+        "size": 96628,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-sv-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Swedish LexHint IPA lexicon",
+      "id": "sv:lexhint",
+      "kind": "pronunciation",
+      "language": "sv",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-sv-lexhint.manifest.json",
+        "sha256": "70f74a5709adcde5440f524aac122f29b9ced468c674a39ec478c3952999021c",
+        "size": 3360,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-sv-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-sv-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 10875,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "53fd560e9015fd9a032133d9ba18edec124925f5675919711b37d88388fd41fc",
+        "name": "g2lex-ta-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "530a299869e21a1f1bf73930380e10920b301e45c8175a48be501bd288f91765",
+        "size": 265420,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ta-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Tamil LexHint IPA lexicon",
+      "id": "ta:lexhint",
+      "kind": "pronunciation",
+      "language": "ta",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ta-lexhint.manifest.json",
+        "sha256": "dca559c35c532d7878bd27886996e062e774b5edb4a11fbace7b38884b5148d3",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ta-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ta-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 5027,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "4c891f225d784c7f93a2aadd86e296fcaa5ab521392d19ef01f9acb54e6f52a6",
+        "name": "g2lex-te-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "28e57a7b2a74db53043a4f4a1d74cad016690f7bf8d5ad188e9e3da2ecaec8a7",
+        "size": 101532,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-te-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Telugu LexHint IPA lexicon",
+      "id": "te:lexhint",
+      "kind": "pronunciation",
+      "language": "te",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-te-lexhint.manifest.json",
+        "sha256": "040c65d5adc525d1b7cb4cd200a05be88f67d9b7566b2ff8c3c3c7aab5f5fe0f",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-te-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-te-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 31142,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "06628805c4c339fd4227c06599293ea29b5d7255f5dce4b8b043a3cb374dfd10",
+        "name": "g2lex-tl-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "0e84effc4d68dff06c539630ccfe195aa86897d13d439b03f281d842887ad145",
+        "size": 747716,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-tl-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Tagalog LexHint IPA lexicon",
+      "id": "tl:lexhint",
+      "kind": "pronunciation",
+      "language": "tl",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-tl-lexhint.manifest.json",
+        "sha256": "45d131c08ffdd5b8b03dfa98fb63d7a439ef13ba6cc5a4e16e6a698facd4a7c6",
+        "size": 3359,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-tl-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-tl-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 16231,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "68038cc27ff66ae5dde115b948dcbd1d2141ca2b445d8f915de88aa24ece8390",
+        "name": "g2lex-tr-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "8d2af41051260ca7458037768440988bea4294428f869c1241321f6cc7a572e8",
+        "size": 278380,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-tr-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Turkish LexHint IPA lexicon",
+      "id": "tr:lexhint",
+      "kind": "pronunciation",
+      "language": "tr",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-tr-lexhint.manifest.json",
+        "sha256": "1099c807530784368be3aba6697d28e81ae649b8408ca1e1d9b46bacca753e99",
+        "size": 3362,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-tr-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-tr-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 54551,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "43c5ee32a5723c612fd03e3b4e272b6579cf3da93cbdf2ea74b4dc598d101db1",
+        "name": "g2lex-uk-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "2e72df1c0d7dc93cc9687505f0dffaa6d6c2a19ae51b14f5d1b590bf67ddec4b",
+        "size": 886172,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-uk-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Ukrainian LexHint IPA lexicon",
+      "id": "uk:lexhint",
+      "kind": "pronunciation",
+      "language": "uk",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-uk-lexhint.manifest.json",
+        "sha256": "bb0554d7d2d4d9bca03eb89a65d050fc93e6bf2251b6b777ae985303c2292032",
+        "size": 3364,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-uk-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-uk-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 7287,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "6879d14274f055134699c8a18987d51f42238be80ff41c5dc5f7e378706f874a",
+        "name": "g2lex-ur-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "731b0084a9de42c9295dbbd81c6092fa40e0ef2768ed6572481df62740bcc495",
+        "size": 122508,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ur-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Urdu LexHint IPA lexicon",
+      "id": "ur:lexhint",
+      "kind": "pronunciation",
+      "language": "ur",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ur-lexhint.manifest.json",
+        "sha256": "006296e33a16d16962e91f9f39d6cfa6495d929036df5f6d4044a0c12f9211dc",
+        "size": 3355,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ur-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ur-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 28079,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "621b1aff950861b99376bfd2559a87adbb96690f8e4751ec3bd93ca871d839c1",
+        "name": "g2lex-vi-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "64719f350cb8ff73c95a1cc79ecfcbcd6ceaacda2894c7842062999a201635fa",
+        "size": 816020,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-vi-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Vietnamese LexHint IPA lexicon",
+      "id": "vi:lexhint",
+      "kind": "pronunciation",
+      "language": "vi",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-vi-lexhint.manifest.json",
+        "sha256": "eb84b14731dd292f25840e67ac4c1dcd02a5136cee08ceb5edcbd8fe63c42af3",
+        "size": 3362,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-vi-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-vi-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 175564,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "a99f3853d14057c360805c2743a95538d76d211204ef0ea8d085f8e883c914d4",
+        "name": "g2lex-zh-lexhint.g2lex",
+        "schema": 1,
+        "sha256": "4f7ef80691604806d78df1252a9f2563e08e4af544de60def8c6448e6c52a72c",
+        "size": 6204468,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-zh-lexhint.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Chinese LexHint IPA lexicon",
+      "id": "zh:lexhint",
+      "kind": "pronunciation",
+      "language": "zh",
+      "license": {
+        "attribution": "English Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-zh-lexhint.manifest.json",
+        "sha256": "0044227ab73fe09d2372cb8c901982380084861b5870526cbf274fb3a8b87707",
+        "size": 3364,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-zh-lexhint.manifest.json"
+      },
+      "name": "lexhint",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-zh-english-2026.09.09"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 62105,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "2452e187108b7462d7bb7289404338dc1f3ccf394064444f2ae850a88888ad8c",
+        "name": "g2lex-cs-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "7fe433d56f8804279ff992f7391634caad3c8685de38faed2550c15a40a16177",
+        "size": 906292,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-cs-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Czech LexHint IPA lexicon",
+      "id": "cs:lexhint-native",
+      "kind": "pronunciation",
+      "language": "cs",
+      "license": {
+        "attribution": "Czech Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-cs-lexhint-native.manifest.json",
+        "sha256": "cfef5fb5fde9714181f8ba47b6d3457fa8024bba338bcf2d4eac3047447f2d20",
+        "size": 3342,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-cs-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-cs-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 941071,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "95d1b3cd9367a5d8cf15070a2a8dfd6fff9501dd5b834489bfb0c7b63a4c6369",
+        "name": "g2lex-de-de-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "ac25f44b44fa59bb796260f57bf49e8e7327219dc3c48ddacd35a0440a74470c",
+        "size": 11855660,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "German LexHint IPA lexicon",
+      "id": "de-de:lexhint-native",
+      "kind": "pronunciation",
+      "language": "de-DE",
+      "license": {
+        "attribution": "German Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-de-de-lexhint-native.manifest.json",
+        "sha256": "76d9bf3a70fb766026da12fb10ceb4c57db21496189e0a5631f02efb87807738",
+        "size": 3362,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-de-de-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-de-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 38122,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "d8c37c069e2cfedd938ddba2dd87d15d13ee34f547944cca53bb3524d8c300e0",
+        "name": "g2lex-el-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "080e124ae5820501cc3827313787f018c694fd5bbbe59e0cbcbf63666825968e",
+        "size": 739884,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-el-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Greek LexHint IPA lexicon",
+      "id": "el:lexhint-native",
+      "kind": "pronunciation",
+      "language": "el",
+      "license": {
+        "attribution": "Greek Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-el-lexhint-native.manifest.json",
+        "sha256": "2fc3c7641fecabb4de7ebacbf4a74c23d3489b26ead7b24106aa1aa9b4eabe1c",
+        "size": 3342,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-el-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-el-2026.09.08"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 831384,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "844ed5430aaa8c47f8e5a14c24056a07c2c6e84fd87c0f69e5354bf105b76307",
+        "name": "g2lex-es-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "c1c149a0b20c117292f742676c14de23b19b3eaa599ac3cb4f41bf8370d1a12c",
+        "size": 11109532,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-es-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Spanish LexHint IPA lexicon",
+      "id": "es:lexhint-native",
+      "kind": "pronunciation",
+      "language": "es",
+      "license": {
+        "attribution": "Spanish Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-es-lexhint-native.manifest.json",
+        "sha256": "2a78f97d5181d3e4b1fcef4affba106ed74b1debf297dcc61e48e4bdcb10d699",
+        "size": 3349,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-es-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-es-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 1703354,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "1441b30400da638a6be49fcd7bf033b094eafe18785fce5b5b3749d041f65b76",
+        "name": "g2lex-fr-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "188daa8359c7983122c8c92f4f12d99179950be61ac29b854b274313f87e2fd7",
+        "size": 19096164,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-fr-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "French LexHint IPA lexicon",
+      "id": "fr:lexhint-native",
+      "kind": "pronunciation",
+      "language": "fr",
+      "license": {
+        "attribution": "French Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-fr-lexhint-native.manifest.json",
+        "sha256": "5dc3f1466b69bcf94495772874407cf104fec4b0728745f93929465744b94e19",
+        "size": 3351,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-fr-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-fr-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 8,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "7da6ac8a1ea7e0c42a504b90beaa6c832780bc09a1c4134b102764ca06ca57a1",
+        "name": "g2lex-id-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "f6afeb462a0d3ff9326e30399673c7e65c874e05312e35efabf3ddc806a0928c",
+        "size": 2740,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-id-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Indonesian LexHint IPA lexicon",
+      "id": "id:lexhint-native",
+      "kind": "pronunciation",
+      "language": "id",
+      "license": {
+        "attribution": "Indonesian Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-id-lexhint-native.manifest.json",
+        "sha256": "f4ffb059e77b559ff84137c699a696bb191597de75b69f5ddad284b6d01caa9e",
+        "size": 3343,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-id-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-id-2026.09.08"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 42396,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "e720a3a3126b1379bd359129a55ecb4fb371cba1c79ded9828d94452fe630a21",
+        "name": "g2lex-it-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "bc349cd021bec14f0c891ab69a1d72af8aef62175e5981f9c24b87015ad91397",
+        "size": 615724,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-it-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Italian LexHint IPA lexicon",
+      "id": "it:lexhint-native",
+      "kind": "pronunciation",
+      "language": "it",
+      "license": {
+        "attribution": "Italian Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-it-lexhint-native.manifest.json",
+        "sha256": "99ff24b58fc1d4c5672a0fc5c9a3005d672a27199419af710f02737249de006e",
+        "size": 3346,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-it-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-it-2026.08.28"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 19365,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "8046e8034e836a61af2a8a710afbcfe15c4248129b9360215da92c86226a3142",
+        "name": "g2lex-ja-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "1b3fe5b3bcf9452a676f60e4a51d6ad6fc220b49647688d423a8db47bd50daf7",
+        "size": 301300,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ja-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Japanese LexHint IPA lexicon",
+      "id": "ja:lexhint-native",
+      "kind": "pronunciation",
+      "language": "ja",
+      "license": {
+        "attribution": "Japanese Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ja-lexhint-native.manifest.json",
+        "sha256": "3a81d59576e2f62b24b165f7c9585e29e8b48bbafabeb2306eccb3a72e961f82",
+        "size": 3361,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ja-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ja-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 30607,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "64a11a15b34138ccfef6f4caf7a76b6528f03f82adec73d070fb87b1845e62a1",
+        "name": "g2lex-ko-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "50da56fd006d210a158547d6ab67839396315847bac24da4f701337e3c1f9112",
+        "size": 526580,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ko-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Korean LexHint IPA lexicon",
+      "id": "ko:lexhint-native",
+      "kind": "pronunciation",
+      "language": "ko",
+      "license": {
+        "attribution": "Korean Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ko-lexhint-native.manifest.json",
+        "sha256": "ff3da2bc18bec8a659d3b8b50089756bfd3fbc6ba6afe18407d8882a148276ad",
+        "size": 3357,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ko-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ko-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 89846,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "3a975b624cede563f895069fd74cda648231508e36f87531b863fd1a9a287390",
+        "name": "g2lex-ku-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "68d3b1bffa55c6e24115dc9408ebda5ff10ef11c36bf21d90451b844ac5fd02c",
+        "size": 1198972,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ku-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Kurdish LexHint IPA lexicon",
+      "id": "ku:lexhint-native",
+      "kind": "pronunciation",
+      "language": "ku",
+      "license": {
+        "attribution": "Kurdish Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ku-lexhint-native.manifest.json",
+        "sha256": "d0ddb2dd43be612d0dd3c2a5b0e596431804393604277cfbbde61b187e038bb3",
+        "size": 3347,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ku-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ku-2026.09.08"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 1584,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "2fd802d097a3761fad924b022a49d7c487d5e0ca98a8b1d042adb3c718cedee5",
+        "name": "g2lex-ms-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "34d3d749100e3a3ae14256098d14d5ba4acc5d105d545c1afeb7d0c05b3b6069",
+        "size": 29820,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ms-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Malay LexHint IPA lexicon",
+      "id": "ms:lexhint-native",
+      "kind": "pronunciation",
+      "language": "ms",
+      "license": {
+        "attribution": "Malay Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ms-lexhint-native.manifest.json",
+        "sha256": "f0b275d47eb552159b650cd011417e77189a7b120b0ff3ddbc4ded84b4194044",
+        "size": 3334,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ms-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ms-2026.09.08"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 45253,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "dd0d52d9474c0174cd473e7b409069f2a3b6362eb0a5f8e6cc934ef4ee9835b3",
+        "name": "g2lex-pl-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "8b2c2c80139a120238d873111f2e742aa05a906d08c383ad1c4cd18c6cc3b206",
+        "size": 1139708,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pl-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Polish LexHint IPA lexicon",
+      "id": "pl:lexhint-native",
+      "kind": "pronunciation",
+      "language": "pl",
+      "license": {
+        "attribution": "Polish Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-pl-lexhint-native.manifest.json",
+        "sha256": "bece14ad1c86c913673adfa683ac2de4bb162af29e28f9d52dd18793fc95a9ee",
+        "size": 3345,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pl-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-pl-2026.09.08"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 16640,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "d74a19c11e6a71d8b260caea8a5fecbc823ef59f1a01d86026cb2aabf9777f54",
+        "name": "g2lex-pt-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "a9ea7f1c9bd0362ebb2fda8f231b753c0bc211e999513d610790193c712e9050",
+        "size": 386820,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Portuguese LexHint IPA lexicon",
+      "id": "pt:lexhint-native",
+      "kind": "pronunciation",
+      "language": "pt",
+      "license": {
+        "attribution": "Portuguese Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-pt-lexhint-native.manifest.json",
+        "sha256": "432dc090304b71cfca1ff08d0663acb11d13e79ac398146c6caf3ceda04d75db",
+        "size": 3368,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-pt-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-pt-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 377214,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "1ae67b06bb58647a802e677e3396e52fdb3315f7b1ad38aced4666b48f8e104a",
+        "name": "g2lex-ru-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "ffc8e0d371336e3475b1590d6b812a90cbd009b7e9fe034baacf68ad9dec626a",
+        "size": 7074100,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ru-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Russian LexHint IPA lexicon",
+      "id": "ru:lexhint-native",
+      "kind": "pronunciation",
+      "language": "ru",
+      "license": {
+        "attribution": "Russian Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-ru-lexhint-native.manifest.json",
+        "sha256": "f24d6e7d691003bcabadb0017a0c8e49ca4d6f1dcd4870e00ec21c2d17d54c0d",
+        "size": 3367,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-ru-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-ru-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 28275,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "e423891b48d5eb08ed66e8ed7ac821f450e09aee415235a821cdec3b1c625fc2",
+        "name": "g2lex-th-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "c71d33f85caebf600b14574d943720a5c513a3d78fa2e6fde8bb69004bf6bfbc",
+        "size": 593948,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-th-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Thai LexHint IPA lexicon",
+      "id": "th:lexhint-native",
+      "kind": "pronunciation",
+      "language": "th",
+      "license": {
+        "attribution": "Thai Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-th-lexhint-native.manifest.json",
+        "sha256": "a03af5e591352500d1dbc029112fe5edeb9dad51001bce4c25afd066badff606",
+        "size": 3353,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-th-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-th-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 13187,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "c5a307e83a571f0be297ec2162cfcfe68b63f7c972654d48c65407f081c8a03a",
+        "name": "g2lex-tr-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "fd0223425b4a7ba7b3c7176c82feeebe7e8256e915ec612a2aa13aca9de395f7",
+        "size": 205460,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-tr-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Turkish LexHint IPA lexicon",
+      "id": "tr:lexhint-native",
+      "kind": "pronunciation",
+      "language": "tr",
+      "license": {
+        "attribution": "Turkish Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-tr-lexhint-native.manifest.json",
+        "sha256": "f1e016872be48a1fa717cea3d70c72acc5df2b720cc25824d1c86a830c2c7cab",
+        "size": 3346,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-tr-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-tr-2026.09.08"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 33880,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "312bb35cbc3419b2c1ebd4e000938faae2f51ebd30e23a37e09576f039619789",
+        "name": "g2lex-vi-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "19b441caaa7a2efdaeb316acc2940b10d53960f1d46dea7285597ee20aaa3f5d",
+        "size": 1353452,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-vi-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Vietnamese LexHint IPA lexicon",
+      "id": "vi:lexhint-native",
+      "kind": "pronunciation",
+      "language": "vi",
+      "license": {
+        "attribution": "Vietnamese Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-vi-lexhint-native.manifest.json",
+        "sha256": "37769bf29916cd3c3a4411036277183fe8d3219d67e2fd6f2d7379ba3c4b439a",
+        "size": 3366,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-vi-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-vi-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 61018,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "3f4d9a74028f6ddb152acf49833a461dabe2e276e1f590afcf52093d77be98b8",
+        "name": "g2lex-zh-lexhint-native.g2lex",
+        "schema": 1,
+        "sha256": "146708a008a9f1d8d7cd943edc27b37fbf3f390c68f9a4d9d339f5ff052acb90",
+        "size": 2401276,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-zh-lexhint-native.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Chinese LexHint IPA lexicon",
+      "id": "zh:lexhint-native",
+      "kind": "pronunciation",
+      "language": "zh",
+      "license": {
+        "attribution": "Chinese Wiktionary contributors; Wiktextract/Kaikki; LexHint datasets",
+        "expression": "CC-BY-SA-4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "manifest": {
+        "name": "g2lex-zh-lexhint-native.manifest.json",
+        "sha256": "9befe8d37e57a8bddf823a44c129916d6c201ba1b9790794a778ab28ebeb14ac",
+        "size": 3363,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-zh-lexhint-native.manifest.json"
+      },
+      "name": "lexhint-native",
+      "phoneme_encoding": "ipa",
+      "provider": "buchwandler/lexhint-datasets",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "CC-BY-SA-4.0",
+        "provider": "buchwandler/lexhint-datasets",
+        "revision": "data-zh-2026.09.03"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 812343,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "c583677e9ed2e60300924bca4a8514dfed0bbe3de05d7083024ab6901647c2da",
+        "name": "g2lex-sv-se-nst.g2lex",
+        "schema": 1,
+        "sha256": "2cc240e1c26156f5f4b3b1935d72c5e266f633b052b2e977fafe887268ad97dd",
+        "size": 10200948,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-sv-se-nst.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "Swedish NST IPA lexicon",
+      "id": "sv-se:nst",
+      "kind": "pronunciation",
+      "language": "sv-SE",
+      "license": {
+        "attribution": "Joakim; NST Swedish pronunciation lexicon published in kokoro-sv-g2p",
+        "expression": "Apache-2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "manifest": {
+        "name": "g2lex-sv-se-nst.manifest.json",
+        "sha256": "e8fbd3ed780a845046dcc171f8385c6aad4391b25a25c643099da2eadd056c0b",
+        "size": 1844,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-sv-se-nst.manifest.json"
+      },
+      "name": "nst",
+      "phoneme_encoding": "ipa",
+      "provider": "Joakim/kokoro-sv-g2p",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "Apache-2.0",
+        "provider": "Joakim/kokoro-sv-g2p",
+        "revision": "d19dd10"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 356764,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "8ebc79ccc23ea26eb93761073ec4d2e6120161cb43b63ca45ad3e62e824f45b7",
+        "name": "g2lex-en-us-gold.g2lex",
+        "schema": 1,
+        "sha256": "ce27d4ecb4bf0451f3879868fc297dc783e4a8f41e82dba6e2d5a3a8e01baaae",
+        "size": 4667132,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-gold.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "English (US) consolidated Kokoro pronunciation lexicon",
+      "id": "en-us:gold",
+      "kind": "pronunciation",
+      "language": "en-US",
+      "license": {
+        "attribution": "KokoroG2P contributors; legacy English pronunciation source",
+        "expression": "Apache-2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "manifest": {
+        "name": "g2lex-en-us-gold.manifest.json",
+        "sha256": "af27082b58325179dd206f50844f8fcd5fd97d1a656d9e732b055c193614f111",
+        "size": 2514,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-us-gold.manifest.json"
+      },
+      "name": "gold",
+      "phoneme_encoding": "kokoro-v1",
+      "provider": "KokoroG2P",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "Apache-2.0",
+        "provider": "KokoroG2P",
+        "revision": "6ebdc3a89d608964e4b1b1b9958fb43b4574f04b"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 383830,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "23f913162567c2da2fc2e6d674ed71fb36edc32f7e5e57ed727b31a87bffb6b1",
+        "name": "g2lex-en-gb-gold.g2lex",
+        "schema": 1,
+        "sha256": "596d8b07669e36b74dff1bb4238c9d09b4ecce8b8d956abffa90c22e50efe718",
+        "size": 4977516,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-gb-gold.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "English (GB) consolidated Kokoro pronunciation lexicon",
+      "id": "en-gb:gold",
+      "kind": "pronunciation",
+      "language": "en-GB",
+      "license": {
+        "attribution": "KokoroG2P contributors; legacy English pronunciation source",
+        "expression": "Apache-2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "manifest": {
+        "name": "g2lex-en-gb-gold.manifest.json",
+        "sha256": "43ed7409e7d8e35d9bfab60439fd97b6c1e234953475be329158356af81b17d8",
+        "size": 2514,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-en-gb-gold.manifest.json"
+      },
+      "name": "gold",
+      "phoneme_encoding": "kokoro-v1",
+      "provider": "KokoroG2P",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "Apache-2.0",
+        "provider": "KokoroG2P",
+        "revision": "6ebdc3a89d608964e4b1b1b9958fb43b4574f04b"
+      }
+    },
+    {
+      "asset": {
+        "entry_count": 30022,
+        "format": "g2lex.lexicon.v1",
+        "logical_sha256": "88051441f06116da1b9a8bc1d7af73b47ead95e55075996f4a77c05ed414d7e2",
+        "name": "g2lex-fr-fr-gold.g2lex",
+        "schema": 1,
+        "sha256": "8d2b8705f3cdee622a5b10a6a131dd314f11d9430839976bd3ccf9a83765cef9",
+        "size": 318004,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-fr-fr-gold.g2lex"
+      },
+      "data_version": "2026.09.09",
+      "display_name": "French consolidated Kokoro pronunciation lexicon",
+      "id": "fr-fr:gold",
+      "kind": "pronunciation",
+      "language": "fr-FR",
+      "license": {
+        "attribution": "KokoroG2P contributors; legacy French pronunciation source",
+        "expression": "Apache-2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "manifest": {
+        "name": "g2lex-fr-fr-gold.manifest.json",
+        "sha256": "55f9f78e499891bcaa49b7ab51720d21919cb075e7eccbed0c0325b6013d11d7",
+        "size": 2239,
+        "url": "https://github.com/buchwandler/g2lex-data/releases/download/data-2026.09.09/g2lex-fr-fr-gold.manifest.json"
+      },
+      "name": "gold",
+      "phoneme_encoding": "kokoro-v1",
+      "provider": "KokoroG2P",
+      "release_tag": "data-2026.09.09",
+      "source": {
+        "license_expression": "Apache-2.0",
+        "provider": "KokoroG2P",
+        "revision": "6ebdc3a89d608964e4b1b1b9958fb43b4574f04b"
+      }
     }
   ],
   "catalog_version": 1,
-  "data_version": "0.1.0",
-  "release_tag": "data-0.1.0",
+  "data_version": "2026.09.09",
+  "release_tag": "data-2026.09.09",
   "repository": "buchwandler/g2lex-data",
   "runtime_contract": "g2lex-data.catalog.v1"
 }
