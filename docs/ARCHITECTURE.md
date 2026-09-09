@@ -2,55 +2,49 @@
 
 ## Ownership
 
-`g2lex-data` is the authoritative source, build, and release repository for externally distributed G2Lex datasets. It owns source inventory and acquisition, immutable revisions and hashes, source adapters, versioned semantic transforms, deterministic G2Lex compilation, source-to-transformed-input verification, manifests, provenance, releases, and catalog publication. This includes reviewed application-specific encodings such as the legacy Kokoro `kokoro-v1` English and French pronunciation assets.
+`g2lex-data` is the source, build, validation, and release repository for distributed G2Lex datasets. It owns source inventory, immutable release inputs, adapters, versioned transforms, deterministic compilation, manifests, provenance, catalogs, and release staging.
 
-Lexphon owns installation, caching, lookup policy, and phonemization. KokoroG2P owns Kokoro-specific conversion, ratings, and runtime behavior, but it no longer owns the migrated source of truth or build for these external assets.
+LexHint owns managed dictionary acquisition and runtime lookup. `g2lex-data` selects LexHint datasets through the public resolver and never treats an implicit source default as a product decision. Lexphon owns installation and lookup policy. KokoroG2P remains the compatibility baseline for Kokoro-specific assets, but not their migrated source of truth.
 
 ## Production pipeline
 
 ```text
-pinned source + provenance
+source catalog and selector
+          |
+          v
+LexHint resolver: explicit source variant, version=None
+          |
+          v
+resolved SQLite identity and runtime metadata
           |
           v
 source integrity and parser
           |
           v
-versioned transform registry
+versioned pronunciation transform
           |
           v
-validated generic G2Lex input
+validated typed G2Lex input
           |
           v
-G2Lex asset + manifest
+G2Lex asset + exact manifest
           |
           v
-immutable release + catalog v1
-          |
-
-LexHint-managed sources resolve through the public `Lexicon` API from explicitly installed, pinned artifacts for all 19 physical base languages. The pronunciation transform calls `iter_pronunciations(include_neutral=True)` with the configured locale, collapses only meaningful POS distinctions, and records source identity, locale derivation, and audit counters in the manifest. English derives the `en-US` and `en-GB` outputs; other languages remain base-language assets without regional claims.
-          v
-Lexphon installation
+immutable release + catalog
 ```
 
-Transform IDs are immutable contracts. Unknown IDs fail, and semantic changes require a
-new ID and data release. Crane uses the documented LexHint entry/POS/pronunciation
-interface only while building. CSTR German sources use the `cstr-de-ipa-v1` adapter,
-which removes one outer delimiter pair, skips only the documented header, preserves
-internal slashes and variant order, and ignores only optional source annotations.
+Direct LexHint records select `variant=dictionary`, an explicit `source_variant`, and the required schema. They omit a dated dataset version. Resolution chooses the newest installed artifact compatible with that schema. If no compatible artifact is installed, the error contains a versionless command with the selected source variant. Native and English source variants cannot cross-resolve.
+
+The current catalog exposes 36 English-Wiktionary-derived physical pairs and 19 native-Wiktionary-derived physical pairs. English-source pairs use the logical name `*:lexhint`; native alternatives use `*:lexhint-native`. English keeps only `en-us:lexhint` and `en-gb:lexhint`, both locale projections of one English source artifact.
+
+The pronunciation transform calls the resolved LexHint API with the configured locale, preserves meaningful pronunciation variants, and records audit counters. Transform IDs are immutable contracts. Semantic changes require a new transform ID and data release.
 
 ## Artifact contracts
 
-Every manifest records the schema and contract versions, stable ID, language, name, kind,
-encoding, data and producer versions, G2Lex version, source identity and provenance,
-transform inputs and report hash, actual asset hash and size, logical hash, and entry
-counts. Build validation checks source integrity, transformed-input losslessness, typed and
-ordered values, deterministic rebuilds, and manifest/file consistency.
+Every manifest records the stable asset identity, language, kind, encoding, producer and data versions, G2Lex version, source selector, exact resolved dataset metadata, transform inputs and report, asset hash and size, logical hash, and entry counts. For LexHint sources, exact provenance includes dataset version, release tag and publication time, release asset name and digest, SQLite digest and size, source variant, Wiktionary edition, metadata language, schema, locale, and LexHint runtime version.
 
-The v1 catalog contains one current artifact per ID and exposes immutable asset and
-manifest URLs, hashes, sizes, logical hash, release tag, encoding, and provider/license
-summary. Releases are data-versioned independently from Python tooling and existing
-versions cannot be overwritten.
+Build validation checks source identity, transformed-input losslessness, typed and ordered values, deterministic rebuilds, and manifest/file consistency. The catalog exposes immutable asset and manifest URLs, hashes, sizes, logical hashes, release tags, encodings, and provider/license summaries. Releases are versioned independently from Python tooling and existing release directories cannot be overwritten.
 
 ## Compatibility boundary
 
-The migration compatibility gate compares the old layered KokoroG2P mappings with the new consolidated assets by complete key membership and typed values, including tagged selectors and ordered variants. The old English layers collapse as `en-us:gold + en-us:silver -> en-us:gold` and `en-gb:gold + en-gb:silver -> en-gb:gold`; French case aliases materialize into `fr-fr:gold`. The resulting G2Lex assets retain the opaque `kokoro-v1` values and require Lexphon support for that encoding.
+The migration compatibility gate compares historical KokoroG2P mappings with consolidated assets by complete key membership and typed values, including tagged selectors and ordered variants. Historical G2Lex releases and source catalogs remain immutable. New LexHint source resolution affects only future builds and records the selected upstream identity in their manifests.

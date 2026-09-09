@@ -11,32 +11,22 @@ This repository is the authoritative source, build, and release repository for e
 The production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`, `de-de:olaph`, `en-us:cmudict`, `en-us:gold`, `en-gb:gold`, `fr-fr:gold`, `en-us:lexhint`, `en-gb:lexhint`, `de-de:lexhint`, `cs:lexhint`, `el:lexhint`, `es:lexhint`, `fr:lexhint`, `id:lexhint`, `it:lexhint`, `ja:lexhint`, `ko:lexhint`, `ku:lexhint`, `ms:lexhint`, `pl:lexhint`, `pt:lexhint`, `ru:lexhint`, `th:lexhint`, `tr:lexhint`, `vi:lexhint`, `zh:lexhint`, and `sv-se:nst`. The demo fixtures remain for fast contract tests.
 Pronunciation encodings are `ipa`, `arpabet`, and the reviewed legacy `kokoro-v1`; membership assets use `none`. The old Kokoro tiers are consolidated as `en-us:gold` from `en-us:gold` plus `en-us:silver`, `en-gb:gold` from `en-gb:gold` plus `en-gb:silver`, and `fr-fr:gold` from `fr-fr:gold`. No English silver ID is published.
 
-LexHint has 19 configured physical base-language datasets. English derives the locale-filtered `en-US` and `en-GB` outputs from one source artifact. All other represented LexHint languages are base-language G2Lex assets without regional pronunciation claims. These remain generic IPA pronunciation lexicons, not Kokoro lexicons.
+LexHint currently exposes 55 physical language/source pairs from the source-qualified v2 catalog: 36 English-Wiktionary-derived pairs and 19 native-Wiktionary-derived pairs. g2lex-data publishes 56 direct LexHint assets: English-source defaults use `*:lexhint`, native alternatives use `*:lexhint-native`, and English derives the locale-filtered `en-US` and `en-GB` outputs from one physical source. The producer resolves the newest compatible installed dictionary without a dated selector and records exact release and SQLite provenance in each manifest. These remain generic IPA pronunciation lexicons, not Kokoro lexicons.
 Source provenance and redistribution status are documented in [DATA_SOURCES.md](DATA_SOURCES.md).
 
 ## Build and validate
 
 ```bash
 python -m pip install -e ".[dev]"
-lexhint dataset download cs --variant dictionary --version 2026.08.28
-lexhint dataset download de --variant dictionary --version 2026.08.28
-lexhint dataset download el --variant dictionary --version 2026.09.08
-lexhint dataset download en --variant dictionary --version 2026.08.28
-lexhint dataset download es --variant dictionary --version 2026.08.28
-lexhint dataset download fr --variant dictionary --version 2026.08.28
-lexhint dataset download id --variant dictionary --version 2026.09.08
-lexhint dataset download it --variant dictionary --version 2026.08.28
-lexhint dataset download ja --variant dictionary --version 2026.09.03
-lexhint dataset download ko --variant dictionary --version 2026.09.03
-lexhint dataset download ku --variant dictionary --version 2026.09.08
-lexhint dataset download ms --variant dictionary --version 2026.09.08
-lexhint dataset download pl --variant dictionary --version 2026.09.08
-lexhint dataset download pt --variant dictionary --version 2026.09.03
-lexhint dataset download ru --variant dictionary --version 2026.09.03
-lexhint dataset download th --variant dictionary --version 2026.09.03
-lexhint dataset download tr --variant dictionary --version 2026.09.08
-lexhint dataset download vi --variant dictionary --version 2026.09.03
-lexhint dataset download zh --variant dictionary --version 2026.09.03
+# Preferred English-Wiktionary sources
+for lang in ar az bg ca ceb cs de el en es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
+  lexhint dataset download "$lang" --variant dictionary --source-variant english
+done
+
+# Native-Wiktionary alternatives
+for lang in cs de es fr id it ja ko ku ms pl pt ru th tr vi zh; do
+  lexhint dataset download "$lang" --variant dictionary --source-variant native
+done
 python -m g2lex_data sources
 python -m g2lex_data build
 python -m g2lex_data validate --catalog

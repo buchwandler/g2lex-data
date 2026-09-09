@@ -1,110 +1,169 @@
 from __future__ import annotations
 
-import hashlib
-from dataclasses import replace
+from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar
 
 import pytest
-from lexhint import LexiconNotInstalled
+from lexhint.datasets import DatasetNotFound
 
+from g2lex_data import sources
 from g2lex_data.config import load_config
 from g2lex_data.sources import resolve_source
 
 
-def _record() -> object:
-    return load_config().asset("en-us:lexhint")
+@dataclass(frozen=True)
+class FakeInstalled:
+    language: str
+    source_variant: str
+    variant: str
+    schema_version: str
+    dataset_version: str
+    path: Path
+    release_tag: str = "data-fixture"
+    release_published_at: str = "2026-09-10T00:00:00Z"
+    asset: str = "fixture.sqlite3.gz"
+    sha256: str = "release-sha256"
+    wiktionary_edition: str = "enwiktionary"
+    metadata_language: str = "en"
 
 
-def test_resolves_pinned_installed_lexhint_artifact() -> None:
+def _record(identifier: str = "en-us:lexhint") -> object:
+    return load_config().asset(identifier)
+
+
+def _install_fake(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, version: str = "2026.09.10") -> dict[str, object]:
+    artifact = tmp_path / f"{version}.sqlite3"
+    artifact.write_bytes(b"fixture")
+    calls: dict[str, object] = {}
+    installed = FakeInstalled(
+        language="en",
+        source_variant="native",
+        variant="dictionary",
+        schema_version="10",
+        dataset_version=version,
+        path=artifact,
+    )
+
+    def resolve(language: str, **kwargs: object) -> FakeInstalled:
+        calls["language"] = language
+        calls.update(kwargs)
+        return installed
+
+    class FakeLexicon:
+        metadata: ClassVar[dict[str, str]] = {"schema_version": "10", "lexhint_version": "0.4.7"}
+
+        @classmethod
+        def from_path(cls, path: Path, **kwargs: object) -> FakeLexicon:
+            calls["path"] = path
+            calls["lexicon_kwargs"] = kwargs
+            return cls()
+
+    monkeypatch.setattr(sources, "resolve_installed_dataset", resolve)
+    monkeypatch.setattr(sources, "Lexicon", FakeLexicon)
+    return calls
+
+
+def test_resolves_latest_compatible_installed_lexhint_artifact(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    calls = _install_fake(monkeypatch, tmp_path)
     resolved = resolve_source(_record())
-    assert resolved.metadata["provider"] == "lexhint"
-    assert resolved.metadata["language"] == "en"
-    assert resolved.metadata["dataset_version"] == "2026.08.28"
+
+    assert calls == {
+        "language": "en",
+        "variant": "dictionary",
+        "source_variant": "native",
+        "version": None,
+        "path": tmp_path / "2026.09.10.sqlite3",
+        "lexicon_kwargs": {"language": "en", "locale": "en_US"},
+    }
+    assert resolved.metadata["dataset_version"] == "2026.09.10"
+    assert resolved.metadata["source_variant"] == "native"
     assert resolved.metadata["schema_version"] == "10"
-    assert resolved.metadata["size"] == 859484160
+    assert resolved.metadata["sqlite_size"] == 7
+    assert resolved.metadata["sqlite_sha256"]
 
 
-@pytest.mark.parametrize(
-    "language",
-    (
-        "cs",
-        "el",
-        "es",
-        "fr",
-        "id",
-        "it",
-        "ja",
-        "ko",
-        "ku",
-        "ms",
-        "pl",
-        "pt",
-        "ru",
-        "th",
-        "tr",
-        "vi",
-        "zh",
-    ),
-)
-def test_resolves_multilingual_base_language_artifacts(language: str) -> None:
-    record = load_config().asset(f"{language}:lexhint")
-    expected = record.transform_inputs or {}
-    resolved = resolve_source(record)
-    assert resolved.metadata["provider"] == "lexhint"
-    assert resolved.metadata["language"] == language
-    assert resolved.metadata["variant"] == "dictionary"
-    assert resolved.metadata["dataset_version"] == expected["lexhint_dataset_version"]
-    assert resolved.metadata["schema_version"] == expected["lexhint_schema_version"]
-    assert resolved.metadata["lexhint_version"] == expected["lexhint_version"]
-    assert resolved.metadata["locale"] is None
+def test_explicit_source_variants_never_cross_select(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    calls: list[str] = []
 
+    def resolve(language: str, **kwargs: object) -> FakeInstalled:
+        source_variant = str(kwargs["source_variant"])
+        calls.append(source_variant)
+        artifact = tmp_path / f"{source_variant}.sqlite3"
+        artifact.write_bytes(source_variant.encode())
+        return FakeInstalled(
+            language=language,
+            source_variant=source_variant,
+            variant="dictionary",
+            schema_version="10",
+            dataset_version="2026.09.10",
+            path=artifact,
+            wiktionary_edition="enwiktionary" if source_variant == "english" else "ptwiktionary",
+            metadata_language="en" if source_variant == "english" else "pt",
+        )
 
-def test_source_hash_mismatch_fails_closed() -> None:
-    record = replace(_record(), source_sha256="0" * 64)
-    with pytest.raises(ValueError, match="SHA-256 mismatch"):
-        resolve_source(record)
+    class FakeLexicon:
+        metadata: ClassVar[dict[str, str]] = {"schema_version": "10"}
+
+        @classmethod
+        def from_path(cls, path: Path, **kwargs: object) -> FakeLexicon:
+            return cls()
+
+    monkeypatch.setattr(sources, "resolve_installed_dataset", resolve)
+    monkeypatch.setattr(sources, "Lexicon", FakeLexicon)
+    english = resolve_source(_record("pt:lexhint"))
+    native = resolve_source(_record("pt:lexhint-native"))
+
+    assert calls == ["english", "native"]
+    assert english.metadata["source_variant"] == "english"
+    assert native.metadata["source_variant"] == "native"
+    assert english.metadata["wiktionary_edition"] != native.metadata["wiktionary_edition"]
 
 
 def test_schema_mismatch_fails_closed(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    artifact = tmp_path / "lexhint.sqlite3"
-    artifact.write_bytes(b"fixture")
-
-    class FakeLexicon:
-        path = artifact
-        variant = "dictionary"
-        dataset_version = "2026.08.28"
-        schema_version = "9"
-        metadata: ClassVar[dict[str, str]] = {
-            "schema_version": "9",
-            "language": "en",
-            "lexhint_version": "0.4.7",
-        }
-
-        def __init__(self, *args: object, **kwargs: object) -> None:
-            pass
-
-    monkeypatch.setattr("g2lex_data.sources.Lexicon", FakeLexicon)
-    record = replace(_record(), source_sha256=hashlib.sha256(b"fixture").hexdigest(), source_size=7)
+    calls = _install_fake(monkeypatch, tmp_path)
+    monkeypatch.setattr(
+        sources,
+        "resolve_installed_dataset",
+        lambda *args, **kwargs: FakeInstalled(
+            language="en",
+            source_variant="native",
+            variant="dictionary",
+            schema_version="9",
+            dataset_version="2026.09.10",
+            path=tmp_path / "2026.09.10.sqlite3",
+        ),
+    )
     with pytest.raises(ValueError, match="schema mismatch"):
-        resolve_source(record)
-
-
-def test_resolver_does_not_download(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fail(*args: object, **kwargs: object) -> None:
-        raise AssertionError("network access")
-
-    monkeypatch.setattr("lexhint.download.request", fail)
-    assert resolve_source(_record()).metadata["provider"] == "lexhint"
-
-
-def test_missing_artifact_message_is_actionable(monkeypatch: pytest.MonkeyPatch) -> None:
-    def missing(*args: object, **kwargs: object) -> None:
-        raise LexiconNotInstalled("not installed")
-
-    monkeypatch.setattr("g2lex_data.sources.Lexicon", missing)
-    with pytest.raises(
-        FileNotFoundError,
-        match="lexhint dataset download en --variant dictionary --version 2026.08.28",
-    ):
         resolve_source(_record())
+    assert "path" not in calls
+
+
+def test_missing_artifact_message_is_versionless_and_source_qualified(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        sources,
+        "resolve_installed_dataset",
+        lambda *args, **kwargs: (_ for _ in ()).throw(DatasetNotFound("missing")),
+    )
+    with pytest.raises(FileNotFoundError) as error:
+        resolve_source(_record())
+    message = str(error.value)
+    assert "lexhint dataset download en --variant dictionary --source-variant native" in message
+    assert "--version" not in message
+
+
+def test_lexhint_config_does_not_require_static_integrity_pins(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _install_fake(monkeypatch, tmp_path)
+    record = _record()
+    assert record.source_sha256 is None
+    assert record.source_size is None
+    resolved = resolve_source(record)
+    assert resolved.metadata["sqlite_size"] == 7

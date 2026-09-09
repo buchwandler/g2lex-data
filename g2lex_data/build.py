@@ -30,10 +30,11 @@ def validate_source(
     path = resolved.path
     if not path.is_file():
         raise FileNotFoundError(f"missing source for {record.id}: {path}")
-    if path.stat().st_size != record.source_size:
-        raise ValueError(f"source size mismatch for {record.id}")
-    if sha256_file(path) != record.source_sha256:
-        raise ValueError(f"source SHA-256 mismatch for {record.id}")
+    if record.source_provider == "file":
+        if path.stat().st_size != record.source_size:
+            raise ValueError(f"source size mismatch for {record.id}")
+        if sha256_file(path) != record.source_sha256:
+            raise ValueError(f"source SHA-256 mismatch for {record.id}")
     if record.source_provider == "lexhint":
         return {
             "entry_count": None,
@@ -78,7 +79,9 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
     asset_path = ASSET_DIR / record.asset_name
 
     with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
-        transform_result = apply(record, resolved_source.path, Path(temp_name))
+        transform_result = apply(
+            record, resolved_source.path, Path(temp_name), source_metadata=resolved_source.metadata
+        )
         input_path = transform_result.input_path if transform_result else resolved_source.path
         input_format = transform_result.input_format if transform_result else record.source_format
         g2lex.read_typed_lexicon(input_path, format=input_format, source_id=record.source_id)
@@ -116,6 +119,39 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
             raise ValueError(f"lossless verification failed for {record.id}: {verification}")
         inspected = g2lex.inspect_file(asset_path)
 
+    source_metadata = dict(resolved_source.metadata)
+    source_payload: dict[str, object] = {
+        "id": record.source_id,
+        "provider_type": record.source_provider,
+        "path": record.source,
+        "format": record.source_format,
+        "url": record.source_url,
+        "revision": record.revision,
+        "sha256": record.source_sha256,
+        "size": record.source_size,
+        "entry_count": source_info["entry_count"],
+        "logical_sha256": source_info["logical_sha256"],
+        "provider": record.provider,
+        "license_expression": record.license_expression,
+        "license_url": record.license_url,
+        "attribution": record.attribution,
+        "resolved": source_metadata,
+    }
+    if record.source_provider == "lexhint":
+        source_payload.update(
+            {
+                "revision": source_metadata["release_tag"],
+                "sha256": source_metadata["sqlite_sha256"],
+                "size": source_metadata["sqlite_size"],
+                "selector": {
+                    "language": source_metadata["language"],
+                    "source_variant": source_metadata["source_variant"],
+                    "variant": source_metadata["variant"],
+                    "schema_version": source_metadata["schema_version"],
+                    "version_policy": "latest-compatible",
+                },
+            }
+        )
     manifest: dict[str, object] = {
         "manifest_version": MANIFEST_SCHEMA_VERSION,
         "contract_version": 1,
@@ -128,23 +164,7 @@ def build_one(record: AssetConfig, *, data_version: str = "unreleased") -> dict[
         "data_version": data_version,
         "producer": {"name": "g2lex-data", "version": __version__},
         "g2lex": {"version": _g2lex_version(), "generator_contract": GENERATOR_CONTRACT},
-        "source": {
-            "id": record.source_id,
-            "provider_type": record.source_provider,
-            "path": record.source,
-            "format": record.source_format,
-            "url": record.source_url,
-            "revision": record.revision,
-            "sha256": record.source_sha256,
-            "size": record.source_size,
-            "entry_count": source_info["entry_count"],
-            "logical_sha256": source_info["logical_sha256"],
-            "provider": record.provider,
-            "license_expression": record.license_expression,
-            "license_url": record.license_url,
-            "attribution": record.attribution,
-            "resolved": source_info["resolved"],
-        },
+        "source": source_payload,
         "transform": _transform_metadata(transform_result),
         "asset": {
             "name": record.asset_name,

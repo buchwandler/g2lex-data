@@ -19,26 +19,6 @@ PRODUCTION_IDS = {
     "en-us:gold",
     "en-gb:gold",
     "fr-fr:gold",
-    "en-us:lexhint",
-    "en-gb:lexhint",
-    "de-de:lexhint",
-    "cs:lexhint",
-    "el:lexhint",
-    "es:lexhint",
-    "fr:lexhint",
-    "id:lexhint",
-    "it:lexhint",
-    "ja:lexhint",
-    "ko:lexhint",
-    "ku:lexhint",
-    "ms:lexhint",
-    "pl:lexhint",
-    "pt:lexhint",
-    "ru:lexhint",
-    "th:lexhint",
-    "tr:lexhint",
-    "vi:lexhint",
-    "zh:lexhint",
 }
 
 
@@ -57,10 +37,11 @@ def test_production_configuration_contract() -> None:
         assert record.source_provider == "lexhint"
         assert record.phoneme_encoding == "ipa"
         assert record.transform == "lexhint-pronunciation-lowercase-v1"
-    assert (
-        config.asset("en-us:lexhint").source_sha256 == config.asset("en-gb:lexhint").source_sha256
-    )
-    assert config.asset("en-us:lexhint").source_size == config.asset("en-gb:lexhint").source_size
+        assert record.source_sha256 is None
+        assert record.source_size is None
+    assert config.asset("en-us:lexhint").transform_inputs["lexhint_source_variant"] == "native"
+    assert config.asset("en-gb:lexhint").transform_inputs["lexhint_source_variant"] == "native"
+    assert config.asset("de-de:lexhint").transform_inputs["lexhint_source_variant"] == "english"
     assert config.asset("en-us:lexhint").transform_inputs["lexhint_locale"] == "en_US"
     assert config.asset("en-gb:lexhint").transform_inputs["lexhint_locale"] == "en_GB"
     assert config.asset("en-us:lexhint").transform_inputs["include_neutral"] is True
@@ -87,31 +68,22 @@ def test_swedish_nst_configuration_contract() -> None:
 
 
 @pytest.mark.parametrize(
-    "language",
+    ("identifier", "language", "name", "source_variant"),
     (
-        "cs",
-        "el",
-        "es",
-        "fr",
-        "id",
-        "it",
-        "ja",
-        "ko",
-        "ku",
-        "ms",
-        "pl",
-        "pt",
-        "ru",
-        "th",
-        "tr",
-        "vi",
-        "zh",
+        ("cs:lexhint", "cs", "lexhint", "english"),
+        ("de-de:lexhint", "de", "lexhint", "english"),
+        ("pt:lexhint", "pt", "lexhint", "english"),
+        ("pt:lexhint-native", "pt", "lexhint-native", "native"),
+        ("id:lexhint-native", "id", "lexhint-native", "native"),
+        ("en-us:lexhint", "en", "lexhint", "native"),
     ),
 )
-def test_multilingual_lexhint_configuration_contract(language: str) -> None:
-    record = load_config().asset(f"{language}:lexhint")
-    assert record.language == language
-    assert record.name == "lexhint"
+def test_lexhint_configuration_contract(
+    identifier: str, language: str, name: str, source_variant: str
+) -> None:
+    record = load_config().asset(identifier)
+    assert record.language.lower().split("-", 1)[0] == language
+    assert record.name == name
     assert record.kind == "pronunciation"
     assert record.source_provider == "lexhint"
     assert record.source_format == "lexhint-dictionary"
@@ -121,13 +93,13 @@ def test_multilingual_lexhint_configuration_contract(language: str) -> None:
 
     inputs = record.transform_inputs or {}
     assert inputs["lexhint_language"] == language
+    assert inputs["lexhint_source_variant"] == source_variant
     assert inputs["lexhint_variant"] == "dictionary"
     assert inputs["lexhint_schema_version"] == "10"
     assert inputs["include_neutral"] is True
     assert inputs["key_normalization"] == "nfc-lower"
     assert inputs["lexhint_version"] == "0.4.7"
-    assert "lexhint_locale" not in inputs
-
+    assert "lexhint_dataset_version" not in inputs
 
 def test_cstr_transform_skips_only_header_and_strips_outer_delimiters(tmp_path: Path) -> None:
     source = tmp_path / "source.tsv"

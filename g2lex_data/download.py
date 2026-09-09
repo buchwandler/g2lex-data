@@ -7,6 +7,7 @@ from urllib.parse import urlparse, urlunparse
 
 from .common import sha256_file
 from .config import AssetConfig, load_config
+from .sources import lexhint_download_command, resolve_source
 
 
 def _download_url(record: AssetConfig) -> str:
@@ -36,21 +37,23 @@ def source_statuses() -> tuple[dict[str, object], ...]:
     statuses: list[dict[str, object]] = []
     for record in load_config().assets:
         if record.source_provider == "lexhint":
-            from .sources import resolve_source
-
             resolved = resolve_source(record)
-            inputs = record.transform_inputs or {}
+            metadata = resolved.metadata
             statuses.append(
                 {
                     "id": record.id,
                     "provider": "lexhint",
-                    "base_language": inputs.get("lexhint_language"),
-                    "variant": inputs.get("lexhint_variant"),
-                    "dataset_version": inputs.get("lexhint_dataset_version"),
-                    "locale": inputs.get("lexhint_locale"),
+                    "base_language": metadata["language"],
+                    "source_variant": metadata["source_variant"],
+                    "variant": metadata["variant"],
+                    "dataset_version": metadata["dataset_version"],
+                    "schema_version": metadata["schema_version"],
+                    "release_tag": metadata["release_tag"],
+                    "locale": metadata["locale"],
                     "path": str(resolved.path),
                     "installed": True,
-                    "sha256": "ok",
+                    "sha256": metadata["sqlite_sha256"],
+                    "size": metadata["sqlite_size"],
                 }
             )
         else:
@@ -76,7 +79,7 @@ def download_source(identifier: str) -> None:
     if record.source_provider == "lexhint":
         raise ValueError(
             f"{identifier} is managed by LexHint; install it explicitly with "
-            f"lexhint dataset download {record.transform_inputs['lexhint_language']} --variant {record.transform_inputs['lexhint_variant']} --version {record.transform_inputs['lexhint_dataset_version']}"
+            f"{lexhint_download_command(record)}"
         )
     url = _download_url(record)
     record.source_path.parent.mkdir(parents=True, exist_ok=True)

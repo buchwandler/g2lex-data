@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -78,7 +78,13 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     return TransformResult(intermediate, "kokoro-json", metadata, report)
 
 
-def _lexhint(record: Any, source: Path, temp_dir: Path) -> TransformResult:
+def _lexhint(
+    record: Any,
+    source: Path,
+    temp_dir: Path,
+    *,
+    source_metadata: Mapping[str, object] | None = None,
+) -> TransformResult:
     from lexhint import Lexicon
 
     expected = record.transform_inputs or {}
@@ -90,17 +96,34 @@ def _lexhint(record: Any, source: Path, temp_dir: Path) -> TransformResult:
         language=language,
         locale=locale if isinstance(locale, str) else None,
     )
-    source_metadata = {
-        "language": language,
-        "variant": expected.get("lexhint_variant"),
-        "dataset_version": expected.get("lexhint_dataset_version"),
-        "schema_version": expected.get("lexhint_schema_version"),
+    resolved = dict(source_metadata or {})
+    transform_source_metadata = {
+        "language": resolved.get("language", language),
+        "source_variant": resolved.get(
+            "source_variant", expected.get("lexhint_source_variant")
+        ),
+        "variant": resolved.get("variant", expected.get("lexhint_variant")),
+        "dataset_version": resolved.get(
+            "dataset_version", expected.get("lexhint_dataset_version")
+        ),
+        "schema_version": resolved.get(
+            "schema_version", expected.get("lexhint_schema_version")
+        ),
+        "release_tag": resolved.get("release_tag"),
+        "release_published_at": resolved.get("release_published_at"),
+        "asset": resolved.get("asset"),
+        "release_asset_sha256": resolved.get("release_asset_sha256"),
+        "sqlite_sha256": resolved.get("sqlite_sha256", _sha256(source)),
+        "sqlite_size": resolved.get("sqlite_size", source.stat().st_size),
+        "wiktionary_edition": resolved.get("wiktionary_edition"),
+        "metadata_language": resolved.get("metadata_language"),
         "locale": locale,
         "include_neutral": include_neutral,
+        "lexhint_version": resolved.get("lexhint_version"),
     }
     result = transform_lexhint(
         lexicon.iter_pronunciations(include_neutral=include_neutral),
-        source_metadata=source_metadata,
+        source_metadata=transform_source_metadata,
     )
     temp_dir.mkdir(parents=True, exist_ok=True)
     intermediate = temp_dir / f"{record.slug}.json"
@@ -110,14 +133,16 @@ def _lexhint(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     metadata = {
         "transform": LEXHINT_TRANSFORM_VERSION,
         "transform_inputs": dict(expected),
+        "source_metadata": transform_source_metadata,
         "transform_report_sha256": _sha256(report_path),
         "transform_report": result.report,
-        "source_sha256": _sha256(source),
-        "source_size": source.stat().st_size,
-        "lexhint_language": language,
-        "lexhint_variant": expected.get("lexhint_variant"),
-        "lexhint_dataset_version": expected.get("lexhint_dataset_version"),
-        "lexhint_schema_version": expected.get("lexhint_schema_version"),
+        "source_sha256": transform_source_metadata["sqlite_sha256"],
+        "source_size": transform_source_metadata["sqlite_size"],
+        "lexhint_language": transform_source_metadata["language"],
+        "lexhint_source_variant": transform_source_metadata["source_variant"],
+        "lexhint_variant": transform_source_metadata["variant"],
+        "lexhint_dataset_version": transform_source_metadata["dataset_version"],
+        "lexhint_schema_version": transform_source_metadata["schema_version"],
         "lexhint_locale": locale,
         "include_neutral": include_neutral,
     }
@@ -150,13 +175,21 @@ REGISTRY: dict[str, Transform] = {
 }
 
 
-def apply(record: Any, source: Path, temp_dir: Path) -> TransformResult | None:
+def apply(
+    record: Any,
+    source: Path,
+    temp_dir: Path,
+    *,
+    source_metadata: Mapping[str, object] | None = None,
+) -> TransformResult | None:
     if record.transform is None:
         return None
     try:
         transform = REGISTRY[record.transform]
     except KeyError as exc:
         raise ValueError(f"unknown transform ID: {record.transform}") from exc
+    if record.transform == LEXHINT_TRANSFORM_VERSION:
+        return _lexhint(record, source, temp_dir, source_metadata=source_metadata)
     return transform(record, source, temp_dir)
 
 

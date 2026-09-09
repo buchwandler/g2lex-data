@@ -12,7 +12,6 @@ from lexhint.builder import build_dictionary
 
 from g2lex_data.config import load_config
 from g2lex_data.transforms import apply
-from g2lex_data.transforms.lexhint_pronunciations import normalize_key
 
 
 def _build_fixture(tmp_path: Path) -> Path:
@@ -62,7 +61,7 @@ def _record(locale: str | None) -> object:
         transform_inputs={
             "lexhint_language": "en",
             "lexhint_variant": "dictionary",
-            "lexhint_dataset_version": "fixture",
+            "lexhint_source_variant": "native",
             "lexhint_schema_version": "10",
             "lexhint_locale": locale,
             "include_neutral": True,
@@ -164,7 +163,7 @@ def test_multilingual_fixture_round_trip(
         transform_inputs={
             "lexhint_language": language,
             "lexhint_variant": "dictionary",
-            "lexhint_dataset_version": "fixture",
+            "lexhint_source_variant": "native",
             "lexhint_schema_version": "10",
             "include_neutral": True,
             "key_normalization": "nfc-lower",
@@ -177,42 +176,3 @@ def test_multilingual_fixture_round_trip(
 
     with g2lex.open(asset) as lexicon:
         assert lexicon.lookup(word.lower()) == ipa
-
-
-@pytest.mark.parametrize(
-    ("language", "word"),
-    (
-        ("cs", "dům"),
-        ("el", "σπίτι"),
-        ("es", "casa"),
-        ("fr", "maison"),
-        ("id", "kalian"),
-        ("it", "casa"),
-        ("ja", "こんにちは"),
-        ("ko", "집"),
-        ("ku", "mal"),
-        ("ms", "rumah"),
-        ("pl", "dom"),
-        ("pt", "casa"),
-        ("ru", "дом"),
-        ("th", "การบ้าน"),
-        ("tr", "ev"),
-        ("vi", "nhà"),
-        ("zh", "家"),
-    ),
-)
-def test_installed_multilingual_pronunciation_smoke(language: str, word: str) -> None:
-    inputs = load_config().asset(f"{language}:lexhint").transform_inputs or {}
-    source = Lexicon(
-        language,
-        variant="dictionary",
-        dataset_version=str(inputs["lexhint_dataset_version"]),
-    )
-    groups = source.pronunciations(word, include_neutral=True)
-    assert groups
-    assert any(
-        pronunciation.ipa.strip("[]/") for group in groups for pronunciation in group.pronunciations
-    )
-
-    with g2lex.open(Path("build/assets") / f"g2lex-{language}-lexhint.g2lex") as output:
-        assert output.lookup(normalize_key(word)) is not None

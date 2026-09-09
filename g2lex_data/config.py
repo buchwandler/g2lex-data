@@ -40,8 +40,8 @@ class AssetConfig:
     source: str
     source_format: str
     source_id: str
-    source_sha256: str
-    source_size: int
+    source_sha256: str | None
+    source_size: int | None
     phoneme_encoding: str
     provider: str
     revision: str
@@ -100,6 +100,9 @@ def _integer(values: dict[str, Any], key: str, label: str) -> int:
         raise ValueError(f"{label}.{key} must be a non-negative integer")
     return value
 
+def _optional_integer(values: dict[str, Any], key: str, label: str) -> int | None:
+    return None if values.get(key) is None else _integer(values, key, label)
+
 
 def _sha256(value: object, label: str) -> str:
     if not isinstance(value, str) or len(value) != 64:
@@ -108,6 +111,10 @@ def _sha256(value: object, label: str) -> str:
         raise ValueError(f"{label} must be a lowercase SHA-256")
     return value
 
+
+
+def _optional_sha256(value: object, label: str) -> str | None:
+    return None if value is None else _sha256(value, label)
 
 def _transform_inputs(value: object, label: str) -> dict[str, object] | None:
     if value is None:
@@ -170,8 +177,16 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
                 source=_text(values, "source", label),
                 source_format=source_format,
                 source_id=_text(values, "source_id", label),
-                source_sha256=_sha256(values.get("source_sha256"), f"{label}.source_sha256"),
-                source_size=_integer(values, "source_size", label),
+                source_sha256=(
+                    _sha256(values.get("source_sha256"), f"{label}.source_sha256")
+                    if source_provider == "file"
+                    else _optional_sha256(values.get("source_sha256"), f"{label}.source_sha256")
+                ),
+                source_size=(
+                    _integer(values, "source_size", label)
+                    if source_provider == "file"
+                    else _optional_integer(values, "source_size", label)
+                ),
                 phoneme_encoding=encoding,
                 provider=_text(values, "provider", label),
                 revision=_text(values, "revision", label),
