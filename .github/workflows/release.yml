@@ -18,6 +18,10 @@ jobs:
         with:
           python-version: "3.13"
       - run: python -m pip install -e ".[dev]"
+      - run: |
+          for lang in ar az bg ca ceb cs de el es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
+            lexhint dataset download "$lang" --variant dictionary --source-variant english
+          done
       - run: lexhint dataset download cs --variant dictionary --version 2026.08.28
       - run: lexhint dataset download de --variant dictionary --version 2026.08.28
       - run: lexhint dataset download el --variant dictionary --version 2026.09.08
