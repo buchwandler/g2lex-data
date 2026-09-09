@@ -80,7 +80,7 @@ canonical German sources are redistributed here with their upstream notices. Sou
 acquisition is optional and always verifies the configured hash and size before replacing
 a local file.
 
-LexHint records resolve managed local SQLite artifacts from published `buchwandler/lexhint-datasets` dictionary releases. The underlying dictionary text is derived from Wiktionary through Wiktextract and Kaikki. The 19 configured physical base-language sources are `cs`, `de`, `el`, `en`, `es`, `fr`, `id`, `it`, `ja`, `ko`, `ku`, `ms`, `pl`, `pt`, `ru`, `th`, `tr`, `vi`, and `zh`. The `g2lex-data` records pin the installed uncompressed SQLite hash and size, while the source artifact and LexHint 0.4.4 package versions are immutable build inputs. The resulting G2Lex assets are generic IPA outputs. One English artifact produces the `en-US` and `en-GB` locale-derived assets; every other represented language is a base-language record without regional pronunciation claims.
+LexHint records resolve managed local SQLite artifacts from published `buchwandler/lexhint-datasets` dictionary releases. The underlying dictionary text is derived from Wiktionary through Wiktextract and Kaikki. The 19 configured physical base-language sources are `cs`, `de`, `el`, `en`, `es`, `fr`, `id`, `it`, `ja`, `ko`, `ku`, `ms`, `pl`, `pt`, `ru`, `th`, `tr`, `vi`, and `zh`. The `g2lex-data` records pin the installed uncompressed SQLite hash and size, while the source artifact and LexHint 0.4.7 package versions are immutable build inputs. The resulting G2Lex assets are generic IPA outputs. One English artifact produces the `en-US` and `en-GB` locale-derived assets; every other represented language is a base-language record without regional pronunciation claims.
 
 ## Transform contracts
 

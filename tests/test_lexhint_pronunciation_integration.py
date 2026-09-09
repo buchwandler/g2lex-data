@@ -168,7 +168,7 @@ def test_multilingual_fixture_round_trip(
             "lexhint_schema_version": "10",
             "include_neutral": True,
             "key_normalization": "nfc-lower",
-            "lexhint_version": "0.4.4",
+            "lexhint_version": "0.4.7",
         },
     )
     result = apply(record, artifact, tmp_path / f"{language}-output")

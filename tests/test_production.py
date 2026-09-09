@@ -125,7 +125,7 @@ def test_multilingual_lexhint_configuration_contract(language: str) -> None:
     assert inputs["lexhint_schema_version"] == "10"
     assert inputs["include_neutral"] is True
     assert inputs["key_normalization"] == "nfc-lower"
-    assert inputs["lexhint_version"] == "0.4.4"
+    assert inputs["lexhint_version"] == "0.4.7"
     assert "lexhint_locale" not in inputs
 
 

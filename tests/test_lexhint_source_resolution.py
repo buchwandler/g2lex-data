@@ -78,7 +78,7 @@ def test_schema_mismatch_fails_closed(monkeypatch: pytest.MonkeyPatch, tmp_path:
         metadata: ClassVar[dict[str, str]] = {
             "schema_version": "9",
             "language": "en",
-            "lexhint_version": "0.4.4",
+            "lexhint_version": "0.4.7",
         }
 
         def __init__(self, *args: object, **kwargs: object) -> None:
