@@ -59,6 +59,7 @@ def test_resolves_multilingual_base_language_artifacts(language: str) -> None:
     assert resolved.metadata["lexhint_version"] == expected["lexhint_version"]
     assert resolved.metadata["locale"] is None
 
+
 def test_source_hash_mismatch_fails_closed() -> None:
     record = replace(_record(), source_sha256="0" * 64)
     with pytest.raises(ValueError, match="SHA-256 mismatch"):

@@ -2,14 +2,9 @@
 
 ## Ownership
 
-`g2lex-data` is the authoritative producer for generic lexicon data. It owns source
-inventory and acquisition, immutable revisions and hashes, source adapters, versioned
-semantic transforms, deterministic G2Lex compilation, source-to-transformed-input
-verification, manifests, provenance, releases, and catalog publication.
+`g2lex-data` is the authoritative source, build, and release repository for externally distributed G2Lex datasets. It owns source inventory and acquisition, immutable revisions and hashes, source adapters, versioned semantic transforms, deterministic G2Lex compilation, source-to-transformed-input verification, manifests, provenance, releases, and catalog publication. This includes reviewed application-specific encodings such as the legacy Kokoro `kokoro-v1` English and French pronunciation assets.
 
-Lexphon owns installation, caching, lookup policy, and phonemization. KokoroG2P owns
-Kokoro-specific IPA conversion, ratings, runtime precedence, and fallback behavior.
-Those responsibilities are not duplicated here.
+Lexphon owns installation, caching, lookup policy, and phonemization. KokoroG2P owns Kokoro-specific conversion, ratings, and runtime behavior, but it no longer owns the migrated source of truth or build for these external assets.
 
 ## Production pipeline
 
@@ -58,8 +53,4 @@ versions cannot be overwritten.
 
 ## Compatibility boundary
 
-The current German Kokoro assets are frozen in `baseline/kokoro-german.json`. A parity
-command can compare a supplied KokoroG2P checkout by logical hash and, when needed, by
-complete key membership and values including tagged selectors and ordered variants. This
-is a migration gate only. No KokoroG2P runtime asset or behavior is changed by this
-repository.
+The migration compatibility gate compares the old layered KokoroG2P mappings with the new consolidated assets by complete key membership and typed values, including tagged selectors and ordered variants. The old English layers collapse as `en-us:gold + en-us:silver -> en-us:gold` and `en-gb:gold + en-gb:silver -> en-gb:gold`; French case aliases materialize into `fr-fr:gold`. The resulting G2Lex assets retain the opaque `kokoro-v1` values and require Lexphon support for that encoding.

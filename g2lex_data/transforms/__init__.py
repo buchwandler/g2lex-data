@@ -24,6 +24,10 @@ class TransformResult:
     report_path: Path | None = None
 
 
+from .kokoro_legacy import TRANSFORM_VERSION as KOKORO_LEGACY_TRANSFORM_VERSION
+from .kokoro_legacy import transform_kokoro_legacy
+
+
 def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     try:
         from lexhint import Lexicon
@@ -139,6 +143,7 @@ def _cstr(record: Any, source: Path, temp_dir: Path) -> TransformResult:
 
 
 REGISTRY: dict[str, Transform] = {
+    KOKORO_LEGACY_TRANSFORM_VERSION: transform_kokoro_legacy,
     CRANE_TRANSFORM_VERSION: _crane,
     LEXHINT_TRANSFORM_VERSION: _lexhint,
     cstr_de.TRANSFORM_ID: _cstr,

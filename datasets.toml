@@ -790,3 +790,84 @@ license_expression = "Apache-2.0"
 license_url = "https://www.apache.org/licenses/LICENSE-2.0"
 attribution = "Joakim; NST Swedish pronunciation lexicon published in kokoro-sv-g2p"
 source_url = "https://huggingface.co/Joakim/kokoro-sv-g2p/blob/d19dd10/g2p/lexicon.tsv"
+
+# KokoroG2P legacy sources migrated at commit 6ebdc3a89d608964e4b1b1b9958fb43b4574f04b.
+[[asset]]
+id = "en-us:gold"
+language = "en-US"
+name = "gold"
+display_name = "English (US) consolidated Kokoro pronunciation lexicon"
+kind = "pronunciation"
+source = "sources/kokorog2p/en/us_gold.json"
+source_format = "kokoro-json"
+source_id = "kokorog2p-en-us-gold"
+source_sha256 = "50a8a07a5d5054c25cac1f4e2f0efc31a0a104e0d92c6ddc599772c183e1a86d"
+source_size = 3000991
+phoneme_encoding = "kokoro-v1"
+provider = "KokoroG2P"
+revision = "6ebdc3a89d608964e4b1b1b9958fb43b4574f04b"
+license_expression = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+attribution = "KokoroG2P contributors; legacy English pronunciation source"
+source_url = "https://github.com/buchwandler/kokorog2p/blob/6ebdc3a89d608964e4b1b1b9958fb43b4574f04b/lexicons/sources/en/us_gold.json"
+transform = "kokoro-legacy-collapse-v1"
+[asset.transform_inputs]
+secondary_source = "sources/kokorog2p/en/us_silver.json"
+secondary_source_id = "kokorog2p-en-us-silver"
+secondary_sha256 = "067c30f29524585b479affdef2823d6c1e27c59d6d6dfb1694be676bba1185f1"
+secondary_size = 3099518
+source_format = "kokoro-json"
+case_aliases = true
+precedence = ["gold", "silver"]
+
+[[asset]]
+id = "en-gb:gold"
+language = "en-GB"
+name = "gold"
+display_name = "English (GB) consolidated Kokoro pronunciation lexicon"
+kind = "pronunciation"
+source = "sources/kokorog2p/en/gb_gold.json"
+source_format = "kokoro-json"
+source_id = "kokorog2p-en-gb-gold"
+source_sha256 = "bcbc593a5fe247d92ee584ffb6302d326b4f99f652c634991206e3f848d36cac"
+source_size = 2839077
+phoneme_encoding = "kokoro-v1"
+provider = "KokoroG2P"
+revision = "6ebdc3a89d608964e4b1b1b9958fb43b4574f04b"
+license_expression = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+attribution = "KokoroG2P contributors; legacy English pronunciation source"
+source_url = "https://github.com/buchwandler/kokorog2p/blob/6ebdc3a89d608964e4b1b1b9958fb43b4574f04b/lexicons/sources/en/gb_gold.json"
+transform = "kokoro-legacy-collapse-v1"
+[asset.transform_inputs]
+secondary_source = "sources/kokorog2p/en/gb_silver.json"
+secondary_source_id = "kokorog2p-en-gb-silver"
+secondary_sha256 = "6c062fa3dcab1a949855ff9350bd327335cb3c501218180e052d0e3e4faf5883"
+secondary_size = 3663899
+source_format = "kokoro-json"
+case_aliases = true
+precedence = ["gold", "silver"]
+
+[[asset]]
+id = "fr-fr:gold"
+language = "fr-FR"
+name = "gold"
+display_name = "French consolidated Kokoro pronunciation lexicon"
+kind = "pronunciation"
+source = "sources/kokorog2p/fr/fr_gold.json"
+source_format = "kokoro-json"
+source_id = "kokorog2p-fr-fr-gold"
+source_sha256 = "0d5dcd4a6fec8c8decde6403880e41c7b8d6f6c300928eb81f2edc42f811e081"
+source_size = 376263
+phoneme_encoding = "kokoro-v1"
+provider = "KokoroG2P"
+revision = "6ebdc3a89d608964e4b1b1b9958fb43b4574f04b"
+license_expression = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+attribution = "KokoroG2P contributors; legacy French pronunciation source"
+source_url = "https://github.com/buchwandler/kokorog2p/blob/6ebdc3a89d608964e4b1b1b9958fb43b4574f04b/lexicons/sources/fr/fr_gold.json"
+transform = "kokoro-legacy-collapse-v1"
+[asset.transform_inputs]
+source_format = "kokoro-json"
+case_aliases = true
+precedence = ["gold"]

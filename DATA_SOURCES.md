@@ -7,27 +7,30 @@ files, run eSpeak, or import KokoroG2P.
 
 ## Production assets
 
-| ID              | Source and revision                                                           | Format         | License      | Transform                            |
-| --------------- | ----------------------------------------------------------------------------- | -------------- | ------------ | ------------------------------------ |
-| `de-de:gold`    | KokoroG2P German source, `kokorog2p-0.9.0`                                    | Kokoro JSON    | Apache-2.0   | none                                 |
-| `de-de:crane`   | Crane Local AI German `de/de.tsv`, `bfd51698069b30e1b20bbf54479b55af50b4161d` | TSV            | CC-BY-SA-4.0 | `de-crane-lowercase-lexhint-v1`      |
-| `de-de:espeak`  | CSTR `espeak_de.tsv`, `eeac6ffc9271838fd63464a83d4b784ac75fc95b`              | IPA TSV        | CC-BY-SA-3.0 | `cstr-de-ipa-v1`                     |
-| `de-de:olaph`   | CSTR `olaph_de.txt`, `cedb4ada41a288549db36c53f9a1e6858a668624`               | IPA TSV        | MIT          | `cstr-de-ipa-v1`                     |
-| `sv-se:nst`     | Joakim/kokoro-sv-g2p `g2p/lexicon.tsv`, `d19dd10`                             | TSV            | Apache-2.0   | none                                 |
-| `en-us:cmudict` | CMUdict, `74790861f652b15e4ac49015a90074ad62a27690`                           | CMUdict        | BSD-3-Clause | none                                 |
-| `en-us:lexhint` | LexHint datasets English dictionary, `data-en-2026.08.28`                     | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `en-gb:lexhint` | Same pinned English artifact, locale-derived `en_GB`                          | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `de-de:lexhint` | LexHint datasets German dictionary, `data-de-2026.08.28`                      | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `cs:lexhint` | LexHint datasets Czech dictionary, `data-cs-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `el:lexhint` | LexHint datasets Greek dictionary, `data-el-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `es:lexhint` | LexHint datasets Spanish dictionary, `data-es-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `fr:lexhint` | LexHint datasets French dictionary, `data-fr-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `id:lexhint` | LexHint datasets Indonesian dictionary, `data-id-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `it:lexhint` | LexHint datasets Italian dictionary, `data-it-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `ku:lexhint` | LexHint datasets Kurdish dictionary, `data-ku-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `ms:lexhint` | LexHint datasets Malay dictionary, `data-ms-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `pl:lexhint` | LexHint datasets Polish dictionary, `data-pl-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
-| `tr:lexhint` | LexHint datasets Turkish dictionary, `data-tr-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| ID              | Source and revision                                                                                  | Format         | License      | Transform                            |
+| --------------- | ---------------------------------------------------------------------------------------------------- | -------------- | ------------ | ------------------------------------ |
+| `de-de:gold`    | KokoroG2P German source, `kokorog2p-0.9.0`                                                           | Kokoro JSON    | Apache-2.0   | none                                 |
+| `en-us:gold`    | KokoroG2P `lexicons/sources/en/us_gold.json` plus silver, `6ebdc3a89d608964e4b1b1b9958fb43b4574f04b` | Kokoro JSON    | Apache-2.0   | `kokoro-legacy-collapse-v1`          |
+| `en-gb:gold`    | KokoroG2P `lexicons/sources/en/gb_gold.json` plus silver, `6ebdc3a89d608964e4b1b1b9958fb43b4574f04b` | Kokoro JSON    | Apache-2.0   | `kokoro-legacy-collapse-v1`          |
+| `fr-fr:gold`    | KokoroG2P `lexicons/sources/fr/fr_gold.json`, `6ebdc3a89d608964e4b1b1b9958fb43b4574f04b`             | Kokoro JSON    | Apache-2.0   | `kokoro-legacy-collapse-v1`          |
+| `de-de:crane`   | Crane Local AI German `de/de.tsv`, `bfd51698069b30e1b20bbf54479b55af50b4161d`                        | TSV            | CC-BY-SA-4.0 | `de-crane-lowercase-lexhint-v1`      |
+| `de-de:espeak`  | CSTR `espeak_de.tsv`, `eeac6ffc9271838fd63464a83d4b784ac75fc95b`                                     | IPA TSV        | CC-BY-SA-3.0 | `cstr-de-ipa-v1`                     |
+| `de-de:olaph`   | CSTR `olaph_de.txt`, `cedb4ada41a288549db36c53f9a1e6858a668624`                                      | IPA TSV        | MIT          | `cstr-de-ipa-v1`                     |
+| `sv-se:nst`     | Joakim/kokoro-sv-g2p `g2p/lexicon.tsv`, `d19dd10`                                                    | TSV            | Apache-2.0   | none                                 |
+| `en-us:cmudict` | CMUdict, `74790861f652b15e4ac49015a90074ad62a27690`                                                  | CMUdict        | BSD-3-Clause | none                                 |
+| `en-us:lexhint` | LexHint datasets English dictionary, `data-en-2026.08.28`                                            | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `en-gb:lexhint` | Same pinned English artifact, locale-derived `en_GB`                                                 | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `de-de:lexhint` | LexHint datasets German dictionary, `data-de-2026.08.28`                                             | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `cs:lexhint`    | LexHint datasets Czech dictionary, `data-cs-2026.08.28`                                              | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `el:lexhint`    | LexHint datasets Greek dictionary, `data-el-2026.09.08`                                              | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `es:lexhint`    | LexHint datasets Spanish dictionary, `data-es-2026.08.28`                                            | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `fr:lexhint`    | LexHint datasets French dictionary, `data-fr-2026.08.28`                                             | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `id:lexhint`    | LexHint datasets Indonesian dictionary, `data-id-2026.09.08`                                         | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `it:lexhint`    | LexHint datasets Italian dictionary, `data-it-2026.08.28`                                            | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `ku:lexhint`    | LexHint datasets Kurdish dictionary, `data-ku-2026.09.08`                                            | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `ms:lexhint`    | LexHint datasets Malay dictionary, `data-ms-2026.09.08`                                              | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `pl:lexhint`    | LexHint datasets Polish dictionary, `data-pl-2026.09.08`                                             | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `tr:lexhint`    | LexHint datasets Turkish dictionary, `data-tr-2026.09.08`                                            | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 
 | `ja:lexhint` | LexHint datasets Japanese dictionary, `data-ja-2026.09.03` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 | `ko:lexhint` | LexHint datasets Korean dictionary, `data-ko-2026.09.03` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
@@ -42,6 +45,20 @@ files, run eSpeak, or import KokoroG2P.
 The stable ID `sv-se:nst` contains 812,343 parsed IPA entries from the immutable `d19dd10` revision of `Joakim/kokoro-sv-g2p`. The source is exactly 38,008,908 bytes with SHA-256 `65eb3aae9c737f6d04c22a44b2ab836d1ec01f682b1cdee07bb2209852355296`. It uses the generic TSV parser and no semantic transform.
 
 Canonical source and generated G2Lex ownership moved from KokoroG2P to `g2lex-data`. The migration is gated by logical parity with the former `sv_nst.g2lex` asset. Existing Apache-2.0 provider, revision, URL, and attribution metadata are preserved pending any separately required NST provenance notice.
+
+## Kokoro English and French migration
+
+The five source files under `sources/kokorog2p` were copied from KokoroG2P revision `6ebdc3a89d608964e4b1b1b9958fb43b4574f04b`. Their exact SHA-256 hashes and byte sizes are pinned in `datasets.toml`; the source URL, Apache-2.0 license, and KokoroG2P contributor attribution are retained there and in generated manifests.
+
+| Source                                |     Bytes | SHA-256                                                            |
+| ------------------------------------- | --------: | ------------------------------------------------------------------ |
+| `sources/kokorog2p/en/us_gold.json`   | 3,000,991 | `50a8a07a5d5054c25cac1f4e2f0efc31a0a104e0d92c6ddc599772c183e1a86d` |
+| `sources/kokorog2p/en/us_silver.json` | 3,099,518 | `067c30f29524585b479affdef2823d6c1e27c59d6d6dfb1694be676bba1185f1` |
+| `sources/kokorog2p/en/gb_gold.json`   | 2,839,077 | `bcbc593a5fe247d92ee584ffb6302d326b4f99f652c634991206e3f848d36cac` |
+| `sources/kokorog2p/en/gb_silver.json` | 3,663,899 | `6c062fa3dcab1a949855ff9350bd327335cb3c501218180e052d0e3e4faf5883` |
+| `sources/kokorog2p/fr/fr_gold.json`   |   376,263 | `0d5dcd4a6fec8c8decde6403880e41c7b8d6f6c300928eb81f2edc42f811e081` |
+
+The published IDs intentionally collapse the old tiers: `en-us:gold` is gold first then silver, `en-gb:gold` is gold first then silver, and `fr-fr:gold` is the case-alias-expanded French source. `gold` now names the consolidated reviewed lexicon and is not the old tier boundary. The transform materializes case aliases and preserves Kokoro strings, tagged values, and variants as `kokoro-v1`; it does not convert them to IPA.
 
 ## Frozen German migration release
 
@@ -76,6 +93,4 @@ transform contract.
 IPA delimiter pair, preserves internal slashes and source pronunciation order, and
 ignores only the optional OLaPh annotation field.
 
-A semantic transform change requires a new transform ID and a new data release. The
-English Kokoro `gold` and `silver` assets are not generic data and are intentionally not
-migrated.
+A semantic transform change requires a new transform ID and a new data release. The Kokoro English and French sources are now authoritative migration inputs in `g2lex-data`, while consumers use only the published consolidated IDs.

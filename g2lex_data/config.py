@@ -12,7 +12,7 @@ except ModuleNotFoundError:  # pragma: no cover
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "datasets.toml"
 SUPPORTED_KINDS = {"pronunciation", "membership"}
-SUPPORTED_ENCODINGS = {"ipa", "arpabet", "none"}
+SUPPORTED_ENCODINGS = {"ipa", "arpabet", "none", "kokoro-v1"}
 SUPPORTED_FORMATS = {
     "kokoro-json",
     "json-map",

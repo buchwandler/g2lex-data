@@ -16,6 +16,9 @@ PRODUCTION_IDS = {
     "de-de:olaph",
     "sv-se:nst",
     "en-us:cmudict",
+    "en-us:gold",
+    "en-gb:gold",
+    "fr-fr:gold",
     "en-us:lexhint",
     "en-gb:lexhint",
     "de-de:lexhint",
@@ -42,8 +45,11 @@ PRODUCTION_IDS = {
 def test_production_configuration_contract() -> None:
     config = load_config()
     assert PRODUCTION_IDS <= {record.id for record in config.assets}
-    assert SUPPORTED_ENCODINGS == {"ipa", "arpabet", "none"}
-    assert all(record.phoneme_encoding != "kokoro-v1" for record in config.assets)
+    assert SUPPORTED_ENCODINGS == {"ipa", "arpabet", "none", "kokoro-v1"}
+    kokoro_ids = {record.id for record in config.assets if record.phoneme_encoding == "kokoro-v1"}
+    assert kokoro_ids == {"en-us:gold", "en-gb:gold", "fr-fr:gold"}
+    assert "en-us:silver" not in {record.id for record in config.assets}
+    assert "en-gb:silver" not in {record.id for record in config.assets}
     assert config.asset("de-de:crane").transform == "de-crane-lowercase-lexhint-v1"
     assert config.asset("de-de:espeak").transform == "cstr-de-ipa-v1"
     for identifier in ("en-us:lexhint", "en-gb:lexhint", "de-de:lexhint"):
@@ -122,6 +128,7 @@ def test_multilingual_lexhint_configuration_contract(language: str) -> None:
     assert inputs["lexhint_version"] == "0.4.4"
     assert "lexhint_locale" not in inputs
 
+
 def test_cstr_transform_skips_only_header_and_strips_outer_delimiters(tmp_path: Path) -> None:
     source = tmp_path / "source.tsv"
     output = tmp_path / "normalized.tsv"
@@ -162,4 +169,5 @@ def test_transform_registry_has_stable_ids() -> None:
         "de-crane-lowercase-lexhint-v1",
         "lexhint-pronunciation-lowercase-v1",
         "cstr-de-ipa-v1",
+        "kokoro-legacy-collapse-v1",
     }

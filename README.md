@@ -4,16 +4,12 @@
 
 ## Ownership boundary
 
-This repository owns source inventories, immutable source pins, acquisition checks,
-source-specific transforms, deterministic compilation, lossless verification, manifests,
-licenses, immutable data releases, and catalog publication. It does not own tokenization,
-lexicon precedence, Kokoro conversion or ratings, sentence phonemization, or runtime
-fallback behavior.
+This repository is the authoritative source, build, and release repository for externally distributed G2Lex datasets, including reviewed application-specific encodings such as the legacy Kokoro `kokoro-v1` English and French pronunciation assets. It owns source inventories, immutable source pins, acquisition checks, source-specific transforms, deterministic compilation, lossless verification, manifests, licenses, immutable data releases, and catalog publication. It does not own tokenization, sentence phonemization, or runtime fallback behavior.
 
 ## Configured production assets
 
-The production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`, `de-de:olaph`, `en-us:cmudict`, `en-us:lexhint`, `en-gb:lexhint`, `de-de:lexhint`, `cs:lexhint`, `el:lexhint`, `es:lexhint`, `fr:lexhint`, `id:lexhint`, `it:lexhint`, `ja:lexhint`, `ko:lexhint`, `ku:lexhint`, `ms:lexhint`, `pl:lexhint`, `pt:lexhint`, `ru:lexhint`, `th:lexhint`, `tr:lexhint`, `vi:lexhint`, `zh:lexhint`, and `sv-se:nst`. The demo fixtures remain for fast contract tests.
-Generic pronunciation encodings are `ipa` and `arpabet`; membership assets use `none`. LexHint assets are generic IPA outputs. Kokoro-specific `kokoro-v1` assets are deliberately excluded.
+The production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`, `de-de:olaph`, `en-us:cmudict`, `en-us:gold`, `en-gb:gold`, `fr-fr:gold`, `en-us:lexhint`, `en-gb:lexhint`, `de-de:lexhint`, `cs:lexhint`, `el:lexhint`, `es:lexhint`, `fr:lexhint`, `id:lexhint`, `it:lexhint`, `ja:lexhint`, `ko:lexhint`, `ku:lexhint`, `ms:lexhint`, `pl:lexhint`, `pt:lexhint`, `ru:lexhint`, `th:lexhint`, `tr:lexhint`, `vi:lexhint`, `zh:lexhint`, and `sv-se:nst`. The demo fixtures remain for fast contract tests.
+Pronunciation encodings are `ipa`, `arpabet`, and the reviewed legacy `kokoro-v1`; membership assets use `none`. The old Kokoro tiers are consolidated as `en-us:gold` from `en-us:gold` plus `en-us:silver`, `en-gb:gold` from `en-gb:gold` plus `en-gb:silver`, and `fr-fr:gold` from `fr-fr:gold`. No English silver ID is published.
 
 LexHint has 19 configured physical base-language datasets. English derives the locale-filtered `en-US` and `en-GB` outputs from one source artifact. All other represented LexHint languages are base-language G2Lex assets without regional pronunciation claims. These remain generic IPA pronunciation lexicons, not Kokoro lexicons.
 Source provenance and redistribution status are documented in [DATA_SOURCES.md](DATA_SOURCES.md).
