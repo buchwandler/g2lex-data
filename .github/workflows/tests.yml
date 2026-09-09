@@ -3,10 +3,18 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: g2lex-data
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: g2lex-data
+      - uses: actions/checkout@v4
+        with:
+          repository: buchwandler/lexhint-datasets
+          path: lexhint-datasets
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
