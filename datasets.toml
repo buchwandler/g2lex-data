@@ -261,6 +261,307 @@ include_neutral = true
 key_normalization = "nfc-lower"
 lexhint_version = "0.4.4"
 
+
+[[asset]]
+id = "cs:lexhint"
+language = "cs"
+name = "lexhint"
+display_name = "Czech LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:cs:dictionary:s10:2026.08.28"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:cs:dictionary:s10:2026.08.28"
+source_sha256 = "466117fe153fcb02f41e0c9a79264b5062c9e92d576b91d094c879d169dee682"
+source_size = 112889856
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-cs-2026.08.28"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-cs-2026.08.28"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "cs"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.08.28"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "el:lexhint"
+language = "el"
+name = "lexhint"
+display_name = "Greek LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:el:dictionary:s10:2026.09.08"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:el:dictionary:s10:2026.09.08"
+source_sha256 = "4977755a8322602d1560a4f8e8b1cac43ecdb911e61ee5050b039d60c01194e4"
+source_size = 716316672
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-el-2026.09.08"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-el-2026.09.08"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "el"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.08"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "es:lexhint"
+language = "es"
+name = "lexhint"
+display_name = "Spanish LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:es:dictionary:s10:2026.08.28"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:es:dictionary:s10:2026.08.28"
+source_sha256 = "3c8761597965482f1028a07a093c1d657eb31ed8cb2ccc9291a5ed178aa29469"
+source_size = 551866368
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-es-2026.08.28"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-es-2026.08.28"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "es"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.08.28"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "fr:lexhint"
+language = "fr"
+name = "lexhint"
+display_name = "French LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:fr:dictionary:s10:2026.08.28"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:fr:dictionary:s10:2026.08.28"
+source_sha256 = "d700598ef72b05e3c5e8724e6dc0edb0085d58869172672ac34af0863561e446"
+source_size = 1445601280
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-fr-2026.08.28"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-fr-2026.08.28"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "fr"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.08.28"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "id:lexhint"
+language = "id"
+name = "lexhint"
+display_name = "Indonesian LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:id:dictionary:s10:2026.09.08"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:id:dictionary:s10:2026.09.08"
+source_sha256 = "b3e9904b16495fa546557f35256e1281d48d43eeeb5142f8a8fa2ed65290a92f"
+source_size = 21061632
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-id-2026.09.08"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-id-2026.09.08"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "id"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.08"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "it:lexhint"
+language = "it"
+name = "lexhint"
+display_name = "Italian LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:it:dictionary:s10:2026.08.28"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:it:dictionary:s10:2026.08.28"
+source_sha256 = "3774bde305ac1956d23fb8048a8ada05640a88a2ede282ae41546aa2b42d42f2"
+source_size = 284131328
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-it-2026.08.28"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-it-2026.08.28"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "it"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.08.28"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "ku:lexhint"
+language = "ku"
+name = "lexhint"
+display_name = "Kurdish LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:ku:dictionary:s10:2026.09.08"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:ku:dictionary:s10:2026.09.08"
+source_sha256 = "49a1e34170dac372a9a1ba1a67a56c8662b0e041e48b281ede5d349dd775b99e"
+source_size = 167899136
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-ku-2026.09.08"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-ku-2026.09.08"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "ku"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.08"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "ms:lexhint"
+language = "ms"
+name = "lexhint"
+display_name = "Malay LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:ms:dictionary:s10:2026.09.08"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:ms:dictionary:s10:2026.09.08"
+source_sha256 = "82f887329c88638e70118427203bb5f5a5a16daead644d63154d79b8111d7b9f"
+source_size = 3878912
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-ms-2026.09.08"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-ms-2026.09.08"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "ms"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.08"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "pl:lexhint"
+language = "pl"
+name = "lexhint"
+display_name = "Polish LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:pl:dictionary:s10:2026.09.08"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:pl:dictionary:s10:2026.09.08"
+source_sha256 = "0ca3f576c2400f3a5db784a7827f80be483de0226111babb5c19d1dab7194d80"
+source_size = 286908416
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-pl-2026.09.08"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-pl-2026.09.08"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "pl"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.08"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
+[[asset]]
+id = "tr:lexhint"
+language = "tr"
+name = "lexhint"
+display_name = "Turkish LexHint IPA lexicon"
+kind = "pronunciation"
+source = "lexhint:tr:dictionary:s10:2026.09.08"
+source_provider = "lexhint"
+source_format = "lexhint-dictionary"
+source_id = "lexhint:tr:dictionary:s10:2026.09.08"
+source_sha256 = "e4b64791e9aa1cadfb1c610f13f8d357303216db7c6285f67ccfca0ba1a66e4f"
+source_size = 186597376
+phoneme_encoding = "ipa"
+provider = "buchwandler/lexhint-datasets"
+revision = "data-tr-2026.09.08"
+license_expression = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+attribution = "Wiktionary contributors; Wiktextract and Kaikki extraction; Lexhint dataset release by buchwandler"
+source_url = "https://github.com/buchwandler/lexhint-datasets/releases/tag/data-tr-2026.09.08"
+transform = "lexhint-pronunciation-lowercase-v1"
+
+[asset.transform_inputs]
+lexhint_language = "tr"
+lexhint_variant = "dictionary"
+lexhint_dataset_version = "2026.09.08"
+lexhint_schema_version = "10"
+include_neutral = true
+key_normalization = "nfc-lower"
+lexhint_version = "0.4.4"
+
 [[asset]]
 id = "ja:lexhint"
 language = "ja"

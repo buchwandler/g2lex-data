@@ -32,7 +32,7 @@ G2Lex asset + manifest
 immutable release + catalog v1
           |
 
-LexHint-managed sources resolve through the public `Lexicon` API from explicitly installed, pinned base-language artifacts. The pronunciation transform calls `iter_pronunciations(include_neutral=True)` with the configured locale, collapses only meaningful POS distinctions, and records source identity, locale derivation, and audit counters in the manifest.
+LexHint-managed sources resolve through the public `Lexicon` API from explicitly installed, pinned artifacts for all 19 physical base languages. The pronunciation transform calls `iter_pronunciations(include_neutral=True)` with the configured locale, collapses only meaningful POS distinctions, and records source identity, locale derivation, and audit counters in the manifest. English derives the `en-US` and `en-GB` outputs; other languages remain base-language assets without regional claims.
           v
 Lexphon installation
 ```

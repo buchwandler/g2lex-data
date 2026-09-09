@@ -19,11 +19,21 @@ PRODUCTION_IDS = {
     "en-us:lexhint",
     "en-gb:lexhint",
     "de-de:lexhint",
+    "cs:lexhint",
+    "el:lexhint",
+    "es:lexhint",
+    "fr:lexhint",
+    "id:lexhint",
+    "it:lexhint",
     "ja:lexhint",
     "ko:lexhint",
+    "ku:lexhint",
+    "ms:lexhint",
+    "pl:lexhint",
     "pt:lexhint",
     "ru:lexhint",
     "th:lexhint",
+    "tr:lexhint",
     "vi:lexhint",
     "zh:lexhint",
 }
@@ -70,10 +80,30 @@ def test_swedish_nst_configuration_contract() -> None:
     assert record.revision == "d19dd10"
 
 
-@pytest.mark.parametrize("language", ("ja", "ko", "pt", "ru", "th", "vi", "zh"))
+@pytest.mark.parametrize(
+    "language",
+    (
+        "cs",
+        "el",
+        "es",
+        "fr",
+        "id",
+        "it",
+        "ja",
+        "ko",
+        "ku",
+        "ms",
+        "pl",
+        "pt",
+        "ru",
+        "th",
+        "tr",
+        "vi",
+        "zh",
+    ),
+)
 def test_multilingual_lexhint_configuration_contract(language: str) -> None:
     record = load_config().asset(f"{language}:lexhint")
-
     assert record.language == language
     assert record.name == "lexhint"
     assert record.kind == "pronunciation"
@@ -91,7 +121,6 @@ def test_multilingual_lexhint_configuration_contract(language: str) -> None:
     assert inputs["key_normalization"] == "nfc-lower"
     assert inputs["lexhint_version"] == "0.4.4"
     assert "lexhint_locale" not in inputs
-
 
 def test_cstr_transform_skips_only_header_and_strips_outer_delimiters(tmp_path: Path) -> None:
     source = tmp_path / "source.tsv"

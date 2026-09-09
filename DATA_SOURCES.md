@@ -18,6 +18,16 @@ files, run eSpeak, or import KokoroG2P.
 | `en-us:lexhint` | LexHint datasets English dictionary, `data-en-2026.08.28`                     | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 | `en-gb:lexhint` | Same pinned English artifact, locale-derived `en_GB`                          | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 | `de-de:lexhint` | LexHint datasets German dictionary, `data-de-2026.08.28`                      | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `cs:lexhint` | LexHint datasets Czech dictionary, `data-cs-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `el:lexhint` | LexHint datasets Greek dictionary, `data-el-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `es:lexhint` | LexHint datasets Spanish dictionary, `data-es-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `fr:lexhint` | LexHint datasets French dictionary, `data-fr-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `id:lexhint` | LexHint datasets Indonesian dictionary, `data-id-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `it:lexhint` | LexHint datasets Italian dictionary, `data-it-2026.08.28` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `ku:lexhint` | LexHint datasets Kurdish dictionary, `data-ku-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `ms:lexhint` | LexHint datasets Malay dictionary, `data-ms-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `pl:lexhint` | LexHint datasets Polish dictionary, `data-pl-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
+| `tr:lexhint` | LexHint datasets Turkish dictionary, `data-tr-2026.09.08` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 
 | `ja:lexhint` | LexHint datasets Japanese dictionary, `data-ja-2026.09.03` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
 | `ko:lexhint` | LexHint datasets Korean dictionary, `data-ko-2026.09.03` | LexHint SQLite | CC-BY-SA-4.0 | `lexhint-pronunciation-lowercase-v1` |
@@ -53,7 +63,7 @@ canonical German sources are redistributed here with their upstream notices. Sou
 acquisition is optional and always verifies the configured hash and size before replacing
 a local file.
 
-LexHint records resolve managed local SQLite artifacts from published `buchwandler/lexhint-datasets` dictionary releases. The underlying dictionary text is derived from Wiktionary through Wiktextract and Kaikki. The `g2lex-data` records pin the installed uncompressed SQLite hash and size, while the source artifact and LexHint 0.4.4 package versions are immutable build inputs. The resulting G2Lex assets are generic IPA outputs. The English US and GB assets use one physical English artifact and differ only by LexHint locale derivation; the ja, ko, pt, ru, th, vi, and zh assets are base-language records without regional pronunciation claims.
+LexHint records resolve managed local SQLite artifacts from published `buchwandler/lexhint-datasets` dictionary releases. The underlying dictionary text is derived from Wiktionary through Wiktextract and Kaikki. The 19 configured physical base-language sources are `cs`, `de`, `el`, `en`, `es`, `fr`, `id`, `it`, `ja`, `ko`, `ku`, `ms`, `pl`, `pt`, `ru`, `th`, `tr`, `vi`, and `zh`. The `g2lex-data` records pin the installed uncompressed SQLite hash and size, while the source artifact and LexHint 0.4.4 package versions are immutable build inputs. The resulting G2Lex assets are generic IPA outputs. One English artifact produces the `en-US` and `en-GB` locale-derived assets; every other represented language is a base-language record without regional pronunciation claims.
 
 ## Transform contracts
 

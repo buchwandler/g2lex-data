@@ -113,11 +113,21 @@ def test_transformed_values_round_trip_through_g2lex(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("language", "word", "ipa"),
     (
+        ("cs", "DŮM", "duːm"),
+        ("el", "ΣΠΊΤΙ", "ˈspiti"),
+        ("es", "CASA", "ˈkasa"),
+        ("fr", "MAISON", "mɛzɔ̃"),
+        ("id", "RUMAH", "ˈrumah"),
+        ("it", "CASA", "ˈkaza"),
         ("ja", "家", "kaː"),
         ("ko", "집", "tɕipː"),
+        ("ku", "MAL", "mal"),
+        ("ms", "RUMAH", "rumah"),
+        ("pl", "DOM", "dɔm"),
         ("pt", "AÇÃO", "aˈsɐ̃w"),
         ("ru", "ДОМ", "ˈdom"),
         ("th", "บ้าน", "baːn˥"),
+        ("tr", "EV", "ev"),
         ("vi", "NHÀ", "naː˧˩"),
         ("zh", "家", "tɕja˥"),
     ),
@@ -172,17 +182,32 @@ def test_multilingual_fixture_round_trip(
 @pytest.mark.parametrize(
     ("language", "word"),
     (
+        ("cs", "dům"),
+        ("el", "σπίτι"),
+        ("es", "casa"),
+        ("fr", "maison"),
+        ("id", "kalian"),
+        ("it", "casa"),
         ("ja", "こんにちは"),
         ("ko", "집"),
+        ("ku", "mal"),
+        ("ms", "rumah"),
+        ("pl", "dom"),
         ("pt", "casa"),
         ("ru", "дом"),
         ("th", "การบ้าน"),
+        ("tr", "ev"),
         ("vi", "nhà"),
         ("zh", "家"),
     ),
 )
 def test_installed_multilingual_pronunciation_smoke(language: str, word: str) -> None:
-    source = Lexicon(language, variant="dictionary", dataset_version="2026.09.03")
+    inputs = load_config().asset(f"{language}:lexhint").transform_inputs or {}
+    source = Lexicon(
+        language,
+        variant="dictionary",
+        dataset_version=str(inputs["lexhint_dataset_version"]),
+    )
     groups = source.pronunciations(word, include_neutral=True)
     assert groups
     assert any(

@@ -25,18 +25,39 @@ def test_resolves_pinned_installed_lexhint_artifact() -> None:
     assert resolved.metadata["size"] == 859484160
 
 
-@pytest.mark.parametrize("language", ("ja", "ko", "pt", "ru", "th", "vi", "zh"))
+@pytest.mark.parametrize(
+    "language",
+    (
+        "cs",
+        "el",
+        "es",
+        "fr",
+        "id",
+        "it",
+        "ja",
+        "ko",
+        "ku",
+        "ms",
+        "pl",
+        "pt",
+        "ru",
+        "th",
+        "tr",
+        "vi",
+        "zh",
+    ),
+)
 def test_resolves_multilingual_base_language_artifacts(language: str) -> None:
     record = load_config().asset(f"{language}:lexhint")
+    expected = record.transform_inputs or {}
     resolved = resolve_source(record)
     assert resolved.metadata["provider"] == "lexhint"
     assert resolved.metadata["language"] == language
     assert resolved.metadata["variant"] == "dictionary"
-    assert resolved.metadata["dataset_version"] == "2026.09.03"
-    assert resolved.metadata["schema_version"] == "10"
-    assert resolved.metadata["lexhint_version"] == "0.4.4"
+    assert resolved.metadata["dataset_version"] == expected["lexhint_dataset_version"]
+    assert resolved.metadata["schema_version"] == expected["lexhint_schema_version"]
+    assert resolved.metadata["lexhint_version"] == expected["lexhint_version"]
     assert resolved.metadata["locale"] is None
-
 
 def test_source_hash_mismatch_fails_closed() -> None:
     record = replace(_record(), source_sha256="0" * 64)
