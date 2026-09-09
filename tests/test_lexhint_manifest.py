@@ -7,7 +7,7 @@ from pathlib import Path
 
 from lexhint.builder import build_dictionary
 
-from g2lex_data import build
+from g2lex_data import build, validate
 from g2lex_data.config import load_config
 from g2lex_data.sources import ResolvedSource
 
@@ -63,6 +63,14 @@ def test_lexhint_manifest_records_exact_resolved_identity(tmp_path: Path, monkey
     )
     monkeypatch.setattr(build, "ASSET_DIR", tmp_path / "assets")
     monkeypatch.setattr(build, "MANIFEST_DIR", tmp_path / "manifests")
+    monkeypatch.setattr(validate, "ASSET_DIR", tmp_path / "assets")
+    monkeypatch.setattr(validate, "MANIFEST_DIR", tmp_path / "manifests")
+    monkeypatch.setattr(validate, "resolve_source", lambda record: ResolvedSource(source, metadata))
+    monkeypatch.setattr(
+        validate,
+        "validate_source",
+        lambda record, **kwargs: {"entry_count": 1, "logical_sha256": "logical-sha256", "resolved": metadata},
+    )
 
     manifest = build.build_one(record)
     source_manifest = manifest["source"]
@@ -81,6 +89,7 @@ def test_lexhint_manifest_records_exact_resolved_identity(tmp_path: Path, monkey
     assert source_manifest["resolved"]["sqlite_sha256"] == "sqlite-sha256"
     assert source_manifest["resolved"]["sqlite_size"] == 123
     assert "2026.09.10" in json.dumps(manifest)
+    validate.validate_one(record, verify_transform=False, verify_source=False)
 
 
 def test_portuguese_regional_manifests_record_projection_identity(

@@ -48,7 +48,13 @@ def validate_one(
     source = manifest.get("source")
     if not isinstance(source, dict):
         raise TypeError(f"invalid manifest source object for {record.id}")
-    if source.get("sha256") != record.source_sha256 or source.get("size") != record.source_size:
+    if record.source_provider == "lexhint":
+        expected_source_sha256 = resolved_source.metadata["sqlite_sha256"]
+        expected_source_size = resolved_source.metadata["sqlite_size"]
+    else:
+        expected_source_sha256 = record.source_sha256
+        expected_source_size = record.source_size
+    if source.get("sha256") != expected_source_sha256 or source.get("size") != expected_source_size:
         raise ValueError(f"manifest source pin mismatch for {record.id}")
     if verify_source and source.get("entry_count") != source_info["entry_count"]:
         raise ValueError(f"manifest source entry count mismatch for {record.id}")
