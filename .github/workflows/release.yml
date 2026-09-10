@@ -26,29 +26,15 @@ jobs:
         with:
           python-version: "3.13"
       - run: python -m pip install -e ".[dev]"
-      - run: |
+      - name: Download current English-source LexHint dictionaries
+        run: |
           for lang in ar az bg ca ceb cs de el es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
             lexhint dataset download "$lang" --variant dictionary --source-variant english
           done
-      - run: lexhint dataset download cs --variant dictionary --version 2026.08.28
-      - run: lexhint dataset download de --variant dictionary --version 2026.08.28
-      - run: lexhint dataset download el --variant dictionary --version 2026.09.08
-      - run: lexhint dataset download en --variant dictionary --version 2026.08.28
-      - run: lexhint dataset download es --variant dictionary --version 2026.08.28
-      - run: lexhint dataset download fr --variant dictionary --version 2026.08.28
-      - run: lexhint dataset download id --variant dictionary --version 2026.09.08
-      - run: lexhint dataset download it --variant dictionary --version 2026.08.28
-      - run: lexhint dataset download ja --variant dictionary --version 2026.09.03
-      - run: lexhint dataset download ko --variant dictionary --version 2026.09.03
-      - run: lexhint dataset download ku --variant dictionary --version 2026.09.08
-      - run: lexhint dataset download ms --variant dictionary --version 2026.09.08
-      - run: lexhint dataset download pl --variant dictionary --version 2026.09.08
-      - run: lexhint dataset download pt --variant dictionary --version 2026.09.03
-      - run: lexhint dataset download ru --variant dictionary --version 2026.09.03
-      - run: lexhint dataset download th --variant dictionary --version 2026.09.03
-      - run: lexhint dataset download tr --variant dictionary --version 2026.09.08
-      - run: lexhint dataset download vi --variant dictionary --version 2026.09.03
-      - run: lexhint dataset download zh --variant dictionary --version 2026.09.03
+      - name: Download current native-source LexHint dictionaries
+        run: |
+          for lang in cs de el en es fr id it ja ko ku ms pl pt ru th tr vi zh; do
+            lexhint dataset download "$lang" --variant dictionary --source-variant native
       - run: g2lex-data build
       - run: pytest
       - run: g2lex-data release --data-version "${{ inputs.data_version }}"
