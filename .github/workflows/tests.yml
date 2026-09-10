@@ -29,6 +29,12 @@ jobs:
           for lang in cs de el en es fr id it ja ko ku ms pl pt ru th tr vi zh; do
             lexhint dataset download "$lang" --variant dictionary --source-variant native
           done
+      - name: Download pinned Crane LexHint dependency
+        run: |
+          lexhint dataset download de \
+            --variant dictionary \
+            --source-variant native \
+            --version 2026.08.28
       - run: g2lex-data sources
       - run: ruff check .
       - run: g2lex-data build

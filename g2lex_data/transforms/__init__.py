@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..sources import resolve_lexhint_transform_input
 from . import cstr_de
 from .crane import TRANSFORM_VERSION as CRANE_TRANSFORM_VERSION
 from .crane import serialize_entries, transform_crane
@@ -35,21 +36,30 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
         raise RuntimeError("the Crane transform requires the optional lexhint package") from exc
 
     expected = record.transform_inputs or {}
-    lexicon = Lexicon(str(expected.get("lexhint_language", record.language.split("-", 1)[0])))
-    artifact = Path(lexicon.path)
-    actual_hash = _sha256(artifact)
-    if expected.get("lexhint_artifact_sha256") != actual_hash:
-        raise ValueError(f"LexHint artifact SHA-256 differs from pinned value for {record.id}")
+    resolved = resolve_lexhint_transform_input(record)
+    language = str(expected["lexhint_language"])
+    lexicon = Lexicon.from_path(resolved.path, language=language)
+    resolved_metadata = dict(resolved.metadata)
+    crane_sha256 = _sha256(source)
+    lexhint_metadata = {
+        "lexhint_language": resolved_metadata["language"],
+        "lexhint_source_variant": resolved_metadata["source_variant"],
+        "lexhint_variant": resolved_metadata["variant"],
+        "lexhint_dataset_version": resolved_metadata["dataset_version"],
+        "lexhint_schema_version": resolved_metadata["schema_version"],
+        "lexhint_release_tag": resolved_metadata["release_tag"],
+        "lexhint_release_asset": resolved_metadata["asset"],
+        "lexhint_release_asset_sha256": resolved_metadata["release_asset_sha256"],
+        "lexhint_artifact_sha256": resolved_metadata["sqlite_sha256"],
+        "lexhint_artifact_size": resolved_metadata["sqlite_size"],
+        "lexhint_wiktionary_edition": resolved_metadata["wiktionary_edition"],
+        "lexhint_metadata_language": resolved_metadata["metadata_language"],
+        "lexhint_version": resolved_metadata["lexhint_version"],
+    }
     result = transform_crane(
         source,
         lexhint_lexicon=lexicon,
-        source_metadata={
-            "crane_source_sha256": _sha256(source),
-            "lexhint_language": expected.get("lexhint_language"),
-            "lexhint_artifact": expected.get("lexhint_artifact"),
-            "lexhint_artifact_sha256": actual_hash,
-            "lexhint_version": expected.get("lexhint_version"),
-        },
+        source_metadata={"crane_source_sha256": crane_sha256, **lexhint_metadata},
     )
     intermediate = temp_dir / f"{record.slug}.json"
     intermediate.write_text(serialize_entries(result.entries), encoding="utf-8")
@@ -60,18 +70,20 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
         + "\n",
         encoding="utf-8",
     )
+    transform_inputs = dict(expected)
+    transform_inputs.update(
+        {
+            "crane_sha256": crane_sha256,
+            "lexhint_sha256": resolved_metadata["sqlite_sha256"],
+            **lexhint_metadata,
+        }
+    )
     metadata = {
         "transform": CRANE_TRANSFORM_VERSION,
-        "transform_inputs": {
-            "crane_sha256": _sha256(source),
-            "lexhint_sha256": actual_hash,
-            "lexhint_version": expected.get("lexhint_version"),
-        },
+        "transform_inputs": transform_inputs,
+        "source_metadata": lexhint_metadata,
         "transform_report_sha256": _sha256(report),
-        "lexhint_language": expected.get("lexhint_language"),
-        "lexhint_artifact": expected.get("lexhint_artifact"),
-        "lexhint_artifact_sha256": actual_hash,
-        "lexhint_version": expected.get("lexhint_version"),
+        **lexhint_metadata,
         "key_normalization": "NFC+lower",
         "transform_report": result.report,
     }

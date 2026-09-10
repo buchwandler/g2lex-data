@@ -41,65 +41,97 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def lexhint_download_command(record: AssetConfig) -> str:
+def lexhint_download_command(record: AssetConfig, *, version: str | None = None) -> str:
     language = _required_input(record, "lexhint_language")
     variant = _required_input(record, "lexhint_variant")
     source_variant = _required_input(record, "lexhint_source_variant")
-    return (
+    command = (
         f"lexhint dataset download {language} --variant {variant} --source-variant {source_variant}"
     )
+    if version is not None:
+        command += f" --version {version}"
+    return command
 
 
-def _resolve_lexhint(record: AssetConfig) -> ResolvedSource:
-    inputs = record.transform_inputs or {}
-    language = _required_input(record, "lexhint_language")
-    variant = _required_input(record, "lexhint_variant")
-    source_variant = _required_input(record, "lexhint_source_variant")
+def _resolve_lexhint_dataset(
+    *,
+    record_id: str,
+    language: str,
+    variant: str,
+    source_variant: str,
+    schema_version: str,
+    dataset_version: str | None,
+    locale: str | None,
+    include_neutral: bool,
+    expected_package_version: str | None,
+    expected_sqlite_sha256: str | None = None,
+    install_command: str | None = None,
+) -> ResolvedSource:
     if source_variant not in {"english", "native"}:
-        raise ValueError(f"{record.id} has unsupported LexHint source variant: {source_variant}")
-    expected_schema = _required_input(record, "lexhint_schema_version")
-    locale = inputs.get("lexhint_locale")
-    if locale is not None and (not isinstance(locale, str) or not locale.strip()):
-        raise ValueError(f"{record.id} transform input lexhint_locale must be a non-empty string")
-    normalized_locale = locale.strip() if isinstance(locale, str) else None
-
+        raise ValueError(f"{record_id} has unsupported LexHint source variant: {source_variant}")
     try:
         installed = resolve_installed_dataset(
-            language, variant=variant, source_variant=source_variant, version=None
+            language,
+            variant=variant,
+            source_variant=source_variant,
+            version=dataset_version,
         )
     except DatasetNotFound as exc:
-        raise FileNotFoundError(
-            "LexHint dictionary artifact is not installed:\n"
-            f"language={language}\nsource_variant={source_variant}\nvariant={variant}\n\n"
-            "Install the newest compatible source with:\n"
-            f"{lexhint_download_command(record)}"
-        ) from exc
+        command = install_command or (
+            f"lexhint dataset download {language} --variant {variant} "
+            f"--source-variant {source_variant}"
+        )
+        if dataset_version is not None:
+            command += f" --version {dataset_version}"
+            message = (
+                f"Pinned LexHint transform dependency is not installed for {record_id}.\n"
+                f"Install it with:\n{command}"
+            )
+        else:
+            message = (
+                "LexHint dictionary artifact is not installed:\n"
+                f"language={language}\nsource_variant={source_variant}\nvariant={variant}\n\n"
+                "Install the newest compatible source with:\n"
+                f"{command}"
+            )
+        raise FileNotFoundError(message) from exc
 
     path = Path(installed.path)
     if not path.is_file():
         raise FileNotFoundError(f"LexHint dictionary artifact is not installed: {path}")
-    actual_hash = _sha256_file(path)
-    actual_size = path.stat().st_size
-    if installed.language != language.strip().lower():
-        raise ValueError(f"LexHint language mismatch for {record.id}")
+    normalized_language = language.strip().lower()
+    if installed.language != normalized_language:
+        raise ValueError(f"LexHint language mismatch for {record_id}")
     if installed.source_variant != source_variant or installed.variant != variant:
-        raise ValueError(f"LexHint dataset identity mismatch for {record.id}")
-    if str(installed.schema_version) != expected_schema:
+        raise ValueError(f"LexHint dataset identity mismatch for {record_id}")
+    if str(installed.schema_version) != schema_version:
         raise ValueError(
-            f"LexHint schema mismatch for {record.id}: "
-            f"expected {expected_schema}, got {installed.schema_version}"
+            f"LexHint schema mismatch for {record_id}: "
+            f"expected {schema_version}, got {installed.schema_version}"
         )
-
-    lexicon = Lexicon.from_path(path, language=language, locale=normalized_locale)
-    metadata = dict(lexicon.metadata)
-    expected_package_version = inputs.get("lexhint_version")
+    if dataset_version is not None and str(installed.dataset_version) != dataset_version:
+        raise ValueError(
+            f"LexHint dataset version mismatch for {record_id}: "
+            f"expected {dataset_version}, got {installed.dataset_version}"
+        )
+    if expected_package_version is not None and not isinstance(expected_package_version, str):
+        raise ValueError(f"{record_id} transform input lexhint_version must be a string")
     actual_package_version = _lexhint_version()
     if expected_package_version is not None and expected_package_version != actual_package_version:
         raise ValueError(
-            f"LexHint package version mismatch for {record.id}: "
+            f"LexHint package version mismatch for {record_id}: "
             f"expected {expected_package_version}, got {actual_package_version}"
         )
+    actual_hash = _sha256_file(path)
+    actual_size = path.stat().st_size
+    if expected_sqlite_sha256 is not None and expected_sqlite_sha256 != actual_hash:
+        raise ValueError(
+            f"LexHint artifact SHA-256 differs from pinned value for {record_id}: "
+            f"expected {expected_sqlite_sha256}, got {actual_hash}"
+        )
 
+    lexicon = Lexicon.from_path(path, language=language, locale=locale)
+    metadata = dict(lexicon.metadata)
     resolved_metadata: dict[str, object] = {
         "provider": "lexhint",
         "path": str(path),
@@ -120,10 +152,60 @@ def _resolve_lexhint(record: AssetConfig) -> ResolvedSource:
         "size": actual_size,
         "lexhint_version": actual_package_version,
         "artifact_builder_version": metadata.get("lexhint_version"),
-        "locale": normalized_locale,
-        "include_neutral": inputs.get("include_neutral", False),
+        "locale": locale,
+        "include_neutral": include_neutral,
     }
     return ResolvedSource(path, resolved_metadata)
+
+
+def _resolve_lexhint(record: AssetConfig) -> ResolvedSource:
+    inputs = record.transform_inputs or {}
+    language = _required_input(record, "lexhint_language")
+    variant = _required_input(record, "lexhint_variant")
+    source_variant = _required_input(record, "lexhint_source_variant")
+    expected_schema = _required_input(record, "lexhint_schema_version")
+    locale = inputs.get("lexhint_locale")
+    if locale is not None and (not isinstance(locale, str) or not locale.strip()):
+        raise ValueError(f"{record.id} transform input lexhint_locale must be a non-empty string")
+    normalized_locale = locale.strip() if isinstance(locale, str) else None
+    expected_package_version = inputs.get("lexhint_version")
+    if expected_package_version is not None and not isinstance(expected_package_version, str):
+        raise ValueError(f"{record.id} transform input lexhint_version must be a string")
+    return _resolve_lexhint_dataset(
+        record_id=record.id,
+        language=language,
+        variant=variant,
+        source_variant=source_variant,
+        schema_version=expected_schema,
+        dataset_version=None,
+        locale=normalized_locale,
+        include_neutral=bool(inputs.get("include_neutral", False)),
+        expected_package_version=expected_package_version,
+        install_command=lexhint_download_command(record),
+    )
+
+
+def resolve_lexhint_transform_input(record: AssetConfig) -> ResolvedSource:
+    language = _required_input(record, "lexhint_language")
+    variant = _required_input(record, "lexhint_variant")
+    source_variant = _required_input(record, "lexhint_source_variant")
+    schema_version = _required_input(record, "lexhint_schema_version")
+    dataset_version = _required_input(record, "lexhint_dataset_version")
+    expected_package_version = _required_input(record, "lexhint_version")
+    expected_sqlite_sha256 = _required_input(record, "lexhint_artifact_sha256")
+    return _resolve_lexhint_dataset(
+        record_id=record.id,
+        language=language,
+        variant=variant,
+        source_variant=source_variant,
+        schema_version=schema_version,
+        dataset_version=dataset_version,
+        locale=None,
+        include_neutral=False,
+        expected_package_version=expected_package_version,
+        expected_sqlite_sha256=expected_sqlite_sha256,
+        install_command=lexhint_download_command(record, version=dataset_version),
+    )
 
 
 def resolve_source(record: AssetConfig) -> ResolvedSource:
@@ -136,4 +218,9 @@ def resolve_source(record: AssetConfig) -> ResolvedSource:
     raise ValueError(f"unsupported source provider: {record.source_provider}")
 
 
-__all__ = ["ResolvedSource", "lexhint_download_command", "resolve_source"]
+__all__ = [
+    "ResolvedSource",
+    "lexhint_download_command",
+    "resolve_lexhint_transform_input",
+    "resolve_source",
+]

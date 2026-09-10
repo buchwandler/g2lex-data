@@ -12,7 +12,7 @@ LexHint owns managed dictionary acquisition and runtime lookup. `g2lex-data` sel
 source catalog and selector
           |
           v
-LexHint resolver: explicit source variant, version=None
+LexHint resolver: explicit source variant and version policy
           |
           v
 resolved SQLite identity and runtime metadata
@@ -33,7 +33,7 @@ G2Lex asset + exact manifest
 immutable release + catalog
 ```
 
-Direct LexHint records select `variant=dictionary`, an explicit `source_variant`, and the required schema. They omit a dated dataset version. Resolution chooses the newest installed artifact compatible with that schema. If no compatible artifact is installed, the error contains a versionless command with the selected source variant. Native and English source variants cannot cross-resolve.
+Direct LexHint records select `variant=dictionary`, an explicit `source_variant`, and the required schema with `version=None`. Resolution chooses the newest installed artifact compatible with that schema. If no compatible artifact is installed, the error contains a versionless command with the selected source variant. Native and English source variants cannot cross-resolve. Historical transforms that use LexHint as a secondary input may instead pin an exact dataset version and digest. The Crane migration transform resolves its pinned native German dictionary through this same public resolver and never uses `Lexicon(language)` defaults.
 
 The current catalog exposes 36 English-Wiktionary-derived physical pairs and 19 native-Wiktionary-derived physical pairs. English-source pairs use the logical name `*:lexhint`; native alternatives use `*:lexhint-native`. Locale-qualified G2Lex assets are projections of a base-language LexHint dictionary, not separate physical datasets. English derives `en-US` and `en-GB` projections from one English source artifact. Portuguese derives `pt-BR` and `pt-PT` projections from one Portuguese source artifact, while the locale-neutral `pt:lexhint` asset retains all regional evidence.
 

@@ -7,7 +7,7 @@ from urllib.parse import urlparse, urlunparse
 
 from .common import sha256_file
 from .config import AssetConfig, load_config
-from .sources import lexhint_download_command, resolve_source
+from .sources import lexhint_download_command, resolve_lexhint_transform_input, resolve_source
 
 
 def _download_url(record: AssetConfig) -> str:
@@ -58,6 +58,8 @@ def source_statuses() -> tuple[dict[str, object], ...]:
             )
         else:
             validate_source_file(record)
+            if record.transform == "de-crane-lowercase-lexhint-v1":
+                resolve_lexhint_transform_input(record)
             statuses.append(
                 {
                     "id": record.id,

@@ -68,6 +68,26 @@ def test_production_configuration_contract() -> None:
     assert pt.transform_inputs["include_neutral"] is True
 
 
+def test_crane_lexhint_dependency_is_explicitly_pinned() -> None:
+    record = load_config().asset("de-de:crane")
+    inputs = record.transform_inputs or {}
+    assert inputs["lexhint_language"] == "de"
+    assert inputs["lexhint_variant"] == "dictionary"
+    assert inputs["lexhint_source_variant"] == "native"
+    assert inputs["lexhint_schema_version"] == "10"
+    assert inputs["lexhint_dataset_version"] == "2026.08.28"
+    assert inputs["lexhint_artifact_sha256"] == (
+        "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
+    )
+    assert inputs["lexhint_version"] == "0.4.7"
+    assert "lexhint_dataset_version" not in (
+        load_config().asset("de-de:lexhint").transform_inputs or {}
+    )
+    assert "lexhint_dataset_version" not in (
+        load_config().asset("de-de:lexhint-native").transform_inputs or {}
+    )
+
+
 def test_swedish_nst_configuration_contract() -> None:
     record = load_config().asset("sv-se:nst")
 

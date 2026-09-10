@@ -46,6 +46,14 @@ lexhint dataset download pt --variant dictionary --source-variant native
 
 The resolver records the selected release identity after installation. Source variants are never silently substituted.
 
+The Crane migration transform uses a pinned native German LexHint dictionary as a secondary disambiguation input. This pin is independent from the rolling `de-de:lexhint-native` asset and is installed explicitly in CI:
+
+```bash
+lexhint dataset download de --variant dictionary --source-variant native --version 2026.08.28
+```
+
+The pinned transform input is resolved by its source-qualified identity and digest. It must not be replaced by the newest installed German dictionary.
+
 ## Historical data
 
 Previously published G2Lex and LexHint-derived releases are retained as historical artifacts. Their source revisions, hashes, manifests, and catalogs must not be rewritten when the current source matrix or LexHint runtime changes.

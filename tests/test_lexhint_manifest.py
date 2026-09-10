@@ -69,7 +69,11 @@ def test_lexhint_manifest_records_exact_resolved_identity(tmp_path: Path, monkey
     monkeypatch.setattr(
         validate,
         "validate_source",
-        lambda record, **kwargs: {"entry_count": 1, "logical_sha256": "logical-sha256", "resolved": metadata},
+        lambda record, **kwargs: {
+            "entry_count": 1,
+            "logical_sha256": "logical-sha256",
+            "resolved": metadata,
+        },
     )
 
     manifest = build.build_one(record)

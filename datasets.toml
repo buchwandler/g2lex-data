@@ -100,7 +100,10 @@ source_url = "https://huggingface.co/datasets/crane-local-ai/g2p-lexicons/blob/b
 transform = "de-crane-lowercase-lexhint-v1"
 [asset.transform_inputs]
 lexhint_language = "de"
-lexhint_artifact = "de/dictionary/s10/2026.08.28/lexhint.sqlite3"
+lexhint_variant = "dictionary"
+lexhint_source_variant = "native"
+lexhint_schema_version = "10"
+lexhint_dataset_version = "2026.08.28"
 lexhint_artifact_sha256 = "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
 lexhint_version = "0.4.7"
 key_normalization = "NFC+lower"
