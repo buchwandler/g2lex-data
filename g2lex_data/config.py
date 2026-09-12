@@ -12,7 +12,7 @@ except ModuleNotFoundError:  # pragma: no cover
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "datasets.toml"
 SUPPORTED_KINDS = {"pronunciation", "membership"}
-SUPPORTED_ENCODINGS = {"ipa", "arpabet", "none", "kokoro-v1"}
+SUPPORTED_ENCODINGS = {"ipa", "arpabet", "none", "kokoro-v1", "espeak-ipa3"}
 SUPPORTED_FORMATS = {
     "kokoro-json",
     "json-map",
@@ -26,9 +26,9 @@ SUPPORTED_FORMATS = {
     "pls",
     "gruut-sqlite",
     "lexhint-dictionary",
+    "g2lex",
 }
-SUPPORTED_SOURCE_PROVIDERS = {"file", "lexhint"}
-
+SUPPORTED_SOURCE_PROVIDERS = {"file", "lexhint", "g2lex-assets"}
 
 @dataclass(frozen=True, slots=True)
 class AssetConfig:
@@ -52,6 +52,7 @@ class AssetConfig:
     transform: str | None = None
     transform_inputs: dict[str, object] | None = None
     source_provider: str = "file"
+    source_ids: tuple[str, ...] = ()
 
     @property
     def source_path(self) -> Path:
@@ -80,6 +81,7 @@ class RepositoryConfig:
     release_tag_prefix: str
     assets: tuple[AssetConfig, ...]
 
+    espeak_generation: dict[str, object] | None = None
     def asset(self, identifier: str) -> AssetConfig:
         for record in self.assets:
             if record.id == identifier:
@@ -125,6 +127,155 @@ def _transform_inputs(value: object, label: str) -> dict[str, object] | None:
     return dict(value)
 
 
+_DEFAULT_ESPEAK_VOICES = {
+    "ar": "ar",
+    "az": "az",
+    "bg": "bg",
+    "ca": "ca",
+    "cs": "cs",
+    "de-de": "de",
+    "el": "el",
+    "en-gb": "en",
+    "en-us": "en-us",
+    "es": "es",
+    "fr": "fr",
+    "ga": "ga",
+    "he": "he",
+    "hi": "hi",
+    "hu": "hu",
+    "hy": "hy",
+    "id": "id",
+    "it": "it",
+    "ja": "ja",
+    "ko": "ko",
+    "ku": "ku",
+    "la": "la",
+    "lt": "lt",
+    "lv": "lv",
+    "mr": "mr",
+    "ms": "ms",
+    "nl": "nl",
+    "pl": "pl",
+    "pt": "pt",
+    "pt-br": "pt-br",
+    "pt-pt": "pt",
+    "ro": "ro",
+    "ru": "ru",
+    "sv": "sv",
+    "ta": "ta",
+    "te": "te",
+    "th": "th",
+    "tr": "tr",
+    "uk": "uk",
+    "ur": "ur",
+    "vi": "vi",
+    "zh": "cmn",
+}
+
+
+def _source_ids(value: object, label: str, provider: str) -> tuple[str, ...]:
+    if value is None:
+        if provider == "g2lex-assets":
+            raise ValueError(f"{label}.source_ids is required for g2lex-assets")
+        return ()
+    if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
+        raise TypeError(f"{label}.source_ids must be a non-empty array of strings")
+    result = tuple(item.strip() for item in value)
+    if not result:
+        raise ValueError(f"{label}.source_ids must not be empty")
+    if len(set(result)) != len(result):
+        raise ValueError(f"{label}.source_ids must not contain duplicates")
+    if provider != "g2lex-assets":
+        raise ValueError(f"{label}.source_ids is only supported for g2lex-assets")
+    return result
+
+
+def _generation_config(raw: dict[str, Any]) -> dict[str, object] | None:
+    value = raw.get("espeak_generation")
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise TypeError("espeak_generation must be a TOML table")
+    config = dict(value)
+    if not isinstance(config.get("enabled", False), bool):
+        raise TypeError("espeak_generation.enabled must be a boolean")
+    for key in ("voice_overrides", "unsupported"):
+        entries = config.get(key, {})
+        if not isinstance(entries, dict) or not all(
+            isinstance(name, str) and isinstance(reason, str)
+            for name, reason in entries.items()
+        ):
+            raise TypeError(f"espeak_generation.{key} must be a string table")
+        config[key] = {name.lower(): reason for name, reason in entries.items()}
+    return config
+
+
+def _derived_espeak_assets(
+    assets: list[AssetConfig], generation: dict[str, object] | None,
+ ) -> list[AssetConfig]:
+    if not generation or not generation.get("enabled", False):
+        return assets
+    groups: dict[str, list[AssetConfig]] = {}
+    for record in assets:
+        if record.name in {"lexhint", "lexhint-native"}:
+            locale = record.id.split(":", 1)[0]
+            groups.setdefault(locale, []).append(record)
+    overrides = generation.get("voice_overrides", {})
+    unsupported = generation.get("unsupported", {})
+    assert isinstance(overrides, dict) and isinstance(unsupported, dict)
+    result = list(assets)
+    for locale, parents in sorted(groups.items()):
+        if locale in unsupported:
+            continue
+        source_ids = tuple(sorted(parent.id for parent in parents))
+        voice = overrides.get(locale, _DEFAULT_ESPEAK_VOICES.get(locale))
+        if not isinstance(voice, str) or not voice.strip():
+            continue
+        language = parents[0].language
+        common_inputs: dict[str, object] = {
+            "source_ids": list(source_ids),
+            "voice": voice.strip(),
+            "piper_version": generation.get("piper_version"),
+            "espeak_git_revision": generation.get("espeak_git_revision"),
+            "expected_espeak_version": generation.get("expected_espeak_version"),
+        }
+        for name, mode, encoding, transform in (
+            ("espeak", "ipa", "ipa", "g2lex-espeak-ipa-v1"),
+            ("espeak-piper", "ipa3", "espeak-ipa3", "g2lex-espeak-piper-ipa3-v1"),
+        ):
+            identifier = f"{locale}:{name}"
+            inputs = {**common_inputs, "output_mode": mode}
+            result.append(
+                AssetConfig(
+                    id=identifier,
+                    language=language,
+                    name=name,
+                    display_name=(
+                        f"{language} eSpeak IPA"
+                        if name == "espeak"
+                        else f"{language} eSpeak IPA for Piper raw phonemes"
+                    ),
+                    kind="pronunciation",
+                    source="",
+                    source_format="g2lex",
+                    source_id=identifier,
+                    source_sha256=None,
+                    source_size=None,
+                    phoneme_encoding=encoding,
+                    provider="eSpeak-NG",
+                    revision=str(generation.get("espeak_git_revision", "unknown")),
+                    license_expression="CC-BY-SA-4.0",
+                    license_url="https://creativecommons.org/licenses/by-sa/4.0/",
+                    attribution="LexHint word inventory; pronunciation generated with eSpeak-NG",
+                    transform=transform,
+                    transform_inputs=inputs,
+                    source_provider="g2lex-assets",
+                    source_ids=source_ids,
+                )
+            )
+    return result
+
+
 def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
     raw = tomllib.loads(path.read_text(encoding="utf-8"))
     if raw.get("schema_version") != 1:
@@ -135,7 +286,7 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
     items = raw.get("asset")
     if not isinstance(items, list) or not items:
         raise ValueError("datasets.toml requires at least one [[asset]] record")
-
+    generation = _generation_config(raw)
     assets: list[AssetConfig] = []
     seen: set[str] = set()
     for index, values in enumerate(items):
@@ -168,6 +319,7 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
         source_url = values.get("source_url")
         if source_url is not None and not isinstance(source_url, str):
             raise TypeError(f"{label}.source_url must be a string")
+        source = values.get("source", "") if source_provider == "g2lex-assets" else _text(values, "source", label)
         assets.append(
             AssetConfig(
                 id=identifier,
@@ -175,19 +327,11 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
                 name=_text(values, "name", label),
                 display_name=_text(values, "display_name", label),
                 kind=kind,
-                source=_text(values, "source", label),
+                source=source,
                 source_format=source_format,
                 source_id=_text(values, "source_id", label),
-                source_sha256=(
-                    _sha256(values.get("source_sha256"), f"{label}.source_sha256")
-                    if source_provider == "file"
-                    else _optional_sha256(values.get("source_sha256"), f"{label}.source_sha256")
-                ),
-                source_size=(
-                    _integer(values, "source_size", label)
-                    if source_provider == "file"
-                    else _optional_integer(values, "source_size", label)
-                ),
+                source_sha256=(_sha256(values.get("source_sha256"), f"{label}.source_sha256") if source_provider == "file" else _optional_sha256(values.get("source_sha256"), f"{label}.source_sha256")),
+                source_size=(_integer(values, "source_size", label) if source_provider == "file" else _optional_integer(values, "source_size", label)),
                 phoneme_encoding=encoding,
                 provider=_text(values, "provider", label),
                 revision=_text(values, "revision", label),
@@ -198,9 +342,27 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
                 transform=transform.strip() if isinstance(transform, str) else None,
                 transform_inputs=_transform_inputs(values.get("transform_inputs"), label),
                 source_provider=source_provider,
+                source_ids=_source_ids(values.get("source_ids"), label, source_provider),
             )
         )
-
+    assets = _derived_espeak_assets(assets, generation)
+    records = {record.id: record for record in assets}
+    for record in assets:
+        if record.source_provider != "g2lex-assets":
+            continue
+        if not record.source_ids:
+            raise ValueError(f"{record.id} requires source_ids")
+        locale = record.id.split(":", 1)[0]
+        for source_id in record.source_ids:
+            if source_id == record.id:
+                raise ValueError(f"{record.id} cannot reference itself")
+            source = records.get(source_id)
+            if source is None:
+                raise ValueError(f"{record.id} references unknown source {source_id}")
+            if source.name not in {"lexhint", "lexhint-native"}:
+                raise ValueError(f"{record.id} source {source_id} is not a LexHint asset")
+            if source.id.split(":", 1)[0] != locale:
+                raise ValueError(f"{record.id} sources must share locale prefix")
     return RepositoryConfig(
         schema_version=1,
         contract_version=contract_version,
@@ -209,4 +371,5 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
         runtime_contract=_text(raw, "runtime_contract", "root"),
         release_tag_prefix=_text(raw, "release_tag_prefix", "root"),
         assets=tuple(assets),
+        espeak_generation=generation,
     )

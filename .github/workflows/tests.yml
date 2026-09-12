@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: python -m pip install -e ".[dev]"
+      - run: python -m pip install -e ".[dev,espeak]"
       - name: Download current English-source LexHint dictionaries
         run: |
           for lang in ar az bg ca ceb cs de el es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
@@ -36,6 +36,7 @@ jobs:
             --source-variant native \
             --version 2026.08.28
       - run: g2lex-data sources
+      - run: python scripts/check_espeak_coverage.py --json
       - run: ruff check .
       - run: g2lex-data build
       - run: pytest

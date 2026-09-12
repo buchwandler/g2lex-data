@@ -5,10 +5,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..espeak import EspeakBackend
+from ..inventory import build_word_inventory
 from ..sources import resolve_lexhint_transform_input
 from . import cstr_de
 from .crane import TRANSFORM_VERSION as CRANE_TRANSFORM_VERSION
 from .crane import serialize_entries, transform_crane
+from .espeak import (
+    NORMAL_TRANSFORM_ID,
+    PIPER_TRANSFORM_ID,
+    generate_espeak_pair,
+)
 from .lexhint_pronunciations import TRANSFORM_VERSION as LEXHINT_TRANSFORM_VERSION
 from .lexhint_pronunciations import serialize_entries as serialize_lexhint_entries
 from .lexhint_pronunciations import transform_lexhint
@@ -27,6 +34,65 @@ class TransformResult:
 
 from .kokoro_legacy import TRANSFORM_VERSION as KOKORO_LEGACY_TRANSFORM_VERSION
 from .kokoro_legacy import transform_kokoro_legacy
+
+
+def _espeak(
+    record: Any, source: Path, temp_dir: Path,
+    *,
+    source_metadata: Mapping[str, object] | None = None,
+ ) -> TransformResult:
+    resolved = dict(source_metadata or {})
+    raw_paths = resolved.get("source_paths")
+    if isinstance(raw_paths, dict):
+        source_paths = {source_id: Path(str(path)) for source_id, path in raw_paths.items()}
+    else:
+        source_paths = {record.source_ids[0]: source}
+    inventory = build_word_inventory(
+        source_paths, locale=record.id.split(":", 1)[0]
+    )
+    inputs = record.transform_inputs or {}
+    backend = EspeakBackend(
+        git_revision=str(inputs.get("espeak_git_revision", record.revision)),
+        expected_version=(
+            str(inputs["expected_espeak_version"])
+            if inputs.get("expected_espeak_version") else None
+        ),
+    )
+    try:
+        pair = generate_espeak_pair(
+            inventory=inventory,
+            voice=str(inputs["voice"]),
+            backend=backend,
+        )
+    finally:
+        backend.close()
+    entries = pair.normal_entries if record.name == "espeak" else pair.piper_entries
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    intermediate = temp_dir / f"{record.slug}.json"
+    intermediate.write_text(
+        __import__("json").dumps(entries, ensure_ascii=False, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+    report = {
+        **pair.shared_report,
+        "variant": pair.normal_report if record.name == "espeak" else pair.piper_report,
+    }
+    report_path = temp_dir / f"{record.slug}.transform-report.json"
+    report_path.write_text(
+        __import__("json").dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return TransformResult(
+        intermediate,
+        "json-map",
+        {
+            "transform": record.transform,
+            "transform_inputs": {**inputs, "generator": pair.shared_report["generator"]},
+            "source_metadata": {"word_inventory": report["word_inventory"]},
+            "transform_report_sha256": _sha256(report_path),
+        },
+        report_path,
+    )
 
 
 def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
@@ -177,6 +243,8 @@ REGISTRY: dict[str, Transform] = {
     KOKORO_LEGACY_TRANSFORM_VERSION: transform_kokoro_legacy,
     CRANE_TRANSFORM_VERSION: _crane,
     LEXHINT_TRANSFORM_VERSION: _lexhint,
+    NORMAL_TRANSFORM_ID: _espeak,
+    PIPER_TRANSFORM_ID: _espeak,
     cstr_de.TRANSFORM_ID: _cstr,
 }
 
@@ -196,6 +264,8 @@ def apply(
         raise ValueError(f"unknown transform ID: {record.transform}") from exc
     if record.transform == LEXHINT_TRANSFORM_VERSION:
         return _lexhint(record, source, temp_dir, source_metadata=source_metadata)
+    if record.transform in {NORMAL_TRANSFORM_ID, PIPER_TRANSFORM_ID}:
+        return _espeak(record, source, temp_dir, source_metadata=source_metadata)
     return transform(record, source, temp_dir)
 
 

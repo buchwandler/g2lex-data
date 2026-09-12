@@ -5,6 +5,29 @@ catalog_version = 1
 runtime_contract = "g2lex-data.catalog.v1"
 release_tag_prefix = "data-"
 
+
+[espeak_generation]
+enabled = true
+piper_version = "1.8.0"
+espeak_git_revision = "724808c"
+expected_espeak_version = "1.52.0.1"
+normal_transform = "g2lex-espeak-ipa-v1"
+piper_transform = "g2lex-espeak-piper-ipa3-v1"
+normal_encoding = "ipa"
+piper_encoding = "espeak-ipa3"
+
+[espeak_generation.voice_overrides]
+"en-US" = "en-us"
+"en-GB" = "en"
+"de-DE" = "de"
+"pt-BR" = "pt-br"
+"pt-PT" = "pt"
+"zh" = "cmn"
+
+[espeak_generation.unsupported]
+ceb = "No compatible voice in pinned eSpeak-NG build"
+tl = "No compatible voice in pinned eSpeak-NG build"
+
 # Small self-owned fixtures remain part of the fast test contract.
 [[asset]]
 id = "de-de:demo"
@@ -109,14 +132,14 @@ lexhint_version = "0.4.7"
 key_normalization = "NFC+lower"
 
 [[asset]]
-id = "de-de:espeak"
+id = "de-de:cstr"
 language = "de-DE"
-name = "espeak"
-display_name = "German eSpeak-derived IPA lexicon"
+name = "cstr"
+display_name = "German CSTR pronunciation lexicon"
 kind = "pronunciation"
 source = "sources/de/espeak_de.tsv"
 source_format = "ipa-tsv"
-source_id = "de-de:espeak"
+source_id = "de-de:cstr"
 source_sha256 = "190b62f1ddcf6616b62214173f05b09804635b170f75b9877eceab20b1624dbf"
 source_size = 23829981
 phoneme_encoding = "ipa"

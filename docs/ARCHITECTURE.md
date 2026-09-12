@@ -33,6 +33,23 @@ G2Lex asset + exact manifest
 immutable release + catalog
 ```
 
+## Paired LexHint-backed eSpeak pipeline
+
+For each locale, configured `lexhint` and `lexhint-native` parents are grouped by locale and their keys are merged into one deterministic inventory. The build creates two derived `g2lex-assets` records with the same `source_ids`:
+
+```text
+<locale>:lexhint + <locale>:lexhint-native
+             |
+             v
+       canonical key union
+          /            \
+         v              v
+<locale>:espeak   <locale>:espeak-piper
+  eSpeak --ipa       eSpeak --ipa=3
+```
+
+The normal asset uses `ipa` and `g2lex-espeak-ipa-v1`. The Piper asset uses `espeak-ipa3` and `g2lex-espeak-piper-ipa3-v1`. Both use one initialized eSpeak-NG backend, voice, binary/data fingerprints, ordered keys, and inventory logical SHA-256. The Piper value is preserved exactly, including U+200D, and is suitable for `[[ ... ]]` raw phoneme injection. Unsupported voices are explicit coverage omissions rather than fallbacks.
+
 Direct LexHint records select `variant=dictionary`, an explicit `source_variant`, and the required schema with `version=None`. Resolution chooses the newest installed artifact compatible with that schema. If no compatible artifact is installed, the error contains a versionless command with the selected source variant. Native and English source variants cannot cross-resolve. Historical transforms that use LexHint as a secondary input may instead pin an exact dataset version and digest. The Crane migration transform resolves its pinned native German dictionary through this same public resolver and never uses `Lexicon(language)` defaults.
 
 The current catalog exposes 36 English-Wiktionary-derived physical pairs and 19 native-Wiktionary-derived physical pairs. English-source pairs use the logical name `*:lexhint`; native alternatives use `*:lexhint-native`. Locale-qualified G2Lex assets are projections of a base-language LexHint dictionary, not separate physical datasets. English derives `en-US` and `en-GB` projections from one English source artifact. Portuguese derives `pt-BR` and `pt-PT` projections from one Portuguese source artifact, while the locale-neutral `pt:lexhint` asset retains all regional evidence.
@@ -46,5 +63,7 @@ Every manifest records the stable asset identity, language, kind, encoding, prod
 Build validation checks source identity, transformed-input losslessness, typed and ordered values, deterministic rebuilds, and manifest/file consistency. The catalog exposes immutable asset and manifest URLs, hashes, sizes, logical hashes, release tags, encodings, and provider/license summaries. Releases are versioned independently from Python tooling and existing release directories cannot be overwritten.
 
 ## Compatibility boundary
+
+The historical German CSTR family no longer occupies the generated `de-de:espeak` ID in new releases. It is published as `de-de:cstr`; `de-de:espeak` and `de-de:espeak-piper` now have the consistent generated meanings described above. Existing release assets remain immutable.
 
 The migration compatibility gate compares historical KokoroG2P mappings with consolidated assets by complete key membership and typed values, including tagged selectors and ordered variants. Historical G2Lex releases and source catalogs remain immutable. New LexHint source resolution affects only future builds and records the selected upstream identity in their manifests.

@@ -8,7 +8,8 @@ from pathlib import Path
 from lexhint import Lexicon
 from lexhint.datasets import DatasetNotFound, resolve_installed_dataset
 
-from .config import AssetConfig
+from .common import ASSET_DIR
+from .config import AssetConfig, load_config
 
 
 @dataclass(frozen=True, slots=True)
@@ -208,6 +209,32 @@ def resolve_lexhint_transform_input(record: AssetConfig) -> ResolvedSource:
     )
 
 
+def _resolve_g2lex_assets(record: AssetConfig) -> ResolvedSource:
+    if not record.source_ids:
+        raise ValueError(f"{record.id} requires source_ids")
+    config = load_config()
+    source_paths: dict[str, Path] = {}
+    for source_id in record.source_ids:
+        parent = config.asset(source_id)
+        if parent.source_provider not in {"file", "lexhint"}:
+            raise ValueError(f"{record.id} has unsupported parent provider: {source_id}")
+        path = ASSET_DIR / parent.asset_name
+        if not path.is_file():
+            raise FileNotFoundError(
+                f"parent G2Lex asset is not built for {record.id}: {path}"
+            )
+        source_paths[source_id] = path
+    first_path = source_paths[record.source_ids[0]]
+    return ResolvedSource(
+        first_path,
+        {
+            "provider": "g2lex-assets",
+            "source_ids": list(record.source_ids),
+            "source_paths": {source_id: str(path) for source_id, path in source_paths.items()},
+        },
+    )
+
+
 def resolve_source(record: AssetConfig) -> ResolvedSource:
     if record.source_provider == "file":
         return ResolvedSource(
@@ -215,6 +242,8 @@ def resolve_source(record: AssetConfig) -> ResolvedSource:
         )
     if record.source_provider == "lexhint":
         return _resolve_lexhint(record)
+    if record.source_provider == "g2lex-assets":
+        return _resolve_g2lex_assets(record)
     raise ValueError(f"unsupported source provider: {record.source_provider}")
 
 

@@ -11,13 +11,26 @@ This repository is the authoritative source, build, and release repository for e
 The production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`, `de-de:olaph`, `en-us:cmudict`, `en-us:gold`, `en-gb:gold`, `fr-fr:gold`, `en-us:lexhint`, `en-gb:lexhint`, `de-de:lexhint`, `cs:lexhint`, `el:lexhint`, `es:lexhint`, `fr:lexhint`, `id:lexhint`, `it:lexhint`, `ja:lexhint`, `ko:lexhint`, `ku:lexhint`, `ms:lexhint`, `pl:lexhint`, `pt:lexhint`, `pt-br:lexhint`, `pt-pt:lexhint`, `ru:lexhint`, `th:lexhint`, `tr:lexhint`, `vi:lexhint`, `zh:lexhint`, and `sv-se:nst`. The demo fixtures remain for fast contract tests.
 Pronunciation encodings are `ipa`, `arpabet`, and the reviewed legacy `kokoro-v1`; membership assets use `none`. The old Kokoro tiers are consolidated as `en-us:gold` from `en-us:gold` plus `en-us:silver`, `en-gb:gold` from `en-gb:gold` plus `en-gb:silver`, and `fr-fr:gold` from `fr-fr:gold`. No English silver ID is published.
 
+## Paired eSpeak assets
+
+The LexHint-backed locale inventory generates exactly two pronunciation assets when a pinned eSpeak-NG voice is available:
+
+| Asset | Generator | Encoding | Intended use |
+| --- | --- | --- | --- |
+| `*:espeak` | eSpeak-NG `--ipa` | `ipa` | General eSpeak IPA dictionaries |
+| `*:espeak-piper` | eSpeak-NG `--ipa=3` | `espeak-ipa3` | Piper raw `[[ ... ]]` phonemes |
+
+Both variants use the same eSpeak build, voice, and union of `lexhint` and `lexhint-native` keys. Their manifests include the source inventory, generator fingerprints, and shared logical hash. Unsupported voices are retained in the coverage report and never fall back to English.
+
+The historical German CSTR asset is now `de-de:cstr`. New releases use `de-de:espeak` for generated normal IPA and `de-de:espeak-piper` for Piper IPA3; historical releases retain their original IDs and files.
+
 LexHint currently exposes 55 physical language/source pairs from the source-qualified v2 catalog: 36 English-Wiktionary-derived pairs and 19 native-Wiktionary-derived pairs. g2lex-data publishes 58 direct LexHint assets: `pt:lexhint` is the locale-neutral/all-retained-evidence Portuguese asset, while `pt-br:lexhint` and `pt-pt:lexhint` are Brazilian and European Portuguese projections. All three preferred Portuguese assets use the same English-Wiktionary-derived physical `pt` dictionary; `lexhint-native` remains a separate source-variant choice. English likewise derives the locale-filtered `en-US` and `en-GB` outputs from one physical source. The producer resolves the newest compatible installed dictionary without a dated selector and records exact release and SQLite provenance in each manifest. These remain generic IPA pronunciation lexicons, not Kokoro lexicons.
 Source provenance and redistribution status are documented in [DATA_SOURCES.md](DATA_SOURCES.md).
 
 ## Build and validate
 
 ```bash
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev,espeak]"
 # Preferred English-Wiktionary sources
 for lang in ar az bg ca ceb cs de el en es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
   lexhint dataset download "$lang" --variant dictionary --source-variant english
@@ -29,6 +42,9 @@ for lang in cs de es fr id it ja ko ku ms pl pt ru th tr vi zh; do
 done
 python -m g2lex_data sources
 python -m g2lex_data build
+python scripts/check_espeak_coverage.py
+python scripts/check_espeak_coverage.py --json
+python -m g2lex_data build-espeak --locale en-us
 python -m g2lex_data validate --catalog
 python -m g2lex_data parity --baseline-dir /path/to/kokorog2p
 pytest

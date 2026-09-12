@@ -13,6 +13,8 @@ PRODUCTION_IDS = {
     "de-de:gold",
     "de-de:crane",
     "de-de:espeak",
+    "de-de:cstr",
+    "de-de:espeak-piper",
     "de-de:olaph",
     "sv-se:nst",
     "en-us:cmudict",
@@ -25,13 +27,15 @@ PRODUCTION_IDS = {
 def test_production_configuration_contract() -> None:
     config = load_config()
     assert PRODUCTION_IDS <= {record.id for record in config.assets}
-    assert SUPPORTED_ENCODINGS == {"ipa", "arpabet", "none", "kokoro-v1"}
+    assert SUPPORTED_ENCODINGS == {"ipa", "arpabet", "none", "kokoro-v1", "espeak-ipa3"}
     kokoro_ids = {record.id for record in config.assets if record.phoneme_encoding == "kokoro-v1"}
     assert kokoro_ids == {"en-us:gold", "en-gb:gold", "fr-fr:gold"}
     assert "en-us:silver" not in {record.id for record in config.assets}
     assert "en-gb:silver" not in {record.id for record in config.assets}
     assert config.asset("de-de:crane").transform == "de-crane-lowercase-lexhint-v1"
-    assert config.asset("de-de:espeak").transform == "cstr-de-ipa-v1"
+    assert config.asset("de-de:cstr").transform == "cstr-de-ipa-v1"
+    assert config.asset("de-de:espeak").transform == "g2lex-espeak-ipa-v1"
+    assert config.asset("de-de:espeak-piper").transform == "g2lex-espeak-piper-ipa3-v1"
     for identifier in ("en-us:lexhint", "en-gb:lexhint", "de-de:lexhint"):
         record = config.asset(identifier)
         assert record.source_provider == "lexhint"
@@ -183,4 +187,6 @@ def test_transform_registry_has_stable_ids() -> None:
         "lexhint-pronunciation-lowercase-v1",
         "cstr-de-ipa-v1",
         "kokoro-legacy-collapse-v1",
+        "g2lex-espeak-ipa-v1",
+        "g2lex-espeak-piper-ipa3-v1",
     }

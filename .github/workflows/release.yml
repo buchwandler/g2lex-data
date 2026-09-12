@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: python -m pip install -e ".[dev]"
+      - run: python -m pip install -e ".[dev,espeak]"
       - name: Download current English-source LexHint dictionaries
         run: |
           for lang in ar az bg ca ceb cs de el es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
@@ -42,6 +42,7 @@ jobs:
             --variant dictionary \
             --source-variant native \
             --version 2026.08.28
+      - run: python scripts/check_espeak_coverage.py --json
       - run: g2lex-data build
       - run: pytest
       - run: g2lex-data release --data-version "${{ inputs.data_version }}"
@@ -56,7 +57,7 @@ jobs:
           esac
           gh release create "$tag" dist/"$tag"/* \
             --title "$tag" \
-            --notes "Deterministic G2Lex data release $tag"
+            --notes "Paired LexHint-backed eSpeak assets; de-de:espeak now means generated IPA, historical CSTR data is de-de:cstr; Piper IPA3 is published as de-de:espeak-piper."
       - name: Commit refreshed catalog
         run: |
           git config user.name github-actions[bot]

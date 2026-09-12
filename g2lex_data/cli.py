@@ -23,6 +23,11 @@ def main(argv: list[str] | None = None) -> int:
     p_build = sub.add_parser("build")
     p_build.add_argument("--id", action="append", dest="ids")
 
+
+    p_build_espeak = sub.add_parser("build-espeak")
+    p_build_espeak.add_argument("--locale", required=True)
+    p_coverage = sub.add_parser("espeak-coverage")
+    p_coverage.add_argument("--json", action="store_true")
     p_validate = sub.add_parser("validate")
     p_validate.add_argument("--catalog", action="store_true")
 
@@ -46,6 +51,13 @@ def main(argv: list[str] | None = None) -> int:
         manifests = build(args.ids)
         for manifest in manifests:
             print(f"built {manifest['id']}")
+    elif args.command == "build-espeak":
+        ids = [f"{args.locale}:espeak", f"{args.locale}:espeak-piper"]
+        for manifest in build(ids):
+            print(f"built {manifest['id']}")
+    elif args.command == "espeak-coverage":
+        from scripts.check_espeak_coverage import main as coverage_main
+        return coverage_main(["--json"] if args.json else [])
     elif args.command == "validate":
         validate_all(catalog=args.catalog)
         print("validation OK")

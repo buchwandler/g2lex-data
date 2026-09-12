@@ -87,6 +87,13 @@ def build_catalog(
                     "entry_count": asset["entry_count"],
                     "logical_sha256": asset["logical_sha256"],
                 },
+                "word_inventory_sources": source.get("id"),
+                "generator": (manifest.get("transform") or {}).get("inputs", {}).get("generator"),
+                "variant": (
+                    {"family": "espeak", "mode": "piper-ipa3" if record.name == "espeak-piper" else "ipa"}
+                    if record.source_provider == "g2lex-assets"
+                    else None
+                ),
             }
         )
     catalog: dict[str, object] = {

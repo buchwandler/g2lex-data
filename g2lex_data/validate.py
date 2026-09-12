@@ -8,8 +8,43 @@ import g2lex
 from .build import validate_source
 from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, read_json, sha256_file
 from .config import AssetConfig, load_config
+from .inventory import build_word_inventory
 from .sources import resolve_source
 from .transforms import apply
+
+
+def _validate_derived_pair(
+    record: AssetConfig, asset_path: Path, manifest: dict[str, object],
+ ) -> None:
+    resolved = resolve_source(record)
+    resolved_paths = resolved.metadata.get("source_paths")
+    if not isinstance(resolved_paths, dict):
+        raise TypeError(f"missing parent paths for {record.id}")
+    inventory = build_word_inventory(
+        {source_id: Path(str(path)) for source_id, path in resolved_paths.items()},
+        locale=record.id.split(":", 1)[0],
+    )
+    with g2lex.open(asset_path) as lexicon:
+        keys = tuple(lexicon.keys())
+    if keys != inventory.keys:
+        raise ValueError(f"derived asset key inventory mismatch for {record.id}")
+    provenance = manifest.get("word_inventory")
+    if not isinstance(provenance, dict) or provenance.get("logical_sha256") != inventory.logical_sha256:
+        raise ValueError(f"derived inventory provenance mismatch for {record.id}")
+    pair_name = "espeak-piper" if record.name == "espeak" else "espeak"
+    pair_id = f"{record.id.split(':', 1)[0]}:{pair_name}"
+    pair_record = load_config().asset(pair_id)
+    pair_path = ASSET_DIR / pair_record.asset_name
+    pair_manifest_path = MANIFEST_DIR / pair_record.manifest_name
+    if not pair_path.is_file() or not pair_manifest_path.is_file():
+        raise FileNotFoundError(f"paired asset is missing for {record.id}: {pair_id}")
+    with g2lex.open(pair_path) as pair_lexicon:
+        if tuple(pair_lexicon.keys()) != keys:
+            raise ValueError(f"paired asset key mismatch for {record.id}")
+    pair_manifest = read_json(pair_manifest_path)
+    pair_provenance = pair_manifest.get("word_inventory")
+    if not isinstance(pair_provenance, dict) or pair_provenance.get("logical_sha256") != inventory.logical_sha256:
+        raise ValueError(f"paired inventory provenance mismatch for {record.id}")
 
 
 def validate_one(
@@ -37,14 +72,16 @@ def validate_one(
     if asset.get("entry_count") != g2lex.inspect_file(asset_path).get("entry_count"):
         raise ValueError(f"asset entry count mismatch for {record.id}")
     if verify_transform:
-        with tempfile.TemporaryDirectory(prefix=f".{record.slug}.validate.") as temp_name:
-            result = apply(record, resolved_source.path, Path(temp_name))
-            input_path = result.input_path if result else resolved_source.path
-            input_format = result.input_format if result else record.source_format
-            verification = g2lex.verify_file(input_path, asset_path, input_format=input_format)
-            if not verification.get("lossless"):
-                raise ValueError(f"asset no longer verifies losslessly for {record.id}")
-
+        if record.source_provider == "g2lex-assets":
+            _validate_derived_pair(record, asset_path, manifest)
+        else:
+            with tempfile.TemporaryDirectory(prefix=f".{record.slug}.validate.") as temp_name:
+                result = apply(record, resolved_source.path, Path(temp_name))
+                input_path = result.input_path if result else resolved_source.path
+                input_format = result.input_format if result else record.source_format
+                verification = g2lex.verify_file(input_path, asset_path, input_format=input_format)
+                if not verification.get("lossless"):
+                    raise ValueError(f"asset no longer verifies losslessly for {record.id}")
     source = manifest.get("source")
     if not isinstance(source, dict):
         raise TypeError(f"invalid manifest source object for {record.id}")
@@ -56,7 +93,7 @@ def validate_one(
         expected_source_size = record.source_size
     if source.get("sha256") != expected_source_sha256 or source.get("size") != expected_source_size:
         raise ValueError(f"manifest source pin mismatch for {record.id}")
-    if verify_source and source.get("entry_count") != source_info["entry_count"]:
+    if verify_source and record.source_provider != "g2lex-assets" and source.get("entry_count") != source_info["entry_count"]:
         raise ValueError(f"manifest source entry count mismatch for {record.id}")
 
 
