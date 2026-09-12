@@ -20,7 +20,7 @@ The LexHint-backed locale inventory generates exactly two pronunciation assets w
 | `*:espeak`       | eSpeak-NG `--ipa`   | `ipa`         | General eSpeak IPA dictionaries |
 | `*:espeak-piper` | eSpeak-NG `--ipa=3` | `espeak-ipa3` | Piper raw `[[ ... ]]` phonemes  |
 
-Both variants use the same eSpeak build, voice, and union of `lexhint` and `lexhint-native` keys. Their manifests include the source inventory, generator fingerprints, and shared logical hash. Unsupported voices are retained in the coverage report and never fall back to English.
+Both variants use the same eSpeak build and voice. Their source union is the complete `lexhint` plus `lexhint-native` key set, while each generated pair contains the same deterministic subset for which both pinned modes return non-empty output. Every omitted source key is recorded in `skipped_keys`; generated values are never empty. Manifests include both union and generated inventory hashes, generator fingerprints, and pair provenance. Unsupported voices are retained in the coverage report and never fall back to English.
 
 The historical German CSTR asset is now `de-de:cstr`. New releases use `de-de:espeak` for generated normal IPA and `de-de:espeak-piper` for Piper IPA3; historical releases retain their original IDs and files.
 

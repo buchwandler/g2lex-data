@@ -189,10 +189,7 @@ class EspeakBackend:
             result = self._library.espeak_TextToPhonemes(text_pointer, _ESPEAK_CHARS_UTF8, mode)
             if result:
                 chunks.append(result.decode("utf-8"))
-        value = " ".join(chunks)
-        if not value:
-            raise ValueError(f"eSpeak-NG returned empty output for {text!r}")
-        return value
+        return " ".join(chunks)
 
     def phonemize_ipa(self, text: str) -> str:
         return self._phonemize(text, _ESPEAK_PHONEMES_IPA)

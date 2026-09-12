@@ -18,14 +18,13 @@ class WordInventory:
     logical_sha256: str
 
 
-def _logical_sha256(keys: tuple[str, ...]) -> str:
+def logical_sha256_for_keys(keys: tuple[str, ...]) -> str:
     digest = sha256()
     for key in keys:
         encoded = key.encode("utf-8")
         digest.update(len(encoded).to_bytes(8, "big"))
         digest.update(encoded)
     return digest.hexdigest()
-
 
 def build_word_inventory(
     source_paths: Mapping[str, Path],
@@ -58,8 +57,8 @@ def build_word_inventory(
         source_entry_counts=source_entry_counts,
         keys=ordered_keys,
         duplicate_key_count=duplicate_key_count,
-        logical_sha256=_logical_sha256(ordered_keys),
+        logical_sha256=logical_sha256_for_keys(ordered_keys),
     )
 
 
-__all__ = ["WordInventory", "build_word_inventory"]
+__all__ = ["WordInventory", "build_word_inventory", "logical_sha256_for_keys"]

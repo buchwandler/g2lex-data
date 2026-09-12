@@ -8,7 +8,7 @@ import g2lex
 from .build import validate_source
 from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, read_json, sha256_file
 from .config import AssetConfig, load_config
-from .inventory import build_word_inventory
+from .inventory import build_word_inventory, logical_sha256_for_keys
 from .sources import resolve_source
 from .transforms import apply
 
@@ -28,14 +28,32 @@ def _validate_derived_pair(
     )
     with g2lex.open(asset_path) as lexicon:
         keys = tuple(lexicon.keys())
-    if keys != inventory.keys:
-        raise ValueError(f"derived asset key inventory mismatch for {record.id}")
     provenance = manifest.get("word_inventory")
-    if (
-        not isinstance(provenance, dict)
-        or provenance.get("logical_sha256") != inventory.logical_sha256
+    if not isinstance(provenance, dict):
+        raise TypeError(f"missing word inventory provenance for {record.id}")
+    skipped_value = provenance.get("skipped_keys")
+    if not isinstance(skipped_value, list) or not all(
+        isinstance(key, str) for key in skipped_value
     ):
-        raise ValueError(f"derived inventory provenance mismatch for {record.id}")
+        raise ValueError(f"invalid skipped keys for {record.id}")
+    skipped_keys = tuple(skipped_value)
+    if skipped_keys != tuple(sorted(skipped_keys)) or len(set(skipped_keys)) != len(skipped_keys):
+        raise ValueError(f"skipped keys are not deterministic for {record.id}")
+    if (
+        provenance.get("union_entry_count") != len(inventory.keys)
+        or provenance.get("union_logical_sha256") != inventory.logical_sha256
+    ):
+        raise ValueError(f"derived source union provenance mismatch for {record.id}")
+    if (
+        provenance.get("generated_entry_count") != len(keys)
+        or provenance.get("logical_sha256") != provenance.get("generated_logical_sha256")
+    ):
+        raise ValueError(f"derived generated inventory count mismatch for {record.id}")
+    generated_sha256 = logical_sha256_for_keys(keys)
+    if provenance.get("generated_logical_sha256") != generated_sha256:
+        raise ValueError(f"derived generated inventory hash mismatch for {record.id}")
+    if set(keys).intersection(skipped_keys) or tuple(sorted(set(keys) | set(skipped_keys))) != inventory.keys:
+        raise ValueError(f"derived asset key inventory mismatch for {record.id}")
     pair_name = "espeak-piper" if record.name == "espeak" else "espeak"
     pair_id = f"{record.id.split(':', 1)[0]}:{pair_name}"
     pair_record = load_config().asset(pair_id)
@@ -48,11 +66,18 @@ def _validate_derived_pair(
             raise ValueError(f"paired asset key mismatch for {record.id}")
     pair_manifest = read_json(pair_manifest_path)
     pair_provenance = pair_manifest.get("word_inventory")
-    if (
-        not isinstance(pair_provenance, dict)
-        or pair_provenance.get("logical_sha256") != inventory.logical_sha256
+    if not isinstance(pair_provenance, dict):
+        raise TypeError(f"missing paired word inventory provenance for {record.id}")
+    for field in (
+        "union_logical_sha256",
+        "generated_logical_sha256",
+        "logical_sha256",
+        "skipped_entry_count",
+        "skipped_keys",
     ):
-        raise ValueError(f"paired inventory provenance mismatch for {record.id}")
+        if pair_provenance.get(field) != provenance.get(field):
+            raise ValueError(f"paired inventory provenance mismatch for {record.id}")
+
 
 
 def validate_one(

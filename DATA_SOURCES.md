@@ -60,7 +60,7 @@ The pinned transform input is resolved by its source-qualified identity and dige
 
 ## eSpeak generation and German migration
 
-Generated `:espeak` and `:espeak-piper` assets derive only their word keys from the configured `lexhint` and `lexhint-native` G2Lex parents. Pronunciations come from the pinned eSpeak-NG build. Normal output uses `--ipa`; Piper output uses `--ipa=3`. Both manifests record the eSpeak version, configured git revision, library SHA-256, data-tree SHA-256, voice, parent IDs, duplicate count, and inventory logical SHA-256.
+Generated `:espeak` and `:espeak-piper` assets derive their source union only from the configured `lexhint` and `lexhint-native` G2Lex parents. Pronunciations come from the pinned eSpeak-NG build. Normal output uses `--ipa`; Piper output uses `--ipa=3`. Both modes must return a non-empty value for a key to include it. Keys with empty output in both modes are omitted from both assets and recorded in sorted `skipped_keys`; asymmetric availability is an error. Both manifests record the eSpeak version, configured git revision, library SHA-256, data-tree SHA-256, voice, parent IDs, duplicate count, union and generated inventory hashes, and skipped-key provenance.
 
 The next release intentionally changes the meaning of the German ID: historical CSTR data is retained as `de-de:cstr`, while `de-de:espeak` becomes the generated normal eSpeak dictionary and `de-de:espeak-piper` is its Piper-compatible pair. Published historical releases are immutable and are not rewritten.
 
