@@ -104,6 +104,8 @@ jobs:
           cache: pip
           cache-dependency-path: g2lex-data/pyproject.toml
       - run: python -m pip install -e ".[dev,espeak]"
+      - name: Install pinned eSpeak-NG
+        run: scripts/install_espeak_ng.sh
       - name: Download LexHint sources for shard
         shell: bash
         run: |
