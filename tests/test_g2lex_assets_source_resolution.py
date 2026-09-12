@@ -13,7 +13,9 @@ def test_derived_assets_have_plural_same_locale_sources() -> None:
     assert piper.source_ids == normal.source_ids
 
 
-def test_derived_source_resolution_returns_all_parent_paths() -> None:
+def test_derived_source_resolution_returns_all_parent_paths(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr("g2lex_data.sources.ASSET_DIR", tmp_path)
+    (tmp_path / "g2lex-en-us-lexhint.g2lex").touch()
     resolved = resolve_source(load_config().asset("en-us:espeak"))
     source_paths = resolved.metadata["source_paths"]
     assert set(source_paths) == {"en-us:lexhint"}

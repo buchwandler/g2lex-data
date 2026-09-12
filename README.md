@@ -51,6 +51,25 @@ pytest
 ruff check .
 ```
 
+### Sharded release builds
+
+Build producers can generate the static partition or one or more locale pairs with the final release version:
+
+```bash
+python -m g2lex_data build-espeak \
+  --locale en-us \
+  --locale en-gb \
+  --data-version 2026.09.12
+python -m g2lex_data build-static --data-version 2026.09.12
+python scripts/download_lexhint_sources.py --locale en-us --locale en-gb
+```
+
+The release workflow uploads each producer's `build/assets/` and `build/manifests/` tree as an Actions artifact. The assembler merges those trees and runs no source download, transform, or eSpeak generation. To assemble an already-built tree locally, use `--from-build`; missing or stale files fail rather than being repaired:
+
+```bash
+python -m g2lex_data release --data-version 2026.09.12 --from-build
+```
+
 The parity command accepts either a KokoroG2P checkout root or its
 `kokorog2p/lexicons/data` directory. Normal builds never import KokoroG2P.
 
@@ -65,3 +84,11 @@ and manifest URLs, hashes, sizes, logical hash, and license summary needed by Le
 ```bash
 python -m g2lex_data release --data-version data-2026.09.0
 ```
+
+For a CI artifact assembly, use:
+
+```bash
+python -m g2lex_data release --data-version 2026.09.12 --from-build
+```
+
+`--from-build` verifies every expected asset and manifest, including data-version and hashes. It never regenerates or silently repairs missing outputs.

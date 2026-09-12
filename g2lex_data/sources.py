@@ -42,17 +42,29 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def lexhint_download_command(record: AssetConfig, *, version: str | None = None) -> str:
+def lexhint_download_args(
+    record: AssetConfig, *, version: str | None = None
+) -> tuple[str, ...]:
     language = _required_input(record, "lexhint_language")
     variant = _required_input(record, "lexhint_variant")
     source_variant = _required_input(record, "lexhint_source_variant")
-    command = (
-        f"lexhint dataset download {language} --variant {variant} --source-variant {source_variant}"
+    args = (
+        "lexhint",
+        "dataset",
+        "download",
+        language,
+        "--variant",
+        variant,
+        "--source-variant",
+        source_variant,
     )
-    if version is not None:
-        command += f" --version {version}"
-    return command
+    return args if version is None else (*args, "--version", version)
 
+
+def lexhint_download_command(record: AssetConfig, *, version: str | None = None) -> str:
+    import shlex
+
+    return shlex.join(lexhint_download_args(record, version=version))
 
 def _resolve_lexhint_dataset(
     *,
@@ -247,6 +259,7 @@ def resolve_source(record: AssetConfig) -> ResolvedSource:
 
 __all__ = [
     "ResolvedSource",
+    "lexhint_download_args",
     "lexhint_download_command",
     "resolve_lexhint_transform_input",
     "resolve_source",

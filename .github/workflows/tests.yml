@@ -1,7 +1,9 @@
 name: tests
+
 on: [push, pull_request]
+
 jobs:
-  test:
+  unit:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -11,33 +13,36 @@ jobs:
         with:
           fetch-depth: 0
           path: g2lex-data
-      - uses: actions/checkout@v4
-        with:
-          repository: buchwandler/lexhint-datasets
-          path: lexhint-datasets
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+          cache: pip
+          cache-dependency-path: g2lex-data/pyproject.toml
       - run: python -m pip install -e ".[dev,espeak]"
-      - name: Download current English-source LexHint dictionaries
-        run: |
-          for lang in ar az bg ca ceb cs de el es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
-            lexhint dataset download "$lang" --variant dictionary --source-variant english
-          done
-      - name: Download current native-source LexHint dictionaries
-        run: |
-          for lang in cs de el en es fr id it ja ko ku ms pl pt ru th tr vi zh; do
-            lexhint dataset download "$lang" --variant dictionary --source-variant native
-          done
-      - name: Download pinned Crane LexHint dependency
-        run: |
-          lexhint dataset download de \
-            --variant dictionary \
-            --source-variant native \
-            --version 2026.08.28
-      - run: g2lex-data sources
-      - run: python scripts/check_espeak_coverage.py --json
       - run: ruff check .
-      - run: g2lex-data build
       - run: pytest
-      - run: g2lex-data release --data-version data-2026.09.0-test
+
+  espeak-smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: g2lex-data
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: g2lex-data
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: g2lex-data/pyproject.toml
+      - run: python -m pip install -e ".[dev,espeak]"
+      - name: Download smoke LexHint dictionary
+        run: lexhint dataset download az --variant dictionary --source-variant english
+      - run: g2lex-data build-espeak --locale az --data-version ci-test
+      - run: |
+          g2lex-data validate \
+            --id az:lexhint \
+            --id az:espeak \
+            --id az:espeak-piper

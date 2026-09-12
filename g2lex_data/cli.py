@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from . import __version__
-from .build import build
+from .build import build, build_espeak_pairs, build_static
 from .catalog import build_catalog
 from .download import download_source, source_statuses
 from .parity import BASELINE_PATH, compare_baseline
@@ -22,13 +22,22 @@ def main(argv: list[str] | None = None) -> int:
 
     p_build = sub.add_parser("build")
     p_build.add_argument("--id", action="append", dest="ids")
+    p_build.add_argument("--data-version", default="unreleased")
 
     p_build_espeak = sub.add_parser("build-espeak")
-    p_build_espeak.add_argument("--locale", required=True)
+    p_build_espeak.add_argument("--locale", action="append", required=True, dest="locales")
+    p_build_espeak.add_argument("--data-version", default="unreleased")
+
+    p_build_static = sub.add_parser("build-static")
+    p_build_static.add_argument("--data-version", default="unreleased")
+
     p_coverage = sub.add_parser("espeak-coverage")
     p_coverage.add_argument("--json", action="store_true")
+
     p_validate = sub.add_parser("validate")
     p_validate.add_argument("--catalog", action="store_true")
+    p_validate.add_argument("--id", action="append", dest="ids")
+    p_validate.add_argument("--from-build", action="store_true")
 
     p_catalog = sub.add_parser("catalog")
     p_catalog.add_argument("--data-version", required=True)
@@ -36,6 +45,7 @@ def main(argv: list[str] | None = None) -> int:
 
     p_release = sub.add_parser("release")
     p_release.add_argument("--data-version", required=True)
+    p_release.add_argument("--from-build", action="store_true")
 
     p_download = sub.add_parser("download-source")
     p_download.add_argument("id")
@@ -46,26 +56,34 @@ def main(argv: list[str] | None = None) -> int:
     p_parity.add_argument("--baseline", type=Path)
     p_parity.add_argument("--baseline-dir", type=Path, required=True)
     args = parser.parse_args(argv)
+
     if args.command == "build":
-        manifests = build(args.ids)
+        manifests = build(args.ids, data_version=args.data_version)
         for manifest in manifests:
             print(f"built {manifest['id']}")
     elif args.command == "build-espeak":
-        ids = [f"{args.locale}:espeak", f"{args.locale}:espeak-piper"]
-        for manifest in build(ids):
+        for manifest in build_espeak_pairs(args.locales, data_version=args.data_version):
+            print(f"built {manifest['id']}")
+    elif args.command == "build-static":
+        for manifest in build_static(data_version=args.data_version):
             print(f"built {manifest['id']}")
     elif args.command == "espeak-coverage":
         from scripts.check_espeak_coverage import main as coverage_main
 
         return coverage_main(["--json"] if args.json else [])
     elif args.command == "validate":
-        validate_all(catalog=args.catalog)
+        validate_all(
+            catalog=args.catalog,
+            ids=args.ids,
+            verify_transform=not args.from_build,
+            verify_source=not args.from_build,
+        )
         print("validation OK")
     elif args.command == "catalog":
         catalog = build_catalog(args.data_version, base_url=args.base_url)
         print(f"catalog artifacts: {len(catalog['artifacts'])}")
     elif args.command == "release":
-        print(prepare_release(args.data_version))
+        print(prepare_release(args.data_version, from_build=args.from_build))
     elif args.command == "download-source":
         download_source(args.id)
     elif args.command == "sources":

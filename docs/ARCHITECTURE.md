@@ -33,6 +33,12 @@ G2Lex asset + exact manifest
 immutable release + catalog
 ```
 
+## Producer and assembler boundary
+
+Release production is split into independent jobs. Producer jobs own LexHint source resolution, source validation, transforms, eSpeak generation, packing, and manifests. The static producer builds configured assets that are not claimed by a supported eSpeak locale bundle. Each eSpeak producer builds its locale's parent assets and both derived pair members once, using the final release data version, then uploads `build/assets/` and `build/manifests/` as a workflow artifact.
+
+The assembler downloads and merges those artifacts into the normal local `build/` layout. It validates completeness, hashes, manifest versions, built-parent inventory, paired provenance, catalog data, and one common eSpeak generator identity. `release --from-build` then stages and publishes the immutable release without downloading LexHint data, running transforms, or invoking eSpeak. Missing or stale artifacts are errors, not repair triggers.
+
 ## Paired LexHint-backed eSpeak pipeline
 
 For each locale, configured `lexhint` and `lexhint-native` parents are grouped by locale and their keys are merged into one deterministic inventory. The build creates two derived `g2lex-assets` records with the same `source_ids`:

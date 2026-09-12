@@ -43,6 +43,11 @@ def build_catalog(
         manifest = __import__("json").loads(manifest_path.read_text(encoding="utf-8"))
         if manifest.get("id") != record.id:
             raise ValueError(f"manifest id mismatch for {record.id}")
+        if manifest.get("data_version") != version:
+            raise ValueError(
+                f"manifest data version mismatch for {record.id}: "
+                f"expected {version}, got {manifest.get('data_version')}"
+            )
         if record.id in seen:
             raise ValueError(f"duplicate catalog id: {record.id}")
         seen.add(record.id)

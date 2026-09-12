@@ -7,28 +7,41 @@ from .build import build
 from .catalog import _data_tag, build_catalog
 from .common import ASSET_DIR, CATALOG_PATH, DIST_DIR, MANIFEST_DIR, sha256_file, write_json
 from .config import load_config
-from .validate import validate_all
+from .validate import validate_all, validate_espeak_generator_consistency, validate_prebuilt_set
 
 
-def prepare_release(version: str, *, ids: list[str] | None = None) -> Path:
+def prepare_release(
+    version: str,
+    *,
+    ids: list[str] | None = None,
+    from_build: bool = False,
+) -> Path:
     if not version or "/" in version or version.isspace():
         raise ValueError("version must be a non-empty release identifier")
     config = load_config()
-    records = (
-        config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
-    )
+    records = config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
     tag = _data_tag(config, version)
     release_dir = DIST_DIR / tag
     if release_dir.exists():
         raise FileExistsError(f"immutable release already exists: {release_dir}")
+
+    if from_build:
+        validate_prebuilt_set(ids=ids, data_version=version)
+        validate_espeak_generator_consistency(records)
+    else:
+        build(ids, data_version=version)
+
+    build_catalog(version, ids=ids)
+    validate_all(
+        catalog=True,
+        ids=ids,
+        verify_transform=not from_build,
+        verify_source=not from_build,
+    )
+
     staging_dir = DIST_DIR / f".{tag}.staging"
     shutil.rmtree(staging_dir, ignore_errors=True)
     staging_dir.mkdir(parents=True, exist_ok=False)
-
-    build(ids, data_version=version)
-    build_catalog(version, ids=ids)
-    validate_all(catalog=True, ids=ids, verify_transform=False, verify_source=False)
-
     files: list[dict[str, object]] = []
     for record in records:
         for source in (ASSET_DIR / record.asset_name, MANIFEST_DIR / record.manifest_name):

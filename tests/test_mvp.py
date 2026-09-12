@@ -58,7 +58,7 @@ def test_membership_asset_round_trips() -> None:
 def test_catalog_supports_production_and_local_release_roots(tmp_path: Path) -> None:
     demo_ids = ["de-de:demo", "en-us:demo-cmu", "ja-jp:demo-words"]
     for identifier in demo_ids:
-        build_one(load_config().asset(identifier))
+        build_one(load_config().asset(identifier), data_version="0.1.0")
     catalog = build_catalog("0.1.0", ids=demo_ids)
     assert catalog["release_tag"] == "data-0.1.0"
     for artifact in catalog["artifacts"]:
