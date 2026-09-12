@@ -30,6 +30,7 @@ SUPPORTED_FORMATS = {
 }
 SUPPORTED_SOURCE_PROVIDERS = {"file", "lexhint", "g2lex-assets"}
 
+
 @dataclass(frozen=True, slots=True)
 class AssetConfig:
     id: str
@@ -82,6 +83,7 @@ class RepositoryConfig:
     assets: tuple[AssetConfig, ...]
 
     espeak_generation: dict[str, object] | None = None
+
     def asset(self, identifier: str) -> AssetConfig:
         for record in self.assets:
             if record.id == identifier:
@@ -178,7 +180,9 @@ def _source_ids(value: object, label: str, provider: str) -> tuple[str, ...]:
         if provider == "g2lex-assets":
             raise ValueError(f"{label}.source_ids is required for g2lex-assets")
         return ()
-    if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
+    if not isinstance(value, list) or not all(
+        isinstance(item, str) and item.strip() for item in value
+    ):
         raise TypeError(f"{label}.source_ids must be a non-empty array of strings")
     result = tuple(item.strip() for item in value)
     if not result:
@@ -202,8 +206,7 @@ def _generation_config(raw: dict[str, Any]) -> dict[str, object] | None:
     for key in ("voice_overrides", "unsupported"):
         entries = config.get(key, {})
         if not isinstance(entries, dict) or not all(
-            isinstance(name, str) and isinstance(reason, str)
-            for name, reason in entries.items()
+            isinstance(name, str) and isinstance(reason, str) for name, reason in entries.items()
         ):
             raise TypeError(f"espeak_generation.{key} must be a string table")
         config[key] = {name.lower(): reason for name, reason in entries.items()}
@@ -211,8 +214,9 @@ def _generation_config(raw: dict[str, Any]) -> dict[str, object] | None:
 
 
 def _derived_espeak_assets(
-    assets: list[AssetConfig], generation: dict[str, object] | None,
- ) -> list[AssetConfig]:
+    assets: list[AssetConfig],
+    generation: dict[str, object] | None,
+) -> list[AssetConfig]:
     if not generation or not generation.get("enabled", False):
         return assets
     groups: dict[str, list[AssetConfig]] = {}
@@ -319,7 +323,11 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
         source_url = values.get("source_url")
         if source_url is not None and not isinstance(source_url, str):
             raise TypeError(f"{label}.source_url must be a string")
-        source = values.get("source", "") if source_provider == "g2lex-assets" else _text(values, "source", label)
+        source = (
+            values.get("source", "")
+            if source_provider == "g2lex-assets"
+            else _text(values, "source", label)
+        )
         assets.append(
             AssetConfig(
                 id=identifier,
@@ -330,8 +338,16 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
                 source=source,
                 source_format=source_format,
                 source_id=_text(values, "source_id", label),
-                source_sha256=(_sha256(values.get("source_sha256"), f"{label}.source_sha256") if source_provider == "file" else _optional_sha256(values.get("source_sha256"), f"{label}.source_sha256")),
-                source_size=(_integer(values, "source_size", label) if source_provider == "file" else _optional_integer(values, "source_size", label)),
+                source_sha256=(
+                    _sha256(values.get("source_sha256"), f"{label}.source_sha256")
+                    if source_provider == "file"
+                    else _optional_sha256(values.get("source_sha256"), f"{label}.source_sha256")
+                ),
+                source_size=(
+                    _integer(values, "source_size", label)
+                    if source_provider == "file"
+                    else _optional_integer(values, "source_size", label)
+                ),
                 phoneme_encoding=encoding,
                 provider=_text(values, "provider", label),
                 revision=_text(values, "revision", label),

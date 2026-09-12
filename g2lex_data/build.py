@@ -44,9 +44,7 @@ def validate_source(
         if not isinstance(resolved_paths, dict):
             raise ValueError(f"missing parent paths for {record.id}")
         source_paths = {source_id: Path(str(path)) for source_id, path in resolved_paths.items()}
-        inventory = build_word_inventory(
-            source_paths, locale=record.id.split(":", 1)[0]
-        )
+        inventory = build_word_inventory(source_paths, locale=record.id.split(":", 1)[0])
         return {
             "entry_count": len(inventory.keys),
             "logical_sha256": inventory.logical_sha256,
@@ -111,7 +109,8 @@ def _build_derived(record: AssetConfig, *, data_version: str) -> dict[str, objec
         git_revision=str(inputs.get("espeak_git_revision", record.revision)),
         expected_version=(
             str(inputs["expected_espeak_version"])
-            if inputs.get("expected_espeak_version") else None
+            if inputs.get("expected_espeak_version")
+            else None
         ),
     )
     try:

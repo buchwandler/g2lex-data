@@ -70,7 +70,9 @@ def _library_path() -> Path:
             continue
         if resolved.is_file():
             return resolved
-    raise RuntimeError("eSpeak-NG shared library was not found; install the espeak optional dependency")
+    raise RuntimeError(
+        "eSpeak-NG shared library was not found; install the espeak optional dependency"
+    )
 
 
 def _data_parent(library_path: Path) -> Path | None:
@@ -102,7 +104,12 @@ class EspeakBackend:
         if initialize_path and initialize_path.name == "espeak-ng-data":
             initialize_path = initialize_path.parent
         self._library = ctypes.CDLL(str(self._library_path))
-        self._library.espeak_Initialize.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+        self._library.espeak_Initialize.argtypes = [
+            ctypes.c_int,
+            ctypes.c_int,
+            ctypes.c_char_p,
+            ctypes.c_int,
+        ]
         self._library.espeak_Initialize.restype = ctypes.c_int
         parent = str(initialize_path).encode("utf-8") if initialize_path else None
         if self._library.espeak_Initialize(_AUDIO_OUTPUT_SYNCHRONOUS, 0, parent, 0) <= 0:
@@ -135,7 +142,9 @@ class EspeakBackend:
         self._library.espeak_SetVoiceByName.argtypes = [ctypes.c_char_p]
         self._library.espeak_SetVoiceByName.restype = ctypes.c_int
         self._library.espeak_TextToPhonemes.argtypes = [
-            ctypes.POINTER(ctypes.c_char_p), ctypes.c_int, ctypes.c_int
+            ctypes.POINTER(ctypes.c_char_p),
+            ctypes.c_int,
+            ctypes.c_int,
         ]
         self._library.espeak_TextToPhonemes.restype = ctypes.c_char_p
         self._library.espeak_Terminate.argtypes = []
@@ -177,9 +186,7 @@ class EspeakBackend:
         text_pointer = ctypes.pointer(ctypes.c_char_p(text.encode("utf-8")))
         chunks: list[str] = []
         while text_pointer.contents.value is not None:
-            result = self._library.espeak_TextToPhonemes(
-                text_pointer, _ESPEAK_CHARS_UTF8, mode
-            )
+            result = self._library.espeak_TextToPhonemes(text_pointer, _ESPEAK_CHARS_UTF8, mode)
             if result:
                 chunks.append(result.decode("utf-8"))
         value = " ".join(chunks)

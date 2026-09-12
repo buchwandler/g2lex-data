@@ -51,7 +51,9 @@ def main(argv: list[str] | None = None) -> int:
         (piper_path, pair.piper_entries, "espeak-piper", "espeak-ipa3"),
     ):
         source = args.output_dir / f".{path.stem}.json"
-        source.write_text(json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+        source.write_text(
+            json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"
+        )
         g2lex.pack_file(
             source,
             path,
@@ -80,7 +82,9 @@ def main(argv: list[str] | None = None) -> int:
         "piper": {**pair.piper_report, "piper_version": args.piper_version},
         "outputs": [normal_path.name, piper_path.name],
     }
-    report_path.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    report_path.write_text(
+        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
     print(normal_path)
     print(piper_path)
     print(report_path)

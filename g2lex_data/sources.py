@@ -220,9 +220,7 @@ def _resolve_g2lex_assets(record: AssetConfig) -> ResolvedSource:
             raise ValueError(f"{record.id} has unsupported parent provider: {source_id}")
         path = ASSET_DIR / parent.asset_name
         if not path.is_file():
-            raise FileNotFoundError(
-                f"parent G2Lex asset is not built for {record.id}: {path}"
-            )
+            raise FileNotFoundError(f"parent G2Lex asset is not built for {record.id}: {path}")
         source_paths[source_id] = path
     first_path = source_paths[record.source_ids[0]]
     return ResolvedSource(

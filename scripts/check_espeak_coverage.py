@@ -25,7 +25,8 @@ def coverage() -> dict[str, object]:
             git_revision=str(generation.get("espeak_git_revision", "unknown")),
             expected_version=(
                 str(generation["expected_espeak_version"])
-                if generation.get("expected_espeak_version") else None
+                if generation.get("expected_espeak_version")
+                else None
             ),
         )
     except (OSError, RuntimeError) as exc:
@@ -36,7 +37,16 @@ def coverage() -> dict[str, object]:
             normal_id = f"{locale}:espeak"
             piper_id = f"{locale}:espeak-piper"
             if locale in unsupported:
-                rows.append({"locale": locale, "sources": sorted(source_ids), "voice": None, "normal": False, "piper": False, "reason": unsupported[locale]})
+                rows.append(
+                    {
+                        "locale": locale,
+                        "sources": sorted(source_ids),
+                        "voice": None,
+                        "normal": False,
+                        "piper": False,
+                        "reason": unsupported[locale],
+                    }
+                )
                 continue
             normal = next((record for record in config.assets if record.id == normal_id), None)
             piper = next((record for record in config.assets if record.id == piper_id), None)
@@ -51,7 +61,16 @@ def coverage() -> dict[str, object]:
                     available = True
                 except ValueError as exc:
                     reason = str(exc)
-            rows.append({"locale": locale, "sources": sorted(source_ids), "voice": voice, "normal": bool(normal and available), "piper": bool(piper and available), "reason": reason})
+            rows.append(
+                {
+                    "locale": locale,
+                    "sources": sorted(source_ids),
+                    "voice": voice,
+                    "normal": bool(normal and available),
+                    "piper": bool(piper and available),
+                    "reason": reason,
+                }
+            )
     finally:
         if backend is not None:
             backend.close()
@@ -69,7 +88,9 @@ def main(argv: list[str] | None = None) -> int:
     print("locale  sources  voice  normal  piper")
     for row in result["locales"]:
         sources = ",".join(row["sources"])
-        print(f"{row['locale']}  {sources}  {row['voice'] or '-'}  {'yes' if row['normal'] else 'no'}  {'yes' if row['piper'] else 'no'}")
+        print(
+            f"{row['locale']}  {sources}  {row['voice'] or '-'}  {'yes' if row['normal'] else 'no'}  {'yes' if row['piper'] else 'no'}"
+        )
         if row["reason"]:
             print(f"  reason: {row['reason']}")
     return 0

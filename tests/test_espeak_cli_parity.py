@@ -18,11 +18,15 @@ def test_backend_matches_espeak_cli(word: str) -> None:
         pytest.skip(str(exc))
     with backend:
         backend.set_voice("en-us")
-        normal = subprocess.check_output(
-            ["espeak-ng", "-v", "en-us", "--ipa", "-q", word]
-        ).decode("utf-8").removesuffix("\n")
-        piper = subprocess.check_output(
-            ["espeak-ng", "-v", "en-us", "--ipa=3", "-q", word]
-        ).decode("utf-8").removesuffix("\n")
+        normal = (
+            subprocess.check_output(["espeak-ng", "-v", "en-us", "--ipa", "-q", word])
+            .decode("utf-8")
+            .removesuffix("\n")
+        )
+        piper = (
+            subprocess.check_output(["espeak-ng", "-v", "en-us", "--ipa=3", "-q", word])
+            .decode("utf-8")
+            .removesuffix("\n")
+        )
         assert backend.phonemize_ipa(word) == normal
         assert backend.phonemize_ipa3(word) == piper

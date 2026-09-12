@@ -37,25 +37,26 @@ from .kokoro_legacy import transform_kokoro_legacy
 
 
 def _espeak(
-    record: Any, source: Path, temp_dir: Path,
+    record: Any,
+    source: Path,
+    temp_dir: Path,
     *,
     source_metadata: Mapping[str, object] | None = None,
- ) -> TransformResult:
+) -> TransformResult:
     resolved = dict(source_metadata or {})
     raw_paths = resolved.get("source_paths")
     if isinstance(raw_paths, dict):
         source_paths = {source_id: Path(str(path)) for source_id, path in raw_paths.items()}
     else:
         source_paths = {record.source_ids[0]: source}
-    inventory = build_word_inventory(
-        source_paths, locale=record.id.split(":", 1)[0]
-    )
+    inventory = build_word_inventory(source_paths, locale=record.id.split(":", 1)[0])
     inputs = record.transform_inputs or {}
     backend = EspeakBackend(
         git_revision=str(inputs.get("espeak_git_revision", record.revision)),
         expected_version=(
             str(inputs["expected_espeak_version"])
-            if inputs.get("expected_espeak_version") else None
+            if inputs.get("expected_espeak_version")
+            else None
         ),
     )
     try:

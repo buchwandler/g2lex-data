@@ -23,7 +23,6 @@ def main(argv: list[str] | None = None) -> int:
     p_build = sub.add_parser("build")
     p_build.add_argument("--id", action="append", dest="ids")
 
-
     p_build_espeak = sub.add_parser("build-espeak")
     p_build_espeak.add_argument("--locale", required=True)
     p_coverage = sub.add_parser("espeak-coverage")
@@ -57,6 +56,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"built {manifest['id']}")
     elif args.command == "espeak-coverage":
         from scripts.check_espeak_coverage import main as coverage_main
+
         return coverage_main(["--json"] if args.json else [])
     elif args.command == "validate":
         validate_all(catalog=args.catalog)

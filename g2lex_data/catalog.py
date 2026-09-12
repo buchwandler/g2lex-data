@@ -90,7 +90,10 @@ def build_catalog(
                 "word_inventory_sources": source.get("id"),
                 "generator": (manifest.get("transform") or {}).get("inputs", {}).get("generator"),
                 "variant": (
-                    {"family": "espeak", "mode": "piper-ipa3" if record.name == "espeak-piper" else "ipa"}
+                    {
+                        "family": "espeak",
+                        "mode": "piper-ipa3" if record.name == "espeak-piper" else "ipa",
+                    }
                     if record.source_provider == "g2lex-assets"
                     else None
                 ),

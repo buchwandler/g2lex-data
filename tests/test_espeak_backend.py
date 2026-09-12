@@ -6,7 +6,9 @@ import pytest
 
 from g2lex_data.espeak import EspeakBackend
 
-pytestmark = pytest.mark.skipif(shutil.which("espeak-ng") is None, reason="eSpeak-NG is unavailable")
+pytestmark = pytest.mark.skipif(
+    shutil.which("espeak-ng") is None, reason="eSpeak-NG is unavailable"
+)
 
 
 def test_backend_identity_voices_and_both_modes() -> None:

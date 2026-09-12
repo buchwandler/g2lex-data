@@ -15,10 +15,10 @@ Pronunciation encodings are `ipa`, `arpabet`, and the reviewed legacy `kokoro-v1
 
 The LexHint-backed locale inventory generates exactly two pronunciation assets when a pinned eSpeak-NG voice is available:
 
-| Asset | Generator | Encoding | Intended use |
-| --- | --- | --- | --- |
-| `*:espeak` | eSpeak-NG `--ipa` | `ipa` | General eSpeak IPA dictionaries |
-| `*:espeak-piper` | eSpeak-NG `--ipa=3` | `espeak-ipa3` | Piper raw `[[ ... ]]` phonemes |
+| Asset            | Generator           | Encoding      | Intended use                    |
+| ---------------- | ------------------- | ------------- | ------------------------------- |
+| `*:espeak`       | eSpeak-NG `--ipa`   | `ipa`         | General eSpeak IPA dictionaries |
+| `*:espeak-piper` | eSpeak-NG `--ipa=3` | `espeak-ipa3` | Piper raw `[[ ... ]]` phonemes  |
 
 Both variants use the same eSpeak build, voice, and union of `lexhint` and `lexhint-native` keys. Their manifests include the source inventory, generator fingerprints, and shared logical hash. Unsupported voices are retained in the coverage report and never fall back to English.
 

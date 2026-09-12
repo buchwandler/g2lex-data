@@ -12,6 +12,7 @@ def test_derived_assets_have_plural_same_locale_sources() -> None:
     assert normal.source_ids == ("de-de:lexhint", "de-de:lexhint-native")
     assert piper.source_ids == normal.source_ids
 
+
 def test_derived_source_resolution_returns_all_parent_paths() -> None:
     resolved = resolve_source(load_config().asset("en-us:espeak"))
     source_paths = resolved.metadata["source_paths"]
