@@ -83,7 +83,7 @@ def test_crane_lexhint_dependency_is_explicitly_pinned() -> None:
     assert inputs["lexhint_artifact_sha256"] == (
         "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
     )
-    assert inputs["lexhint_version"] == "0.4.7"
+    assert inputs["lexhint_version"] == "0.4.8"
     assert "lexhint_dataset_version" not in (
         load_config().asset("de-de:lexhint").transform_inputs or {}
     )
@@ -142,7 +142,7 @@ def test_lexhint_configuration_contract(
     assert inputs["lexhint_schema_version"] == "10"
     assert inputs["include_neutral"] is True
     assert inputs["key_normalization"] == "nfc-lower"
-    assert inputs["lexhint_version"] == "0.4.7"
+    assert inputs["lexhint_version"] == "0.4.8"
     assert "lexhint_dataset_version" not in inputs
 
 

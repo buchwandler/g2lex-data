@@ -159,7 +159,9 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
 
     resolver_index_payload: dict[str, object] | None = None
     resolver_index_path: Path | None = None
-    with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
+    with tempfile.TemporaryDirectory(
+        prefix=f".{record.slug}.transform.", dir=ASSET_DIR
+    ) as temp_name:
         transform_result = apply(
             record, resolved_source.path, Path(temp_name), source_metadata=resolved_source.metadata
         )

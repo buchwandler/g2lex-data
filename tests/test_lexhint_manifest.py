@@ -49,7 +49,7 @@ def test_lexhint_manifest_records_exact_resolved_identity(tmp_path: Path, monkey
         "metadata_language": "en",
         "sqlite_sha256": "sqlite-sha256",
         "sqlite_size": 123,
-        "lexhint_version": "0.4.7",
+        "lexhint_version": "0.4.8",
         "locale": None,
     }
     monkeypatch.setattr(build, "resolve_source", lambda record: ResolvedSource(source, metadata))
@@ -151,7 +151,7 @@ def test_portuguese_regional_manifests_record_projection_identity(
         "metadata_language": "pt",
         "sqlite_sha256": source_sha256,
         "sqlite_size": artifact.stat().st_size,
-        "lexhint_version": "0.4.7",
+        "lexhint_version": "0.4.8",
         "include_neutral": True,
     }
 
@@ -241,7 +241,7 @@ def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monk
         "metadata_language": "en",
         "sqlite_sha256": source_hash,
         "sqlite_size": artifact.stat().st_size,
-        "lexhint_version": "0.4.7",
+        "lexhint_version": "0.4.8",
         "locale": "en_US",
     }
     resolved = ResolvedSource(artifact, metadata)

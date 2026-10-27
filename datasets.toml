@@ -128,7 +128,7 @@ lexhint_source_variant = "native"
 lexhint_schema_version = "10"
 lexhint_dataset_version = "2026.08.28"
 lexhint_artifact_sha256 = "ef8c6d0402409353abd81bd1ee1d2ef620ae002a0ecbbd8a3a1cb0bc1364cfba"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 key_normalization = "NFC+lower"
 
 [[asset]]
@@ -224,7 +224,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "en_US"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "en-gb:lexhint"
@@ -252,7 +252,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "en_GB"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ar:lexhint"
@@ -279,7 +279,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "az:lexhint"
@@ -306,7 +306,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "bg:lexhint"
@@ -333,7 +333,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ca:lexhint"
@@ -360,7 +360,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ceb:lexhint"
@@ -387,7 +387,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "cs:lexhint"
@@ -414,7 +414,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "de-de:lexhint"
@@ -441,7 +441,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "el:lexhint"
@@ -468,7 +468,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "es:lexhint"
@@ -495,7 +495,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "fr:lexhint"
@@ -522,7 +522,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ga:lexhint"
@@ -549,7 +549,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "he:lexhint"
@@ -576,7 +576,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "hi:lexhint"
@@ -603,7 +603,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "hu:lexhint"
@@ -630,7 +630,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "hy:lexhint"
@@ -657,7 +657,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "it:lexhint"
@@ -684,7 +684,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ja:lexhint"
@@ -711,7 +711,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ko:lexhint"
@@ -738,7 +738,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "la:lexhint"
@@ -765,7 +765,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "lt:lexhint"
@@ -792,7 +792,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "lv:lexhint"
@@ -819,7 +819,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "mr:lexhint"
@@ -846,7 +846,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "nl:lexhint"
@@ -873,7 +873,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "pl:lexhint"
@@ -900,7 +900,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "pt:lexhint"
@@ -927,7 +927,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "pt-br:lexhint"
@@ -955,7 +955,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "pt_BR"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "pt-pt:lexhint"
@@ -983,7 +983,7 @@ lexhint_schema_version = "10"
 lexhint_locale = "pt_PT"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ro:lexhint"
@@ -1010,7 +1010,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ru:lexhint"
@@ -1037,7 +1037,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "sv:lexhint"
@@ -1064,7 +1064,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ta:lexhint"
@@ -1091,7 +1091,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "te:lexhint"
@@ -1118,7 +1118,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "tl:lexhint"
@@ -1145,7 +1145,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "tr:lexhint"
@@ -1172,7 +1172,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "uk:lexhint"
@@ -1199,7 +1199,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ur:lexhint"
@@ -1226,7 +1226,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "vi:lexhint"
@@ -1253,7 +1253,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "zh:lexhint"
@@ -1280,7 +1280,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "cs:lexhint-native"
@@ -1307,7 +1307,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "de-de:lexhint-native"
@@ -1334,7 +1334,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "el:lexhint-native"
@@ -1361,7 +1361,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "es:lexhint-native"
@@ -1388,7 +1388,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "fr:lexhint-native"
@@ -1415,7 +1415,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "id:lexhint-native"
@@ -1442,7 +1442,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "it:lexhint-native"
@@ -1469,7 +1469,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ja:lexhint-native"
@@ -1496,7 +1496,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ko:lexhint-native"
@@ -1523,7 +1523,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ku:lexhint-native"
@@ -1550,7 +1550,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ms:lexhint-native"
@@ -1577,7 +1577,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "pl:lexhint-native"
@@ -1604,7 +1604,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "pt:lexhint-native"
@@ -1631,7 +1631,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "ru:lexhint-native"
@@ -1658,7 +1658,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "th:lexhint-native"
@@ -1685,7 +1685,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "tr:lexhint-native"
@@ -1712,7 +1712,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "vi:lexhint-native"
@@ -1739,7 +1739,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "zh:lexhint-native"
@@ -1766,7 +1766,7 @@ lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
 key_normalization = "nfc-lower"
-lexhint_version = "0.4.7"
+lexhint_version = "0.4.8"
 
 [[asset]]
 id = "sv-se:nst"
