@@ -527,7 +527,7 @@ def _write_espeak_variant(
                 ),
             },
         )
-        verification = g2lex.verify_file(input_path, asset_path, input_format="json-map")
+        verification = g2lex.verify_file(input_path, staged_asset_path, input_format="json-map")
         if not verification.get("lossless"):
             raise ValueError(f"lossless verification failed for {record.id}: {verification}")
         inspected = g2lex.inspect_file(staged_asset_path)
