@@ -83,8 +83,12 @@ def test_generator_identity_rejects_mixed_shards(monkeypatch, field: str) -> Non
     from g2lex_data import validate as validate_module
 
     records = [
-        SimpleNamespace(id="aa:espeak", source_provider="g2lex-assets", manifest_name="aa.manifest.json"),
-        SimpleNamespace(id="bb:espeak", source_provider="g2lex-assets", manifest_name="bb.manifest.json"),
+        SimpleNamespace(
+            id="aa:espeak", source_provider="g2lex-assets", manifest_name="aa.manifest.json"
+        ),
+        SimpleNamespace(
+            id="bb:espeak", source_provider="g2lex-assets", manifest_name="bb.manifest.json"
+        ),
     ]
     generator = {"version": "1", "git_revision": "r", "library_sha256": "l", "data_sha256": "d"}
     manifests = {

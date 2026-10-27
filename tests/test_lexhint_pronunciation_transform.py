@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 from lexhint import Pronunciation, PronunciationEntry, PronunciationGroup
 
@@ -95,8 +97,6 @@ def test_different_pos_values_use_selectors() -> None:
     }
 
 
-
-
 def test_fine_grained_pos_selectors_are_preserved() -> None:
     item = entry(
         "read",
@@ -116,6 +116,7 @@ def test_fine_grained_pos_selectors_are_preserved() -> None:
     assert serialize_entries(result.entries) == (
         '{"read":{"DEFAULT":"riːd","VB":"riːd","VBD":"rɛd","VBN":"rɛd"}}\n'
     )
+
 
 def test_multi_variant_pos_remains_tuple() -> None:
     item = entry("live", group("verb", "[a]"), group("adj", "[b]", "[c]"))
@@ -183,3 +184,24 @@ def test_serialization_is_deterministic() -> None:
     second = serialize_entries({"word": collapse_entry(item)})
     assert first == second
     assert first == '{"word":{"DEFAULT":"b","NOUN":"a","VERB":"b"}}\n'
+
+
+def test_reading_profiles_add_selectors_without_rewriting_default_variants() -> None:
+    item = entry("read", group("noun", "[riːd]", "[rɛd]"))
+    profiles = (
+        SimpleNamespace(word="read", reading_id="r1-first", ipa=("riːd",)),
+        SimpleNamespace(word="read", reading_id="r1-second", ipa=("rɛd",)),
+    )
+
+    result = transform_lexhint([item], reading_profiles=profiles)
+
+    assert result.entries["read"] == {
+        "DEFAULT": ("riːd", "rɛd"),
+        "READING:r1-first": "riːd",
+        "READING:r1-second": "rɛd",
+    }
+    assert result.report["pos_selector_count"] == 0
+    assert result.report["reading_selector_count"] == 2
+    assert serialize_entries(result.entries) == (
+        '{"read":{"DEFAULT":["riːd","rɛd"],"READING:r1-first":"riːd","READING:r1-second":"rɛd"}}\n'
+    )

@@ -26,6 +26,7 @@ def logical_sha256_for_keys(keys: tuple[str, ...]) -> str:
         digest.update(encoded)
     return digest.hexdigest()
 
+
 def build_word_inventory(
     source_paths: Mapping[str, Path],
     *,

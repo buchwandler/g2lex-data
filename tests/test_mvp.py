@@ -64,6 +64,7 @@ def test_catalog_supports_production_and_local_release_roots(tmp_path: Path) -> 
     for artifact in catalog["artifacts"]:
         assert "/releases/download/data-0.1.0/" in artifact["asset"]["url"]
 
+    assert all("resolver_index" not in item for item in catalog["artifacts"])
     local = build_catalog(
         "0.1.0", base_url=tmp_path.as_uri(), output=tmp_path / "catalog.json", ids=demo_ids
     )
@@ -76,6 +77,7 @@ def test_release_is_self_contained() -> None:
     release = json.loads((release_dir / "release.json").read_text(encoding="utf-8"))
     assert release["asset_count"] == 3
     assert (release_dir / "catalog.json").is_file()
+    assert release["resolver_index_count"] == 0
     validate_all(catalog=True, ids=demo_ids)
     for identifier in demo_ids:
         record = load_config().asset(identifier)

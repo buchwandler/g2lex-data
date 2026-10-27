@@ -267,3 +267,122 @@ def test_multilingual_fixture_round_trip(
 
     with g2lex.open(asset) as lexicon:
         assert lexicon.lookup(word.lower()) == ipa
+
+
+def _build_ambiguity_artifact(tmp_path: Path, name: str, rows: list[dict[str, object]]) -> Path:
+    source = tmp_path / f"{name}.jsonl"
+    source.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    artifact, _ = build_dictionary(
+        "en", source, output=tmp_path / f"{name}.sqlite3", no_frequency=True
+    )
+    return artifact
+
+
+def _ambiguity_entry(ipa: str, gloss: str) -> dict[str, object]:
+    return {
+        "word": "read",
+        "lang_code": "en",
+        "pos": "noun",
+        "sounds": [{"ipa": f"[{ipa}]"}],
+        "senses": [{"glosses": [gloss]}],
+    }
+
+
+def test_discovery_adds_stable_reading_selectors_and_report_sidecar(tmp_path: Path) -> None:
+    from pronresolve import load_index
+
+    rows = [_ambiguity_entry("riːd", "a reading"), _ambiguity_entry("rɛd", "a past tense")]
+    artifact = _build_ambiguity_artifact(tmp_path, "forward", rows)
+    reversed_artifact = _build_ambiguity_artifact(tmp_path, "reversed", list(reversed(rows)))
+    record = _record("en_US")
+
+    result = apply(record, artifact, tmp_path / "forward-output")
+    reversed_result = apply(record, reversed_artifact, tmp_path / "reversed-output")
+    assert result is not None and reversed_result is not None
+    assert result.resolver_index_path is not None
+    assert result.report_path is not None
+    index = load_index(result.resolver_index_path)
+    reversed_index = load_index(reversed_result.resolver_index_path)
+    report = json.loads(result.report_path.read_text(encoding="utf-8"))
+    values = json.loads(result.input_path.read_text(encoding="utf-8"))["read"]
+
+    assert index.to_dict() == reversed_index.to_dict()
+    assert len(index.profiles) == 2
+    assert report["ambiguity_discovery"]["entries_scanned"] == 2
+    assert report["ambiguity_discovery"]["ambiguous_keys"] == 1
+    assert report["ambiguity_discovery"]["resolvable_keys"] == 1
+    assert report["ambiguity_discovery"]["unlinked_ambiguity_keys"] == 0
+    assert result.metadata["transform_inputs"]["pronresolve_version"]
+    assert (
+        result.metadata["transform_inputs"]["pronresolve_index_schema_version"]
+        == index.schema_version
+    )
+    for profile in index.profiles:
+        assert values[f"READING:{profile.reading_id}"] == profile.ipa[0]
+
+
+def test_same_ipa_entries_do_not_create_profiles(tmp_path: Path) -> None:
+    from pronresolve import load_index
+
+    artifact = _build_ambiguity_artifact(
+        tmp_path,
+        "same-ipa",
+        [_ambiguity_entry("riːd", "first sense"), _ambiguity_entry("riːd", "second sense")],
+    )
+    result = apply(_record("en_US"), artifact, tmp_path / "same-ipa-output")
+    assert result is not None and result.resolver_index_path is not None
+    index = load_index(result.resolver_index_path)
+    report = json.loads(result.report_path.read_text(encoding="utf-8"))
+
+    assert index.profiles == ()
+    assert report["ambiguity_discovery"]["ambiguous_keys"] == 0
+    assert report["ambiguity_discovery"]["non_ambiguous_keys"] == 1
+    assert not any(
+        selector.startswith("READING:")
+        for value in json.loads(result.input_path.read_text(encoding="utf-8")).values()
+        if isinstance(value, dict)
+        for selector in value
+    )
+
+
+def test_multi_ipa_source_entry_is_reported_unlinked_without_selectors(tmp_path: Path) -> None:
+    from pronresolve import load_index
+
+    row = _ambiguity_entry("riːd", "one entry with multiple IPA")
+    row["sounds"] = [{"ipa": "[riːd]"}, {"ipa": "[rɛd]"}]
+    artifact = _build_ambiguity_artifact(tmp_path, "unlinked", [row])
+    result = apply(_record("en_US"), artifact, tmp_path / "unlinked-output")
+    assert result is not None and result.resolver_index_path is not None
+    index = load_index(result.resolver_index_path)
+    report = json.loads(result.report_path.read_text(encoding="utf-8"))
+    values = json.loads(result.input_path.read_text(encoding="utf-8"))["read"]
+
+    assert index.profiles == ()
+    assert report["ambiguity_discovery"]["ambiguous_keys"] == 1
+    assert report["ambiguity_discovery"]["unlinked_ambiguity_keys"] == 1
+    assert report["ambiguity_discovery"]["unlinked_keys"] == ["read/NOUN"]
+    assert not isinstance(values, dict) or not any(
+        selector.startswith("READING:") for selector in values
+    )
+
+
+def test_other_locale_pronunciations_do_not_become_readings(tmp_path: Path) -> None:
+    from pronresolve import load_index
+
+    row = _ambiguity_entry("ˈlɪv", "locale-specific word")
+    row["word"] = "live"
+    row["sounds"] = [
+        {"ipa": "[ˈlɪv]", "tags": ["US"]},
+        {"ipa": "[ˈlaɪv]", "tags": ["GB"]},
+    ]
+    artifact = _build_ambiguity_artifact(tmp_path, "locale-filter", [row])
+    result = apply(_record("en_US"), artifact, tmp_path / "locale-output")
+    assert result is not None and result.resolver_index_path is not None
+    index = load_index(result.resolver_index_path)
+    values = json.loads(result.input_path.read_text(encoding="utf-8"))["live"]
+
+    assert index.profiles == ()
+    assert values == "ˈlɪv"

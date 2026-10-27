@@ -31,6 +31,9 @@ class TransformResult:
     metadata: dict[str, object]
     report_path: Path | None = None
 
+    resolver_index_path: Path | None = None
+    resolver_index_metadata: dict[str, object] | None = None
+
 
 from .kokoro_legacy import TRANSFORM_VERSION as KOKORO_LEGACY_TRANSFORM_VERSION
 from .kokoro_legacy import transform_kokoro_legacy
@@ -157,6 +160,55 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     return TransformResult(intermediate, "kokoro-json", metadata, report)
 
 
+def _locale_filtered_discovery_entries(
+    lexicon: Any, *, language: str, locale: str | None, include_neutral: bool
+):
+    """Filter entry-level pronunciations with LexHint's locale selection rules."""
+    if not locale:
+        return lexicon.iter_entries()
+
+    from dataclasses import replace
+
+    from lexhint.languages import source_tags_match_locale
+    from pronresolve.normalization import normalize_pos, normalize_word
+
+    def matches(pronunciation: Any) -> bool:
+        return bool(pronunciation.tags) and source_tags_match_locale(
+            pronunciation.tags, language, locale
+        )
+
+    locale_matched_keys: set[tuple[str, str]] = set()
+    if not include_neutral:
+        for entry in lexicon.iter_entries():
+            if any(matches(pronunciation) for pronunciation in entry.pronunciations):
+                locale_matched_keys.add((normalize_word(entry.word), normalize_pos(entry.pos)))
+
+    def filtered_entries():
+        for entry in lexicon.iter_entries():
+            key = (normalize_word(entry.word), normalize_pos(entry.pos))
+            if include_neutral:
+                pronunciations = tuple(
+                    pronunciation
+                    for pronunciation in entry.pronunciations
+                    if not pronunciation.tags or matches(pronunciation)
+                )
+            elif key in locale_matched_keys:
+                pronunciations = tuple(
+                    pronunciation
+                    for pronunciation in entry.pronunciations
+                    if matches(pronunciation)
+                )
+            else:
+                pronunciations = tuple(
+                    pronunciation
+                    for pronunciation in entry.pronunciations
+                    if not pronunciation.tags
+                )
+            yield replace(entry, pronunciations=pronunciations)
+
+    return filtered_entries()
+
+
 def _lexhint(
     record: Any,
     source: Path,
@@ -165,6 +217,9 @@ def _lexhint(
     source_metadata: Mapping[str, object] | None = None,
 ) -> TransformResult:
     from lexhint import Lexicon
+    from pronresolve import __version__ as pronresolve_version
+    from pronresolve import discover_ambiguities, save_index
+    from pronresolve.models import INDEX_SCHEMA_VERSION
 
     expected = record.transform_inputs or {}
     language = str(expected.get("lexhint_language", record.language.split("-", 1)[0]))
@@ -194,18 +249,46 @@ def _lexhint(
         "include_neutral": include_neutral,
         "lexhint_version": resolved.get("lexhint_version"),
     }
+    discovery = discover_ambiguities(
+        _locale_filtered_discovery_entries(
+            lexicon,
+            language=language,
+            locale=locale if isinstance(locale, str) else None,
+            include_neutral=include_neutral,
+        ),
+        language=language,
+        locale=locale if isinstance(locale, str) else None,
+    )
     result = transform_lexhint(
         lexicon.iter_pronunciations(include_neutral=include_neutral),
         source_metadata=transform_source_metadata,
+        reading_profiles=discovery.index.profiles,
     )
+    result.report["ambiguity_discovery"] = discovery.report.as_dict()
     temp_dir.mkdir(parents=True, exist_ok=True)
+    index_path = temp_dir / f"g2lex-{record.slug}.pronresolve.json"
+    save_index(discovery.index, index_path)
     intermediate = temp_dir / f"{record.slug}.json"
     intermediate.write_text(serialize_lexhint_entries(result.entries), encoding="utf-8")
     report_path = temp_dir / f"{record.slug}.transform-report.json"
     write_lexhint_report(result.report, report_path)
+    resolver_index_filename = f"g2lex-{record.slug}.pronresolve.json"
+    resolver_index_metadata = {
+        "name": resolver_index_filename,
+        "schema_version": discovery.index.schema_version,
+        "language": discovery.index.language,
+        "locale": discovery.index.locale,
+        "dataset_version": transform_source_metadata["dataset_version"],
+    }
+    transform_inputs = {
+        **expected,
+        "pronresolve_version": pronresolve_version,
+        "pronresolve_index_schema_version": INDEX_SCHEMA_VERSION,
+    }
     metadata = {
         "transform": LEXHINT_TRANSFORM_VERSION,
-        "transform_inputs": dict(expected),
+        "transform_inputs": transform_inputs,
+        "resolver_index": resolver_index_metadata,
         "source_metadata": transform_source_metadata,
         "transform_report_sha256": _sha256(report_path),
         "transform_report": result.report,
@@ -219,7 +302,14 @@ def _lexhint(
         "lexhint_locale": locale,
         "include_neutral": include_neutral,
     }
-    return TransformResult(intermediate, "json-map", metadata, report_path)
+    return TransformResult(
+        intermediate,
+        "json-map",
+        metadata,
+        report_path,
+        resolver_index_path=index_path,
+        resolver_index_metadata=resolver_index_metadata,
+    )
 
 
 def _cstr(record: Any, source: Path, temp_dir: Path) -> TransformResult:

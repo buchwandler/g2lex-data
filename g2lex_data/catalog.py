@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .common import CATALOG_PATH, MANIFEST_DIR, sha256_file, write_json
+from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, sha256_file, write_json
 from .config import load_config
 
 
@@ -55,55 +55,99 @@ def build_catalog(
         source = manifest.get("source")
         if not isinstance(asset, dict) or not isinstance(source, dict):
             raise TypeError(f"invalid manifest for {record.id}")
-        artifacts.append(
-            {
-                "id": record.id,
-                "language": manifest["language"],
-                "name": manifest["name"],
-                "display_name": manifest["display_name"],
-                "kind": manifest["kind"],
-                "phoneme_encoding": manifest["phoneme_encoding"],
-                "data_version": version,
-                "release_tag": tag,
+        artifact_entry: dict[str, object] = {
+            "id": record.id,
+            "language": manifest["language"],
+            "name": manifest["name"],
+            "display_name": manifest["display_name"],
+            "kind": manifest["kind"],
+            "phoneme_encoding": manifest["phoneme_encoding"],
+            "data_version": version,
+            "release_tag": tag,
+            "provider": source["provider"],
+            "license": {
+                "expression": source["license_expression"],
+                "url": source["license_url"],
+                "attribution": source["attribution"],
+            },
+            "source": {
                 "provider": source["provider"],
-                "license": {
-                    "expression": source["license_expression"],
-                    "url": source["license_url"],
-                    "attribution": source["attribution"],
-                },
-                "source": {
-                    "provider": source["provider"],
-                    "revision": source["revision"],
-                    "license_expression": source["license_expression"],
-                },
-                "manifest": {
-                    "name": record.manifest_name,
-                    "url": _join_url(root, record.manifest_name),
-                    "sha256": sha256_file(manifest_path),
-                    "size": manifest_path.stat().st_size,
-                },
-                "asset": {
-                    "name": record.asset_name,
-                    "url": _join_url(root, record.asset_name),
-                    "sha256": asset["sha256"],
-                    "size": asset["size"],
-                    "format": asset["format"],
-                    "schema": asset["schema"],
-                    "entry_count": asset["entry_count"],
-                    "logical_sha256": asset["logical_sha256"],
-                },
-                "word_inventory_sources": source.get("id"),
-                "generator": (manifest.get("transform") or {}).get("inputs", {}).get("generator"),
-                "variant": (
-                    {
-                        "family": "espeak",
-                        "mode": "piper-ipa3" if record.name == "espeak-piper" else "ipa",
-                    }
-                    if record.source_provider == "g2lex-assets"
-                    else None
-                ),
+                "revision": source["revision"],
+                "license_expression": source["license_expression"],
+            },
+            "manifest": {
+                "name": record.manifest_name,
+                "url": _join_url(root, record.manifest_name),
+                "sha256": sha256_file(manifest_path),
+                "size": manifest_path.stat().st_size,
+            },
+            "asset": {
+                "name": record.asset_name,
+                "url": _join_url(root, record.asset_name),
+                "sha256": asset["sha256"],
+                "size": asset["size"],
+                "format": asset["format"],
+                "schema": asset["schema"],
+                "entry_count": asset["entry_count"],
+                "logical_sha256": asset["logical_sha256"],
+            },
+            "word_inventory_sources": source.get("id"),
+            "generator": (manifest.get("transform") or {}).get("inputs", {}).get("generator"),
+            "variant": (
+                {
+                    "family": "espeak",
+                    "mode": "piper-ipa3" if record.name == "espeak-piper" else "ipa",
+                }
+                if record.source_provider == "g2lex-assets"
+                else None
+            ),
+        }
+        resolver = manifest.get("resolver_index")
+        transform = manifest.get("transform")
+        transform_inputs = transform.get("inputs", {}) if isinstance(transform, dict) else {}
+        if not isinstance(transform_inputs, dict):
+            transform_inputs = {}
+        if resolver is None and transform_inputs.get("pronresolve_version") is not None:
+            raise ValueError(f"resolver index missing from manifest for {record.id}")
+        if resolver is not None:
+            if not isinstance(resolver, dict):
+                raise TypeError(f"invalid resolver index metadata for {record.id}")
+            index_name = resolver.get("path", resolver.get("name"))
+            if (
+                not isinstance(index_name, str)
+                or not index_name
+                or Path(index_name).name != index_name
+            ):
+                raise ValueError(f"invalid resolver index path for {record.id}")
+            index_path = ASSET_DIR / index_name
+            if not index_path.is_file():
+                raise FileNotFoundError(f"resolver index missing for {record.id}: {index_path}")
+            if sha256_file(index_path) != resolver.get("sha256"):
+                raise ValueError(f"resolver index SHA mismatch for {record.id}")
+            if index_path.stat().st_size != resolver.get("size"):
+                raise ValueError(f"resolver index size mismatch for {record.id}")
+            if resolver.get("dataset_version") != version:
+                raise ValueError(f"resolver index data version mismatch for {record.id}")
+            from pronresolve import load_index
+
+            index = load_index(index_path)
+            if (
+                resolver.get("schema_version") != index.schema_version
+                or resolver.get("language") != index.language
+                or resolver.get("locale") != index.locale
+            ):
+                raise ValueError(f"resolver index identity mismatch for {record.id}")
+            artifact_entry["resolver_index"] = {
+                "name": index_name,
+                "url": _join_url(root, index_name),
+                "sha256": resolver["sha256"],
+                "size": resolver["size"],
+                "schema_version": index.schema_version,
+                "language": index.language,
+                "locale": index.locale,
+                "dataset_version": version,
             }
-        )
+        artifacts.append(artifact_entry)
     catalog: dict[str, object] = {
         "catalog_version": config.catalog_version,
         "runtime_contract": config.runtime_contract,

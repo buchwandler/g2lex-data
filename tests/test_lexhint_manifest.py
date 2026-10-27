@@ -195,3 +195,123 @@ def test_portuguese_regional_manifests_record_projection_identity(
     assert br_manifest["transform"]["inputs"] != pt_manifest["transform"]["inputs"]
     assert br_manifest["asset"]["logical_sha256"] != pt_manifest["asset"]["logical_sha256"]
     assert br_manifest["asset"]["sha256"] != pt_manifest["asset"]["sha256"]
+
+
+def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monkeypatch) -> None:
+    import pytest
+
+    from g2lex_data import catalog, release
+
+    record = load_config().asset("en-us:lexhint")
+    rows = [
+        {
+            "word": "read",
+            "lang_code": "en",
+            "pos": "noun",
+            "sounds": [{"ipa": "[riːd]"}],
+            "senses": [{"glosses": ["a reading"]}],
+        },
+        {
+            "word": "read",
+            "lang_code": "en",
+            "pos": "noun",
+            "sounds": [{"ipa": "[rɛd]"}],
+            "senses": [{"glosses": ["a past tense"]}],
+        },
+    ]
+    source_jsonl = tmp_path / "dictionary.jsonl"
+    source_jsonl.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+    artifact, _ = build_dictionary(
+        "en", source_jsonl, output=tmp_path / "lexhint.sqlite3", no_frequency=True
+    )
+    source_hash = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    metadata = {
+        "provider": "lexhint",
+        "path": str(artifact),
+        "language": "en",
+        "source_variant": "native",
+        "variant": "dictionary",
+        "dataset_version": "2026.11.01",
+        "schema_version": "10",
+        "release_tag": "fixture-release",
+        "release_published_at": "",
+        "asset": "fixture.sqlite3",
+        "release_asset_sha256": "release-hash",
+        "wiktionary_edition": "enwiktionary",
+        "metadata_language": "en",
+        "sqlite_sha256": source_hash,
+        "sqlite_size": artifact.stat().st_size,
+        "lexhint_version": "0.4.7",
+        "locale": "en_US",
+    }
+    resolved = ResolvedSource(artifact, metadata)
+    assets = tmp_path / "assets"
+    manifests = tmp_path / "manifests"
+    reports = tmp_path / "reports"
+    catalog_path = tmp_path / "catalog.json"
+    dist = tmp_path / "dist"
+
+    monkeypatch.setattr(build, "resolve_source", lambda _: resolved)
+    monkeypatch.setattr(
+        build,
+        "validate_source",
+        lambda *args, **kwargs: {
+            "entry_count": None,
+            "logical_sha256": None,
+            "resolved": metadata,
+        },
+    )
+    monkeypatch.setattr(build, "ASSET_DIR", assets)
+    monkeypatch.setattr(build, "MANIFEST_DIR", manifests)
+    monkeypatch.setattr(build, "REPORT_DIR", reports)
+    monkeypatch.setattr(validate, "ASSET_DIR", assets)
+    monkeypatch.setattr(validate, "MANIFEST_DIR", manifests)
+    monkeypatch.setattr(validate, "resolve_source", lambda _: resolved)
+    monkeypatch.setattr(catalog, "ASSET_DIR", assets)
+    monkeypatch.setattr(catalog, "MANIFEST_DIR", manifests)
+    monkeypatch.setattr(release, "ASSET_DIR", assets)
+    monkeypatch.setattr(release, "MANIFEST_DIR", manifests)
+    monkeypatch.setattr(release, "DIST_DIR", dist)
+    monkeypatch.setattr(release, "CATALOG_PATH", catalog_path)
+    monkeypatch.setattr(
+        release,
+        "build_catalog",
+        lambda version, ids=None: catalog.build_catalog(version, ids=ids, output=catalog_path),
+    )
+    original_validate_catalog = validate.validate_catalog
+    monkeypatch.setattr(
+        validate,
+        "validate_catalog",
+        lambda path=None, ids=None: original_validate_catalog(path or catalog_path, ids=ids),
+    )
+
+    manifest = build.build_one(record, data_version="2026.11.01")
+    resolver_index = manifest["resolver_index"]
+    assert resolver_index["dataset_version"] == "2026.11.01"
+    assert len(resolver_index["sha256"]) == 64
+    index_bytes = (assets / resolver_index["path"]).read_bytes()
+    assert resolver_index["sha256"] == hashlib.sha256(index_bytes).hexdigest()
+    assert resolver_index["size"] == len(index_bytes)
+    assert (assets / resolver_index["path"]).is_file()
+    assert (reports / f"{record.slug}.transform-report.json").is_file()
+    validate.validate_one(record, verify_source=False)
+    index_path = assets / resolver_index["path"]
+    index_path.write_bytes(index_bytes + b"corrupt")
+    with pytest.raises(ValueError, match="resolver index SHA mismatch"):
+        validate.validate_one(record, verify_transform=False, verify_source=False)
+    index_path.write_bytes(index_bytes)
+
+    built_catalog = catalog.build_catalog("2026.11.01", ids=[record.id], output=catalog_path)
+    catalog_reference = built_catalog["artifacts"][0]["resolver_index"]
+    assert catalog_reference["sha256"] == resolver_index["sha256"]
+    assert catalog_reference["dataset_version"] == "2026.11.01"
+    validate.validate_catalog(path=catalog_path, ids=[record.id])
+
+    release_dir = release.prepare_release("2026.11.01", ids=[record.id], from_build=True)
+    assert (release_dir / resolver_index["path"]).is_file()
+    release_manifest = json.loads((release_dir / "release.json").read_text(encoding="utf-8"))
+    assert release_manifest["resolver_index_count"] == 1
+    assert any(
+        item["name"] == resolver_index["path"] and item["sha256"] == resolver_index["sha256"]
+        for item in release_manifest["files"]
+    )

@@ -18,13 +18,17 @@ def _record(
     language: str = "Test",
     voice: str | None = None,
 ) -> AssetConfig:
-    inputs = None if voice is None else {
-        "voice": voice,
-        "piper_version": "3",
-        "espeak_git_revision": "revision",
-        "expected_espeak_version": "1.52.0.1",
-        "output_mode": "ipa" if name == "espeak" else "ipa3",
-    }
+    inputs = (
+        None
+        if voice is None
+        else {
+            "voice": voice,
+            "piper_version": "3",
+            "espeak_git_revision": "revision",
+            "expected_espeak_version": "1.52.0.1",
+            "output_mode": "ipa" if name == "espeak" else "ipa3",
+        }
+    )
     return AssetConfig(
         id=identifier,
         language=language,
@@ -55,13 +59,19 @@ def _config(records: tuple[AssetConfig, ...]) -> SimpleNamespace:
 
 
 def _inventory(locale: str, source_ids: tuple[str, ...]) -> WordInventory:
-    return WordInventory(locale, source_ids, {source_id: 1 for source_id in source_ids}, ("word",), 0, "hash")
+    return WordInventory(
+        locale, source_ids, {source_id: 1 for source_id in source_ids}, ("word",), 0, "hash"
+    )
 
 
 def test_pair_members_and_parent_are_built_once(monkeypatch) -> None:
     parent = _record("aa:lexhint", "lexhint")
     normal = _record(
-        "aa:espeak", "espeak", source_provider="g2lex-assets", source_ids=(parent.id,), voice="voice-aa"
+        "aa:espeak",
+        "espeak",
+        source_provider="g2lex-assets",
+        source_ids=(parent.id,),
+        voice="voice-aa",
     )
     piper = _record(
         "aa:espeak-piper",
@@ -187,8 +197,7 @@ def test_multiple_locale_pairs_reuse_backend_in_requested_order(monkeypatch) -> 
         build_module,
         "generate_espeak_pair",
         lambda *, inventory, voice, backend: (
-            backend.voices.append(voice)
-            or EspeakPairResult({}, {}, (), {"generator": {}}, {}, {})
+            backend.voices.append(voice) or EspeakPairResult({}, {}, (), {"generator": {}}, {}, {})
         ),
     )
 

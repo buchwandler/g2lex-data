@@ -13,6 +13,8 @@ MANIFEST_DIR = BUILD_DIR / "manifests"
 CATALOG_PATH = ROOT / "catalog" / "catalog.json"
 DIST_DIR = ROOT / "dist"
 
+REPORT_DIR = BUILD_DIR / "reports"
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()

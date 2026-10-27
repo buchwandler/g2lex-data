@@ -128,7 +128,10 @@ def _audit_group(item: Any, value: object) -> dict[str, object]:
 
 
 def transform_lexhint(
-    entries: Iterable[Any], *, source_metadata: Mapping[str, object] | None = None
+    entries: Iterable[Any],
+    *,
+    source_metadata: Mapping[str, object] | None = None,
+    reading_profiles: Iterable[Any] = (),
 ) -> LexHintTransformResult:
     output: dict[str, object] = {}
     reports: list[dict[str, object]] = []
@@ -158,8 +161,29 @@ def transform_lexhint(
         else:
             single_pronunciation_count += 1
 
+    reading_selector_count = 0
+    for profile in reading_profiles:
+        key = normalize_key(str(profile.word))
+        if key not in output:
+            raise ValueError(f"reading profile has no matching G2Lex entry: {profile.word}")
+        ipa_values = tuple(profile.ipa)
+        if len(ipa_values) != 1:
+            raise ValueError(f"reading profile must select exactly one IPA: {profile.reading_id}")
+        ipa = normalize_ipa(str(ipa_values[0]))
+        if not ipa:
+            raise ValueError(f"reading profile has empty IPA: {profile.reading_id}")
+        selector = f"READING:{profile.reading_id}"
+        current = output[key]
+        selectors = dict(current) if isinstance(current, Mapping) else {"DEFAULT": current}
+        existing = selectors.get(selector)
+        if existing is not None and existing != ipa:
+            raise ValueError(f"conflicting IPA for {selector}")
+        selectors[selector] = ipa
+        output[key] = ordered_selectors(selectors)
+        reading_selector_count += 1
     report: dict[str, object] = {
         "transform": TRANSFORM_VERSION,
+        "reading_selector_count": reading_selector_count,
         "source": dict(source_metadata or {}),
         "input_key_count": input_key_count,
         "output_entry_count": len(output),

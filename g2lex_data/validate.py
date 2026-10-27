@@ -11,7 +11,74 @@ from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, read_json, sha256_fil
 from .config import AssetConfig, load_config
 from .inventory import build_word_inventory, logical_sha256_for_keys
 from .sources import resolve_source
-from .transforms import apply
+from .transforms import TransformResult, apply
+
+
+def _validate_resolver_index(
+    record: AssetConfig,
+    asset_path: Path,
+    manifest: dict[str, object],
+    *,
+    generated: TransformResult | None = None,
+) -> None:
+    transform = manifest.get("transform")
+    inputs = transform.get("inputs", {}) if isinstance(transform, dict) else {}
+    inputs = inputs if isinstance(inputs, dict) else {}
+    descriptor = manifest.get("resolver_index")
+    if descriptor is None:
+        if inputs.get("pronresolve_version") is not None:
+            raise ValueError(f"resolver index is missing from manifest for {record.id}")
+        return
+    if not isinstance(descriptor, dict):
+        raise TypeError(f"invalid resolver index descriptor for {record.id}")
+
+    name = descriptor.get("path", descriptor.get("name"))
+    if not isinstance(name, str) or not name or Path(name).name != name:
+        raise ValueError(f"invalid resolver index path for {record.id}")
+    index_path = ASSET_DIR / name
+    if not index_path.is_file():
+        raise FileNotFoundError(f"missing resolver index for {record.id}: {index_path}")
+    if sha256_file(index_path) != descriptor.get("sha256"):
+        raise ValueError(f"resolver index SHA mismatch for {record.id}")
+    if index_path.stat().st_size != descriptor.get("size"):
+        raise ValueError(f"resolver index size mismatch for {record.id}")
+
+    from pronresolve import load_index
+
+    index = load_index(index_path)
+    if (
+        descriptor.get("schema_version") != index.schema_version
+        or descriptor.get("language") != index.language
+        or descriptor.get("locale") != index.locale
+        or descriptor.get("dataset_version") != manifest.get("data_version")
+    ):
+        raise ValueError(f"resolver index identity mismatch for {record.id}")
+    if inputs.get("pronresolve_index_schema_version") != index.schema_version:
+        raise ValueError(f"resolver index schema input mismatch for {record.id}")
+    expected_language = inputs.get("lexhint_language")
+    if expected_language is not None and str(expected_language).casefold() != index.language:
+        raise ValueError(f"resolver index language input mismatch for {record.id}")
+    expected_locale = inputs.get("lexhint_locale")
+    if expected_locale != index.locale:
+        raise ValueError(f"resolver index locale input mismatch for {record.id}")
+
+    with g2lex.open(asset_path) as packed:
+        embedded = packed.metadata.get("resolver_index")
+        if embedded != descriptor:
+            raise ValueError(f"G2Lex resolver index metadata mismatch for {record.id}")
+        for profile in index.profiles:
+            if len(profile.ipa) != 1:
+                raise ValueError(f"resolver profile must have one IPA for {record.id}")
+            selector = f"READING:{profile.reading_id}"
+            if packed.lookup(profile.word, tag=selector) != profile.ipa[0]:
+                raise ValueError(f"resolver selector mismatch for {record.id}: {selector}")
+
+    if generated is not None:
+        if generated.resolver_index_path is None:
+            raise ValueError(f"generated resolver index is missing for {record.id}")
+        generated_index = load_index(generated.resolver_index_path)
+        if generated_index.to_dict() != index.to_dict():
+            raise ValueError(f"resolver index does not match current transform for {record.id}")
 
 
 def _records(ids: list[str] | None) -> tuple[AssetConfig, ...]:
@@ -39,7 +106,9 @@ def _validate_derived_pair(
     if not isinstance(provenance, dict):
         raise TypeError(f"missing word inventory provenance for {record.id}")
     skipped_value = provenance.get("skipped_keys")
-    if not isinstance(skipped_value, list) or not all(isinstance(key, str) for key in skipped_value):
+    if not isinstance(skipped_value, list) or not all(
+        isinstance(key, str) for key in skipped_value
+    ):
         raise ValueError(f"invalid skipped keys for {record.id}")
     skipped_keys = tuple(skipped_value)
     if skipped_keys != tuple(sorted(skipped_keys)) or len(set(skipped_keys)) != len(skipped_keys):
@@ -49,15 +118,17 @@ def _validate_derived_pair(
         or provenance.get("union_logical_sha256") != inventory.logical_sha256
     ):
         raise ValueError(f"derived source union provenance mismatch for {record.id}")
-    if (
-        provenance.get("generated_entry_count") != len(keys)
-        or provenance.get("logical_sha256") != provenance.get("generated_logical_sha256")
-    ):
+    if provenance.get("generated_entry_count") != len(keys) or provenance.get(
+        "logical_sha256"
+    ) != provenance.get("generated_logical_sha256"):
         raise ValueError(f"derived generated inventory count mismatch for {record.id}")
     generated_sha256 = logical_sha256_for_keys(keys)
     if provenance.get("generated_logical_sha256") != generated_sha256:
         raise ValueError(f"derived generated inventory hash mismatch for {record.id}")
-    if set(keys).intersection(skipped_keys) or tuple(sorted(set(keys) | set(skipped_keys))) != inventory.keys:
+    if (
+        set(keys).intersection(skipped_keys)
+        or tuple(sorted(set(keys) | set(skipped_keys))) != inventory.keys
+    ):
         raise ValueError(f"derived asset key inventory mismatch for {record.id}")
     pair_name = "espeak-piper" if record.name == "espeak" else "espeak"
     pair_id = f"{record.id.split(':', 1)[0]}:{pair_name}"
@@ -115,16 +186,31 @@ def validate_one(
         raise ValueError(f"asset entry count mismatch for {record.id}")
     if asset.get("logical_sha256") != inspected.get("logical_sha256"):
         raise ValueError(f"asset logical hash mismatch for {record.id}")
+    generated_transform_result: TransformResult | None = None
     if record.source_provider == "g2lex-assets":
         _validate_derived_pair(record, asset_path, manifest)
+        _validate_resolver_index(record, asset_path, manifest)
     elif verify_transform:
         with tempfile.TemporaryDirectory(prefix=f".{record.slug}.validate.") as temp_name:
-            result = apply(record, resolved_source.path, Path(temp_name))
-            input_path = result.input_path if result else resolved_source.path
-            input_format = result.input_format if result else record.source_format
+            generated_transform_result = apply(record, resolved_source.path, Path(temp_name))
+            input_path = (
+                generated_transform_result.input_path
+                if generated_transform_result
+                else resolved_source.path
+            )
+            input_format = (
+                generated_transform_result.input_format
+                if generated_transform_result
+                else record.source_format
+            )
             verification = g2lex.verify_file(input_path, asset_path, input_format=input_format)
             if not verification.get("lossless"):
                 raise ValueError(f"asset no longer verifies losslessly for {record.id}")
+            _validate_resolver_index(
+                record, asset_path, manifest, generated=generated_transform_result
+            )
+    else:
+        _validate_resolver_index(record, asset_path, manifest)
     source = manifest.get("source")
     if not isinstance(source, dict):
         raise TypeError(f"invalid manifest source object for {record.id}")
@@ -135,7 +221,10 @@ def validate_one(
         else:
             expected_source_sha256 = record.source_sha256
             expected_source_size = record.source_size
-        if source.get("sha256") != expected_source_sha256 or source.get("size") != expected_source_size:
+        if (
+            source.get("sha256") != expected_source_sha256
+            or source.get("size") != expected_source_size
+        ):
             raise ValueError(f"manifest source pin mismatch for {record.id}")
         if (
             record.source_provider != "g2lex-assets"
@@ -156,6 +245,7 @@ def validate_catalog(path: Path = CATALOG_PATH, *, ids: list[str] | None = None)
     if not isinstance(artifacts, list) or len(artifacts) != len(records):
         raise ValueError("catalog must contain exactly one artifact per configured asset")
     expected_ids = {record.id for record in records}
+    records_by_id = {record.id: record for record in records}
     actual_ids: set[str] = set()
     for artifact in artifacts:
         if not isinstance(artifact, dict):
@@ -179,6 +269,32 @@ def validate_catalog(path: Path = CATALOG_PATH, *, ids: list[str] | None = None)
                 raise ValueError(f"unsupported catalog asset URL for {identifier}")
             if not str(manifest.get(key, "")).startswith(("https://", "file://")):
                 raise ValueError(f"unsupported catalog manifest URL for {identifier}")
+        record = records_by_id[identifier]
+        manifest_document = read_json(MANIFEST_DIR / record.manifest_name)
+        manifest_index = manifest_document.get("resolver_index")
+        catalog_index = artifact.get("resolver_index")
+        if manifest_index is None:
+            if catalog_index is not None:
+                raise ValueError(f"unexpected catalog resolver index for {identifier}")
+        else:
+            if not isinstance(manifest_index, dict):
+                raise TypeError(f"invalid manifest resolver index for {identifier}")
+            _validate_resolver_index(record, ASSET_DIR / record.asset_name, manifest_document)
+            if not isinstance(catalog_index, dict):
+                raise ValueError(f"catalog resolver index missing for {identifier}")
+            index_name = manifest_index.get("path", manifest_index.get("name"))
+            expected_index = {
+                "name": index_name,
+                "url": str(asset["url"]).rsplit("/", 1)[0] + "/" + str(index_name),
+                "sha256": manifest_index.get("sha256"),
+                "size": manifest_index.get("size"),
+                "schema_version": manifest_index.get("schema_version"),
+                "language": manifest_index.get("language"),
+                "locale": manifest_index.get("locale"),
+                "dataset_version": manifest_index.get("dataset_version"),
+            }
+            if catalog_index != expected_index:
+                raise ValueError(f"catalog resolver index mismatch for {identifier}")
     if actual_ids != expected_ids:
         raise ValueError("catalog IDs do not match configured assets")
 
@@ -191,7 +307,9 @@ def validate_prebuilt_set(*, ids: list[str] | None = None, data_version: str) ->
         asset_path = ASSET_DIR / record.asset_name
         manifest_path = MANIFEST_DIR / record.manifest_name
         if not asset_path.is_file():
-            raise FileNotFoundError(f"prebuilt release is incomplete: missing asset: {record.asset_name}")
+            raise FileNotFoundError(
+                f"prebuilt release is incomplete: missing asset: {record.asset_name}"
+            )
         if not manifest_path.is_file():
             raise FileNotFoundError(
                 f"prebuilt release is incomplete: missing manifest: {record.manifest_name}"
@@ -217,6 +335,7 @@ def validate_prebuilt_set(*, ids: list[str] | None = None, data_version: str) ->
         for actual, expected, label in checks:
             if actual != expected:
                 raise ValueError(f"{label} mismatch for {record.id}")
+        _validate_resolver_index(record, asset_path, manifest)
     if ids is None:
         actual_assets = {path.name for path in ASSET_DIR.glob("*.g2lex")}
         actual_manifests = {path.name for path in MANIFEST_DIR.glob("*.manifest.json")}
@@ -224,7 +343,9 @@ def validate_prebuilt_set(*, ids: list[str] | None = None, data_version: str) ->
         unexpected_manifests = sorted(actual_manifests - expected_manifests)
         if unexpected_assets or unexpected_manifests:
             unexpected = unexpected_assets + unexpected_manifests
-            raise ValueError(f"prebuilt release contains unexpected outputs: {', '.join(unexpected)}")
+            raise ValueError(
+                f"prebuilt release contains unexpected outputs: {', '.join(unexpected)}"
+            )
 
 
 def validate_espeak_generator_consistency(records: Iterable[AssetConfig]) -> None:

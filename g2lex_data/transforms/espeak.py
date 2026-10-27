@@ -20,7 +20,6 @@ class EspeakPairResult:
     piper_report: dict[str, object]
 
 
-
 def validate_espeak_value(value: str, *, mode: Literal["ipa", "ipa3"]) -> None:
     if not isinstance(value, str) or not value:
         raise ValueError(f"eSpeak {mode} output must be non-empty")
@@ -29,7 +28,6 @@ def validate_espeak_value(value: str, *, mode: Literal["ipa", "ipa3"]) -> None:
     if "\r" in value or "\n" in value:
         raise ValueError(f"eSpeak {mode} output contains an embedded line break")
     value.encode("utf-8")
-
 
 
 def _inventory_report(
@@ -53,7 +51,6 @@ def _inventory_report(
     }
 
 
-
 def _identity_report(backend: EspeakBackend) -> dict[str, object]:
     identity = backend.identity
     return {
@@ -65,7 +62,6 @@ def _identity_report(backend: EspeakBackend) -> dict[str, object]:
         "data_path": str(identity.data_path),
         "data_sha256": identity.data_sha256,
     }
-
 
 
 def generate_espeak_pair(
@@ -96,9 +92,7 @@ def generate_espeak_pair(
     if generated_keys != tuple(piper):
         raise AssertionError("generated eSpeak key order differs between variants")
     identity = _identity_report(backend)
-    inventory_report = _inventory_report(
-        inventory, generated_keys, tuple(skipped_keys)
-    )
+    inventory_report = _inventory_report(inventory, generated_keys, tuple(skipped_keys))
     return EspeakPairResult(
         normal_entries=normal,
         piper_entries=piper,
@@ -118,6 +112,7 @@ def generate_espeak_pair(
             "generator": identity,
         },
     )
+
 
 __all__ = [
     "NORMAL_TRANSFORM_ID",

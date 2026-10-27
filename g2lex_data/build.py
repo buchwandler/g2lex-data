@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import tempfile
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
@@ -9,7 +11,7 @@ from typing import Self
 import g2lex
 
 from . import __version__
-from .common import ASSET_DIR, MANIFEST_DIR, sha256_file, write_json
+from .common import ASSET_DIR, MANIFEST_DIR, REPORT_DIR, sha256_file, write_json
 from .config import AssetConfig, load_config
 from .espeak import EspeakBackend
 from .inventory import WordInventory, build_word_inventory
@@ -93,7 +95,31 @@ def _transform_metadata(result: TransformResult | None) -> dict[str, object]:
         "id": result.metadata.get("transform"),
         "inputs": result.metadata.get("transform_inputs", {}),
         "report_sha256": result.metadata.get("transform_report_sha256"),
+        "report_name": result.report_path.name if result.report_path is not None else None,
     }
+
+
+def _publish_resolver_pair(
+    staged_asset: Path, asset: Path, staged_index: Path, index: Path
+) -> None:
+    backups: list[tuple[Path, Path]] = []
+    published: list[Path] = []
+    try:
+        for destination in (asset, index):
+            if destination.exists():
+                backup = staged_asset.parent / f"{destination.name}.previous"
+                os.replace(destination, backup)
+                backups.append((destination, backup))
+        os.replace(staged_asset, asset)
+        published.append(asset)
+        os.replace(staged_index, index)
+        published.append(index)
+    except BaseException:
+        for destination in published:
+            destination.unlink(missing_ok=True)
+        for destination, backup in reversed(backups):
+            os.replace(backup, destination)
+        raise
 
 
 def _validate_espeak_pair_config(normal: AssetConfig, piper: AssetConfig) -> None:
@@ -131,16 +157,51 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     asset_path = ASSET_DIR / record.asset_name
 
+    resolver_index_payload: dict[str, object] | None = None
+    resolver_index_path: Path | None = None
     with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
         transform_result = apply(
             record, resolved_source.path, Path(temp_name), source_metadata=resolved_source.metadata
         )
+        staged_asset_path = asset_path
+        staged_index_path: Path | None = None
+        if transform_result is not None and transform_result.resolver_index_path is not None:
+            from pronresolve import load_index
+
+            descriptor = transform_result.resolver_index_metadata
+            if descriptor is None:
+                raise ValueError(f"resolver index metadata is missing for {record.id}")
+            index_name = str(descriptor.get("name", ""))
+            if not index_name or Path(index_name).name != index_name:
+                raise ValueError(f"invalid resolver index name for {record.id}")
+            staged_index_path = transform_result.resolver_index_path
+            if not staged_index_path.is_file():
+                raise FileNotFoundError(
+                    f"resolver index is missing for {record.id}: {staged_index_path}"
+                )
+            index = load_index(staged_index_path)
+            for field, actual in (
+                ("schema_version", index.schema_version),
+                ("language", index.language),
+                ("locale", index.locale),
+            ):
+                if descriptor.get(field) != actual:
+                    raise ValueError(f"resolver index {field} mismatch for {record.id}")
+            resolver_index_path = ASSET_DIR / index_name
+            resolver_index_payload = {
+                **descriptor,
+                "path": index_name,
+                "sha256": sha256_file(staged_index_path),
+                "size": staged_index_path.stat().st_size,
+                "dataset_version": data_version,
+            }
+            staged_asset_path = Path(temp_name) / record.asset_name
         input_path = transform_result.input_path if transform_result else resolved_source.path
         input_format = transform_result.input_format if transform_result else record.source_format
         g2lex.read_typed_lexicon(input_path, format=input_format, source_id=record.source_id)
         g2lex.pack_file(
             input_path,
-            asset_path,
+            staged_asset_path,
             input_format=input_format,
             source_id=record.source_id,
             metadata={
@@ -166,13 +227,41 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
                 "producer_version": __version__,
                 "g2lex_version": _g2lex_version(),
                 "transform": _transform_metadata(transform_result),
+                **(
+                    {"resolver_index": resolver_index_payload}
+                    if resolver_index_payload is not None
+                    else {}
+                ),
             },
         )
-        verification = g2lex.verify_file(input_path, asset_path, input_format=input_format)
+        verification = g2lex.verify_file(input_path, staged_asset_path, input_format=input_format)
         if not verification.get("lossless"):
             raise ValueError(f"lossless verification failed for {record.id}: {verification}")
-        inspected = g2lex.inspect_file(asset_path)
+        inspected = g2lex.inspect_file(staged_asset_path)
 
+        if resolver_index_payload is not None:
+            assert transform_result is not None
+            assert staged_index_path is not None and resolver_index_path is not None
+            from pronresolve import load_index
+
+            index = load_index(staged_index_path)
+            with g2lex.open(staged_asset_path) as packed:
+                for profile in index.profiles:
+                    selector = f"READING:{profile.reading_id}"
+                    selected = packed.lookup(profile.word, tag=selector)
+                    if selected != profile.ipa[0]:
+                        raise ValueError(
+                            f"resolver selector mismatch for {profile.word}/{selector}"
+                        )
+            _publish_resolver_pair(
+                staged_asset_path, asset_path, staged_index_path, resolver_index_path
+            )
+            if transform_result.report_path is not None:
+                REPORT_DIR.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(
+                    transform_result.report_path,
+                    REPORT_DIR / f"{record.slug}.transform-report.json",
+                )
     source_metadata = dict(resolved_source.metadata)
     source_payload: dict[str, object] = {
         "id": record.source_id,
@@ -220,6 +309,9 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
         "g2lex": {"version": _g2lex_version(), "generator_contract": GENERATOR_CONTRACT},
         "source": source_payload,
         "transform": _transform_metadata(transform_result),
+        **(
+            {"resolver_index": resolver_index_payload} if resolver_index_payload is not None else {}
+        ),
         "asset": {
             "name": record.asset_name,
             "filename": record.asset_name,
@@ -236,6 +328,7 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
             "lossless": True,
             "typed_values_preserved": True,
             "variant_order_preserved": True,
+            "resolver_index_pair": resolver_index_payload is not None,
             "generated_from_validated_output": True,
         },
     }
@@ -268,7 +361,8 @@ def _write_espeak_variant(
         )
         report_path = temp_dir / f"{record.slug}.transform-report.json"
         report_path.write_text(
-            json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+            json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+            encoding="utf-8",
         )
         transform_inputs = {**inputs, "generator": pair.shared_report["generator"]}
         transform_result = TransformResult(
@@ -483,7 +577,9 @@ def build(
     ids: list[str] | None = None, *, data_version: str = "unreleased"
 ) -> tuple[dict[str, object], ...]:
     config = load_config()
-    records = config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    records = (
+        config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    )
     with BuildSession(data_version=data_version) as session:
         return tuple(session.build_record(record) for record in records)
 
@@ -493,6 +589,7 @@ def build_static(*, data_version: str = "unreleased") -> tuple[dict[str, object]
 
     config = load_config()
     return build(list(static_asset_ids(config)), data_version=data_version)
+
 
 def build_espeak_pairs(
     locales: list[str], *, data_version: str = "unreleased"

@@ -2849,9 +2849,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ar:lexhint"
-      ]
+      "word_inventory_sources": ["ar:lexhint"]
     },
     {
       "asset": {
@@ -2902,9 +2900,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ar:lexhint"
-      ]
+      "word_inventory_sources": ["ar:lexhint"]
     },
     {
       "asset": {
@@ -2955,9 +2951,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "az:lexhint"
-      ]
+      "word_inventory_sources": ["az:lexhint"]
     },
     {
       "asset": {
@@ -3008,9 +3002,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "az:lexhint"
-      ]
+      "word_inventory_sources": ["az:lexhint"]
     },
     {
       "asset": {
@@ -3061,9 +3053,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "bg:lexhint"
-      ]
+      "word_inventory_sources": ["bg:lexhint"]
     },
     {
       "asset": {
@@ -3114,9 +3104,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "bg:lexhint"
-      ]
+      "word_inventory_sources": ["bg:lexhint"]
     },
     {
       "asset": {
@@ -3167,9 +3155,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ca:lexhint"
-      ]
+      "word_inventory_sources": ["ca:lexhint"]
     },
     {
       "asset": {
@@ -3220,9 +3206,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ca:lexhint"
-      ]
+      "word_inventory_sources": ["ca:lexhint"]
     },
     {
       "asset": {
@@ -3273,10 +3257,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "cs:lexhint",
-        "cs:lexhint-native"
-      ]
+      "word_inventory_sources": ["cs:lexhint", "cs:lexhint-native"]
     },
     {
       "asset": {
@@ -3327,10 +3308,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "cs:lexhint",
-        "cs:lexhint-native"
-      ]
+      "word_inventory_sources": ["cs:lexhint", "cs:lexhint-native"]
     },
     {
       "asset": {
@@ -3381,10 +3359,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "de-de:lexhint",
-        "de-de:lexhint-native"
-      ]
+      "word_inventory_sources": ["de-de:lexhint", "de-de:lexhint-native"]
     },
     {
       "asset": {
@@ -3435,10 +3410,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "de-de:lexhint",
-        "de-de:lexhint-native"
-      ]
+      "word_inventory_sources": ["de-de:lexhint", "de-de:lexhint-native"]
     },
     {
       "asset": {
@@ -3489,10 +3461,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "el:lexhint",
-        "el:lexhint-native"
-      ]
+      "word_inventory_sources": ["el:lexhint", "el:lexhint-native"]
     },
     {
       "asset": {
@@ -3543,10 +3512,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "el:lexhint",
-        "el:lexhint-native"
-      ]
+      "word_inventory_sources": ["el:lexhint", "el:lexhint-native"]
     },
     {
       "asset": {
@@ -3597,9 +3563,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "en-gb:lexhint"
-      ]
+      "word_inventory_sources": ["en-gb:lexhint"]
     },
     {
       "asset": {
@@ -3650,9 +3614,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "en-gb:lexhint"
-      ]
+      "word_inventory_sources": ["en-gb:lexhint"]
     },
     {
       "asset": {
@@ -3703,9 +3665,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "en-us:lexhint"
-      ]
+      "word_inventory_sources": ["en-us:lexhint"]
     },
     {
       "asset": {
@@ -3756,9 +3716,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "en-us:lexhint"
-      ]
+      "word_inventory_sources": ["en-us:lexhint"]
     },
     {
       "asset": {
@@ -3809,10 +3767,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "es:lexhint",
-        "es:lexhint-native"
-      ]
+      "word_inventory_sources": ["es:lexhint", "es:lexhint-native"]
     },
     {
       "asset": {
@@ -3863,10 +3818,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "es:lexhint",
-        "es:lexhint-native"
-      ]
+      "word_inventory_sources": ["es:lexhint", "es:lexhint-native"]
     },
     {
       "asset": {
@@ -3917,10 +3869,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "fr:lexhint",
-        "fr:lexhint-native"
-      ]
+      "word_inventory_sources": ["fr:lexhint", "fr:lexhint-native"]
     },
     {
       "asset": {
@@ -3971,10 +3920,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "fr:lexhint",
-        "fr:lexhint-native"
-      ]
+      "word_inventory_sources": ["fr:lexhint", "fr:lexhint-native"]
     },
     {
       "asset": {
@@ -4025,9 +3971,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ga:lexhint"
-      ]
+      "word_inventory_sources": ["ga:lexhint"]
     },
     {
       "asset": {
@@ -4078,9 +4022,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ga:lexhint"
-      ]
+      "word_inventory_sources": ["ga:lexhint"]
     },
     {
       "asset": {
@@ -4131,9 +4073,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "he:lexhint"
-      ]
+      "word_inventory_sources": ["he:lexhint"]
     },
     {
       "asset": {
@@ -4184,9 +4124,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "he:lexhint"
-      ]
+      "word_inventory_sources": ["he:lexhint"]
     },
     {
       "asset": {
@@ -4237,9 +4175,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "hi:lexhint"
-      ]
+      "word_inventory_sources": ["hi:lexhint"]
     },
     {
       "asset": {
@@ -4290,9 +4226,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "hi:lexhint"
-      ]
+      "word_inventory_sources": ["hi:lexhint"]
     },
     {
       "asset": {
@@ -4343,9 +4277,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "hu:lexhint"
-      ]
+      "word_inventory_sources": ["hu:lexhint"]
     },
     {
       "asset": {
@@ -4396,9 +4328,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "hu:lexhint"
-      ]
+      "word_inventory_sources": ["hu:lexhint"]
     },
     {
       "asset": {
@@ -4449,9 +4379,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "hy:lexhint"
-      ]
+      "word_inventory_sources": ["hy:lexhint"]
     },
     {
       "asset": {
@@ -4502,9 +4430,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "hy:lexhint"
-      ]
+      "word_inventory_sources": ["hy:lexhint"]
     },
     {
       "asset": {
@@ -4555,9 +4481,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "id:lexhint-native"
-      ]
+      "word_inventory_sources": ["id:lexhint-native"]
     },
     {
       "asset": {
@@ -4608,9 +4532,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "id:lexhint-native"
-      ]
+      "word_inventory_sources": ["id:lexhint-native"]
     },
     {
       "asset": {
@@ -4661,10 +4583,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "it:lexhint",
-        "it:lexhint-native"
-      ]
+      "word_inventory_sources": ["it:lexhint", "it:lexhint-native"]
     },
     {
       "asset": {
@@ -4715,10 +4634,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "it:lexhint",
-        "it:lexhint-native"
-      ]
+      "word_inventory_sources": ["it:lexhint", "it:lexhint-native"]
     },
     {
       "asset": {
@@ -4769,10 +4685,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ja:lexhint",
-        "ja:lexhint-native"
-      ]
+      "word_inventory_sources": ["ja:lexhint", "ja:lexhint-native"]
     },
     {
       "asset": {
@@ -4823,10 +4736,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ja:lexhint",
-        "ja:lexhint-native"
-      ]
+      "word_inventory_sources": ["ja:lexhint", "ja:lexhint-native"]
     },
     {
       "asset": {
@@ -4877,10 +4787,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ko:lexhint",
-        "ko:lexhint-native"
-      ]
+      "word_inventory_sources": ["ko:lexhint", "ko:lexhint-native"]
     },
     {
       "asset": {
@@ -4931,10 +4838,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ko:lexhint",
-        "ko:lexhint-native"
-      ]
+      "word_inventory_sources": ["ko:lexhint", "ko:lexhint-native"]
     },
     {
       "asset": {
@@ -4985,9 +4889,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ku:lexhint-native"
-      ]
+      "word_inventory_sources": ["ku:lexhint-native"]
     },
     {
       "asset": {
@@ -5038,9 +4940,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ku:lexhint-native"
-      ]
+      "word_inventory_sources": ["ku:lexhint-native"]
     },
     {
       "asset": {
@@ -5091,9 +4991,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "la:lexhint"
-      ]
+      "word_inventory_sources": ["la:lexhint"]
     },
     {
       "asset": {
@@ -5144,9 +5042,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "la:lexhint"
-      ]
+      "word_inventory_sources": ["la:lexhint"]
     },
     {
       "asset": {
@@ -5197,9 +5093,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "lt:lexhint"
-      ]
+      "word_inventory_sources": ["lt:lexhint"]
     },
     {
       "asset": {
@@ -5250,9 +5144,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "lt:lexhint"
-      ]
+      "word_inventory_sources": ["lt:lexhint"]
     },
     {
       "asset": {
@@ -5303,9 +5195,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "lv:lexhint"
-      ]
+      "word_inventory_sources": ["lv:lexhint"]
     },
     {
       "asset": {
@@ -5356,9 +5246,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "lv:lexhint"
-      ]
+      "word_inventory_sources": ["lv:lexhint"]
     },
     {
       "asset": {
@@ -5409,9 +5297,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "mr:lexhint"
-      ]
+      "word_inventory_sources": ["mr:lexhint"]
     },
     {
       "asset": {
@@ -5462,9 +5348,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "mr:lexhint"
-      ]
+      "word_inventory_sources": ["mr:lexhint"]
     },
     {
       "asset": {
@@ -5515,9 +5399,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ms:lexhint-native"
-      ]
+      "word_inventory_sources": ["ms:lexhint-native"]
     },
     {
       "asset": {
@@ -5568,9 +5450,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ms:lexhint-native"
-      ]
+      "word_inventory_sources": ["ms:lexhint-native"]
     },
     {
       "asset": {
@@ -5621,9 +5501,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "nl:lexhint"
-      ]
+      "word_inventory_sources": ["nl:lexhint"]
     },
     {
       "asset": {
@@ -5674,9 +5552,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "nl:lexhint"
-      ]
+      "word_inventory_sources": ["nl:lexhint"]
     },
     {
       "asset": {
@@ -5727,10 +5603,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "pl:lexhint",
-        "pl:lexhint-native"
-      ]
+      "word_inventory_sources": ["pl:lexhint", "pl:lexhint-native"]
     },
     {
       "asset": {
@@ -5781,10 +5654,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "pl:lexhint",
-        "pl:lexhint-native"
-      ]
+      "word_inventory_sources": ["pl:lexhint", "pl:lexhint-native"]
     },
     {
       "asset": {
@@ -5835,10 +5705,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "pt:lexhint",
-        "pt:lexhint-native"
-      ]
+      "word_inventory_sources": ["pt:lexhint", "pt:lexhint-native"]
     },
     {
       "asset": {
@@ -5889,10 +5756,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "pt:lexhint",
-        "pt:lexhint-native"
-      ]
+      "word_inventory_sources": ["pt:lexhint", "pt:lexhint-native"]
     },
     {
       "asset": {
@@ -5943,9 +5807,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "pt-br:lexhint"
-      ]
+      "word_inventory_sources": ["pt-br:lexhint"]
     },
     {
       "asset": {
@@ -5996,9 +5858,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "pt-br:lexhint"
-      ]
+      "word_inventory_sources": ["pt-br:lexhint"]
     },
     {
       "asset": {
@@ -6049,9 +5909,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "pt-pt:lexhint"
-      ]
+      "word_inventory_sources": ["pt-pt:lexhint"]
     },
     {
       "asset": {
@@ -6102,9 +5960,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "pt-pt:lexhint"
-      ]
+      "word_inventory_sources": ["pt-pt:lexhint"]
     },
     {
       "asset": {
@@ -6155,9 +6011,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ro:lexhint"
-      ]
+      "word_inventory_sources": ["ro:lexhint"]
     },
     {
       "asset": {
@@ -6208,9 +6062,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ro:lexhint"
-      ]
+      "word_inventory_sources": ["ro:lexhint"]
     },
     {
       "asset": {
@@ -6261,10 +6113,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ru:lexhint",
-        "ru:lexhint-native"
-      ]
+      "word_inventory_sources": ["ru:lexhint", "ru:lexhint-native"]
     },
     {
       "asset": {
@@ -6315,10 +6164,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ru:lexhint",
-        "ru:lexhint-native"
-      ]
+      "word_inventory_sources": ["ru:lexhint", "ru:lexhint-native"]
     },
     {
       "asset": {
@@ -6369,9 +6215,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "sv:lexhint"
-      ]
+      "word_inventory_sources": ["sv:lexhint"]
     },
     {
       "asset": {
@@ -6422,9 +6266,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "sv:lexhint"
-      ]
+      "word_inventory_sources": ["sv:lexhint"]
     },
     {
       "asset": {
@@ -6475,9 +6317,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ta:lexhint"
-      ]
+      "word_inventory_sources": ["ta:lexhint"]
     },
     {
       "asset": {
@@ -6528,9 +6368,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ta:lexhint"
-      ]
+      "word_inventory_sources": ["ta:lexhint"]
     },
     {
       "asset": {
@@ -6581,9 +6419,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "te:lexhint"
-      ]
+      "word_inventory_sources": ["te:lexhint"]
     },
     {
       "asset": {
@@ -6634,9 +6470,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "te:lexhint"
-      ]
+      "word_inventory_sources": ["te:lexhint"]
     },
     {
       "asset": {
@@ -6687,9 +6521,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "th:lexhint-native"
-      ]
+      "word_inventory_sources": ["th:lexhint-native"]
     },
     {
       "asset": {
@@ -6740,9 +6572,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "th:lexhint-native"
-      ]
+      "word_inventory_sources": ["th:lexhint-native"]
     },
     {
       "asset": {
@@ -6793,10 +6623,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "tr:lexhint",
-        "tr:lexhint-native"
-      ]
+      "word_inventory_sources": ["tr:lexhint", "tr:lexhint-native"]
     },
     {
       "asset": {
@@ -6847,10 +6674,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "tr:lexhint",
-        "tr:lexhint-native"
-      ]
+      "word_inventory_sources": ["tr:lexhint", "tr:lexhint-native"]
     },
     {
       "asset": {
@@ -6901,9 +6725,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "uk:lexhint"
-      ]
+      "word_inventory_sources": ["uk:lexhint"]
     },
     {
       "asset": {
@@ -6954,9 +6776,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "uk:lexhint"
-      ]
+      "word_inventory_sources": ["uk:lexhint"]
     },
     {
       "asset": {
@@ -7007,9 +6827,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "ur:lexhint"
-      ]
+      "word_inventory_sources": ["ur:lexhint"]
     },
     {
       "asset": {
@@ -7060,9 +6878,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "ur:lexhint"
-      ]
+      "word_inventory_sources": ["ur:lexhint"]
     },
     {
       "asset": {
@@ -7113,10 +6929,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "vi:lexhint",
-        "vi:lexhint-native"
-      ]
+      "word_inventory_sources": ["vi:lexhint", "vi:lexhint-native"]
     },
     {
       "asset": {
@@ -7167,10 +6980,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "vi:lexhint",
-        "vi:lexhint-native"
-      ]
+      "word_inventory_sources": ["vi:lexhint", "vi:lexhint-native"]
     },
     {
       "asset": {
@@ -7221,10 +7031,7 @@
         "family": "espeak",
         "mode": "ipa"
       },
-      "word_inventory_sources": [
-        "zh:lexhint",
-        "zh:lexhint-native"
-      ]
+      "word_inventory_sources": ["zh:lexhint", "zh:lexhint-native"]
     },
     {
       "asset": {
@@ -7275,10 +7082,7 @@
         "family": "espeak",
         "mode": "piper-ipa3"
       },
-      "word_inventory_sources": [
-        "zh:lexhint",
-        "zh:lexhint-native"
-      ]
+      "word_inventory_sources": ["zh:lexhint", "zh:lexhint-native"]
     }
   ],
   "catalog_version": 1,

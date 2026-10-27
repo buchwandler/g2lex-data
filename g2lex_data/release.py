@@ -5,7 +5,15 @@ from pathlib import Path
 
 from .build import build
 from .catalog import _data_tag, build_catalog
-from .common import ASSET_DIR, CATALOG_PATH, DIST_DIR, MANIFEST_DIR, sha256_file, write_json
+from .common import (
+    ASSET_DIR,
+    CATALOG_PATH,
+    DIST_DIR,
+    MANIFEST_DIR,
+    read_json,
+    sha256_file,
+    write_json,
+)
 from .config import load_config
 from .validate import validate_all, validate_espeak_generator_consistency, validate_prebuilt_set
 
@@ -19,7 +27,9 @@ def prepare_release(
     if not version or "/" in version or version.isspace():
         raise ValueError("version must be a non-empty release identifier")
     config = load_config()
-    records = config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    records = (
+        config.assets if ids is None else tuple(config.asset(identifier) for identifier in ids)
+    )
     tag = _data_tag(config, version)
     release_dir = DIST_DIR / tag
     if release_dir.exists():
@@ -43,6 +53,7 @@ def prepare_release(
     shutil.rmtree(staging_dir, ignore_errors=True)
     staging_dir.mkdir(parents=True, exist_ok=False)
     files: list[dict[str, object]] = []
+    resolver_index_count = 0
     for record in records:
         for source in (ASSET_DIR / record.asset_name, MANIFEST_DIR / record.manifest_name):
             target = staging_dir / source.name
@@ -50,6 +61,25 @@ def prepare_release(
             files.append(
                 {"name": target.name, "sha256": sha256_file(target), "size": target.stat().st_size}
             )
+        manifest = read_json(MANIFEST_DIR / record.manifest_name)
+        resolver = manifest.get("resolver_index")
+        if resolver is not None:
+            if not isinstance(resolver, dict):
+                raise TypeError(f"invalid resolver index metadata for {record.id}")
+            index_name = resolver.get("path", resolver.get("name"))
+            if (
+                not isinstance(index_name, str)
+                or not index_name
+                or Path(index_name).name != index_name
+            ):
+                raise ValueError(f"invalid resolver index path for {record.id}")
+            source = ASSET_DIR / index_name
+            target = staging_dir / index_name
+            shutil.copy2(source, target)
+            files.append(
+                {"name": target.name, "sha256": sha256_file(target), "size": target.stat().st_size}
+            )
+            resolver_index_count += 1
     catalog_target = staging_dir / "catalog.json"
     shutil.copy2(CATALOG_PATH, catalog_target)
     files.append(
@@ -67,6 +97,7 @@ def prepare_release(
             "version": version,
             "tag": tag,
             "asset_count": len(records),
+            "resolver_index_count": resolver_index_count,
             "immutable": True,
             "files": files,
         },
