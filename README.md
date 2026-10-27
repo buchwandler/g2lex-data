@@ -6,6 +6,18 @@
 
 This repository is the authoritative source, build, and release repository for externally distributed G2Lex datasets, including reviewed application-specific encodings such as the legacy Kokoro `kokoro-v1` English and French pronunciation assets. It owns source inventories, immutable source pins, acquisition checks, source-specific transforms, deterministic compilation, lossless verification, manifests, licenses, immutable data releases, and catalog publication. It does not own tokenization, sentence phonemization, or runtime fallback behavior.
 
+
+
+## Pronunciation-resolution capability
+
+Every pronunciation asset advertises `capabilities.pronunciation_resolution` in its manifest and catalog. The status is one of:
+
+- `available`: a non-empty, validated pronresolve schema-v2 index is paired with the asset.
+- `unnecessary`: LexHint discovery found no safely resolvable same-POS ambiguity; the reason is `no_resolvable_same_pos_ambiguities` and no sidecar is published.
+- `unavailable`: the source lacks validated sense-linked pronunciation mappings; for example, `en-us:gold` uses `source_has_no_sense_linked_pronunciation_mapping` and has no sidecar.
+
+Only `available` assets include an index descriptor and `.pronresolve.json` release artifact. The descriptor and paired `READING:<id>` selectors are checked against the packed G2Lex asset. Consumers should use the catalog capability rather than infer support from transform names or filenames. g2lex-data consumes pronresolve's Policy B output (synonyms, glosses, topics, tags, and antonyms); examples are excluded from runtime cues and the policy remains owned by pronresolve.
+
 ## Configured production assets
 
 The production tranche contains `de-de:gold`, `de-de:crane`, `de-de:espeak`, `de-de:olaph`, `en-us:cmudict`, `en-us:gold`, `en-gb:gold`, `fr-fr:gold`, `en-us:lexhint`, `en-gb:lexhint`, `de-de:lexhint`, `cs:lexhint`, `el:lexhint`, `es:lexhint`, `fr:lexhint`, `id:lexhint`, `it:lexhint`, `ja:lexhint`, `ko:lexhint`, `ku:lexhint`, `ms:lexhint`, `pl:lexhint`, `pt:lexhint`, `pt-br:lexhint`, `pt-pt:lexhint`, `ru:lexhint`, `th:lexhint`, `tr:lexhint`, `vi:lexhint`, `zh:lexhint`, and `sv-se:nst`. The demo fixtures remain for fast contract tests.

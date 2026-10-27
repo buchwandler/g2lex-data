@@ -1816,6 +1816,11 @@ source_format = "kokoro-json"
 case_aliases = true
 precedence = ["gold", "silver"]
 
+
+[asset.capabilities.pronunciation_resolution]
+status = "unavailable"
+reason = "source_has_no_sense_linked_pronunciation_mapping"
+
 [[asset]]
 id = "en-gb:gold"
 language = "en-GB"

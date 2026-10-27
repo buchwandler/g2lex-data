@@ -323,23 +323,29 @@ def test_discovery_adds_stable_reading_selectors_and_report_sidecar(tmp_path: Pa
         == index.schema_version
     )
     for profile in index.profiles:
-        assert values[f"READING:{profile.reading_id}"] == profile.ipa[0]
+        assert values[f"READING:{profile.reading_id}"] == profile.ipa
 
 
 def test_same_ipa_entries_do_not_create_profiles(tmp_path: Path) -> None:
-    from pronresolve import load_index
-
     artifact = _build_ambiguity_artifact(
         tmp_path,
         "same-ipa",
         [_ambiguity_entry("riːd", "first sense"), _ambiguity_entry("riːd", "second sense")],
     )
     result = apply(_record("en_US"), artifact, tmp_path / "same-ipa-output")
-    assert result is not None and result.resolver_index_path is not None
-    index = load_index(result.resolver_index_path)
+    assert result is not None
+    assert result.resolver_index_path is None
+    assert result.resolver_index_metadata is None
+    assert result.resolution_capability is not None
+    assert result.resolution_capability.to_dict() == {
+        "status": "unnecessary",
+        "reason": "no_resolvable_same_pos_ambiguities",
+    }
+    assert not tuple((tmp_path / "same-ipa-output").glob("*.pronresolve.json"))
     report = json.loads(result.report_path.read_text(encoding="utf-8"))
 
-    assert index.profiles == ()
+    assert report["runtime_profile_count"] == 0
+    assert report["runtime_cue_count"] == 0
     assert report["ambiguity_discovery"]["ambiguous_keys"] == 0
     assert report["ambiguity_discovery"]["non_ambiguous_keys"] == 1
     assert not any(
@@ -349,31 +355,30 @@ def test_same_ipa_entries_do_not_create_profiles(tmp_path: Path) -> None:
         for selector in value
     )
 
-
 def test_multi_ipa_source_entry_is_reported_unlinked_without_selectors(tmp_path: Path) -> None:
-    from pronresolve import load_index
-
     row = _ambiguity_entry("riːd", "one entry with multiple IPA")
     row["sounds"] = [{"ipa": "[riːd]"}, {"ipa": "[rɛd]"}]
     artifact = _build_ambiguity_artifact(tmp_path, "unlinked", [row])
-    result = apply(_record("en_US"), artifact, tmp_path / "unlinked-output")
-    assert result is not None and result.resolver_index_path is not None
-    index = load_index(result.resolver_index_path)
+    output = tmp_path / "unlinked-output"
+    result = apply(_record("en_US"), artifact, output)
+    assert result is not None
+    assert result.resolver_index_path is None
+    assert result.resolution_capability is not None
+    assert result.resolution_capability.status == "unnecessary"
     report = json.loads(result.report_path.read_text(encoding="utf-8"))
     values = json.loads(result.input_path.read_text(encoding="utf-8"))["read"]
 
-    assert index.profiles == ()
+    assert report["runtime_profile_count"] == 0
     assert report["ambiguity_discovery"]["ambiguous_keys"] == 1
     assert report["ambiguity_discovery"]["unlinked_ambiguity_keys"] == 1
     assert report["ambiguity_discovery"]["unlinked_keys"] == ["read/NOUN"]
+    assert not tuple(output.glob("*.pronresolve.json"))
     assert not isinstance(values, dict) or not any(
         selector.startswith("READING:") for selector in values
     )
 
 
 def test_other_locale_pronunciations_do_not_become_readings(tmp_path: Path) -> None:
-    from pronresolve import load_index
-
     row = _ambiguity_entry("ˈlɪv", "locale-specific word")
     row["word"] = "live"
     row["sounds"] = [
@@ -381,10 +386,38 @@ def test_other_locale_pronunciations_do_not_become_readings(tmp_path: Path) -> N
         {"ipa": "[ˈlaɪv]", "tags": ["GB"]},
     ]
     artifact = _build_ambiguity_artifact(tmp_path, "locale-filter", [row])
-    result = apply(_record("en_US"), artifact, tmp_path / "locale-output")
-    assert result is not None and result.resolver_index_path is not None
-    index = load_index(result.resolver_index_path)
+    output = tmp_path / "locale-output"
+    result = apply(_record("en_US"), artifact, output)
+    assert result is not None
+    assert result.resolver_index_path is None
+    assert result.resolution_capability is not None
+    assert result.resolution_capability.status == "unnecessary"
     values = json.loads(result.input_path.read_text(encoding="utf-8"))["live"]
 
-    assert index.profiles == ()
+    assert not tuple(output.glob("*.pronresolve.json"))
     assert values == "ˈlɪv"
+
+
+
+def test_example_only_token_is_excluded_from_policy_b_runtime_index(tmp_path: Path) -> None:
+    from pronresolve import load_index
+
+    example_token = "exampleonlytokenzz"
+    rows = []
+    for ipa, gloss in (("riːd", "a text interpretation"), ("rɛd", "the past form")):
+        row = _ambiguity_entry(ipa, gloss)
+        row["senses"] = [
+            {"glosses": [gloss], "examples": [{"text": f"A {example_token} appears here."}]}
+        ]
+        rows.append(row)
+    artifact = _build_ambiguity_artifact(tmp_path, "example-only", rows)
+    result = apply(_record("en_US"), artifact, tmp_path / "example-only-output")
+
+    assert result is not None and result.resolver_index_path is not None
+    index = load_index(result.resolver_index_path)
+    assert result.resolution_capability is not None
+    assert result.resolution_capability.status == "available"
+    assert index.profiles
+    assert all(example_token not in {cue.token for cue in profile.cues} for profile in index.profiles)
+    assert example_token not in result.resolver_index_path.read_text(encoding="utf-8")
+    assert result.metadata["transform_inputs"]["pronresolve_index_schema_version"] == 2

@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .capabilities import ResolutionCapability
+
 try:
     import tomllib
 except ModuleNotFoundError:  # pragma: no cover
@@ -54,6 +56,7 @@ class AssetConfig:
     transform_inputs: dict[str, object] | None = None
     source_provider: str = "file"
     source_ids: tuple[str, ...] = ()
+    resolution_capability: ResolutionCapability | None = None
 
     @property
     def source_path(self) -> Path:
@@ -127,6 +130,31 @@ def _transform_inputs(value: object, label: str) -> dict[str, object] | None:
     if not isinstance(value, dict):
         raise TypeError(f"{label}.transform_inputs must be a TOML table")
     return dict(value)
+
+
+
+def _resolution_capability(
+    values: dict[str, Any], label: str, kind: str
+) -> ResolutionCapability | None:
+    capabilities = values.get("capabilities")
+    if capabilities is None:
+        return None
+    if not isinstance(capabilities, dict):
+        raise TypeError(f"{label}.capabilities must be a TOML table")
+    raw = capabilities.get("pronunciation_resolution")
+    if raw is None:
+        return None
+    if not isinstance(raw, dict):
+        raise TypeError(f"{label}.capabilities.pronunciation_resolution must be a TOML table")
+    if kind != "pronunciation":
+        raise ValueError(f"{label} capabilities apply only to pronunciation assets")
+    status = raw.get("status")
+    if status != "unavailable":
+        raise ValueError(f"{label}.capabilities.pronunciation_resolution.status must be unavailable")
+    reason = raw.get("reason")
+    if not isinstance(reason, str) or not reason.strip():
+        raise ValueError(f"{label}.capabilities.pronunciation_resolution.reason must be a non-empty string")
+    return ResolutionCapability("unavailable", reason=reason.strip())
 
 
 _DEFAULT_ESPEAK_VOICES = {
@@ -359,6 +387,7 @@ def load_config(path: Path = CONFIG_PATH) -> RepositoryConfig:
                 transform_inputs=_transform_inputs(values.get("transform_inputs"), label),
                 source_provider=source_provider,
                 source_ids=_source_ids(values.get("source_ids"), label, source_provider),
+                resolution_capability=_resolution_capability(values, label, kind),
             )
         )
     assets = _derived_espeak_assets(assets, generation)

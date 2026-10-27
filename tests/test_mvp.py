@@ -42,8 +42,14 @@ def test_typed_asset_is_lossless_and_deterministic() -> None:
 
 def test_arpabet_variants_are_preserved() -> None:
     record = load_config().asset("en-us:demo-cmu")
-    build_one(record)
+    manifest = build_one(record)
+    expected_capability = {
+        "status": "unavailable",
+        "reason": "source_has_no_sense_linked_pronunciation_mapping",
+    }
+    assert manifest["capabilities"]["pronunciation_resolution"] == expected_capability
     with g2lex.open(ASSET_DIR / record.asset_name) as lexicon:
+        assert lexicon.metadata["capabilities"]["pronunciation_resolution"] == expected_capability
         assert lexicon.lookup_all("read") == ("R IY1 D", "R EH1 D")
 
 
@@ -78,6 +84,12 @@ def test_release_is_self_contained() -> None:
     assert release["asset_count"] == 3
     assert (release_dir / "catalog.json").is_file()
     assert release["resolver_index_count"] == 0
+    assert release["pronunciation_resolution_available_assets"] == 0
+    assert release["pronunciation_resolution_unnecessary_assets"] == 0
+    assert release["pronunciation_resolution_unavailable_assets"] == 2
+    assert release["resolver_index_total_size"] == 0
+    assert release["resolver_index_total_profiles"] == 0
+    assert release["resolver_index_total_cues"] == 0
     validate_all(catalog=True, ids=demo_ids)
     for identifier in demo_ids:
         record = load_config().asset(identifier)

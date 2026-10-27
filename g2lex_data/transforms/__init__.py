@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..capabilities import NO_RESOLVABLE_AMBIGUITIES, ResolutionCapability
 from ..espeak import EspeakBackend
 from ..inventory import build_word_inventory
 from ..sources import resolve_lexhint_transform_input
@@ -33,6 +34,7 @@ class TransformResult:
 
     resolver_index_path: Path | None = None
     resolver_index_metadata: dict[str, object] | None = None
+    resolution_capability: ResolutionCapability | None = None
 
 
 from .kokoro_legacy import TRANSFORM_VERSION as KOKORO_LEGACY_TRANSFORM_VERSION
@@ -218,11 +220,10 @@ def _lexhint(
     *,
     source_metadata: Mapping[str, object] | None = None,
 ) -> TransformResult:
+    import pronresolve
     from lexhint import Lexicon
     from pronresolve import __version__ as pronresolve_version
     from pronresolve import discover_ambiguities, save_index
-    from pronresolve.models import INDEX_SCHEMA_VERSION
-
     expected = record.transform_inputs or {}
     language = str(expected.get("lexhint_language", record.language.split("-", 1)[0]))
     locale = expected.get("lexhint_locale")
@@ -261,36 +262,65 @@ def _lexhint(
         language=language,
         locale=locale if isinstance(locale, str) else None,
     )
+    if discovery.index.schema_version != 2:
+        raise ValueError(
+            f"unsupported pronresolve schema version for g2lex-data: "
+            f"{discovery.index.schema_version}"
+        )
+    profiles = discovery.index.profiles
     result = transform_lexhint(
         lexicon.iter_pronunciations(include_neutral=include_neutral),
         source_metadata=transform_source_metadata,
-        reading_profiles=discovery.index.profiles,
+        reading_profiles=profiles,
     )
     result.report["ambiguity_discovery"] = discovery.report.as_dict()
+    result.report["runtime_profile_count"] = len(profiles)
+    result.report["runtime_cue_count"] = sum(len(profile.cues) for profile in profiles)
+    result.report["resolver_index_schema_version"] = discovery.index.schema_version
+
     temp_dir.mkdir(parents=True, exist_ok=True)
     index_path = temp_dir / f"g2lex-{record.slug}.pronresolve.json"
-    save_index(discovery.index, index_path)
+    resolver_index_path: Path | None = None
+    resolver_index_metadata: dict[str, object] | None = None
+    if profiles:
+        save_index(discovery.index, index_path)
+        resolver_index_path = index_path
+        resolver_index_metadata = {
+            "name": index_path.name,
+            "schema_version": discovery.index.schema_version,
+            "language": discovery.index.language,
+            "locale": discovery.index.locale,
+            "dataset_version": transform_source_metadata["dataset_version"],
+        }
+        capability = ResolutionCapability("available", index=resolver_index_metadata)
+        result.report["resolver_index_byte_size"] = index_path.stat().st_size
+    else:
+        index_path.unlink(missing_ok=True)
+        capability = ResolutionCapability(
+            "unnecessary", reason=NO_RESOLVABLE_AMBIGUITIES
+        )
+        result.report["resolver_index_byte_size"] = 0
+
+    policy_id = getattr(pronresolve, "RUNTIME_POLICY_ID", None)
+    if isinstance(policy_id, str) and policy_id:
+        result.report["resolver_policy_id"] = policy_id
+
     intermediate = temp_dir / f"{record.slug}.json"
     intermediate.write_text(serialize_lexhint_entries(result.entries), encoding="utf-8")
     report_path = temp_dir / f"{record.slug}.transform-report.json"
     write_lexhint_report(result.report, report_path)
-    resolver_index_filename = f"g2lex-{record.slug}.pronresolve.json"
-    resolver_index_metadata = {
-        "name": resolver_index_filename,
-        "schema_version": discovery.index.schema_version,
-        "language": discovery.index.language,
-        "locale": discovery.index.locale,
-        "dataset_version": transform_source_metadata["dataset_version"],
-    }
     transform_inputs = {
         **expected,
         "pronresolve_version": pronresolve_version,
-        "pronresolve_index_schema_version": INDEX_SCHEMA_VERSION,
+        "pronresolve_index_schema_version": discovery.index.schema_version,
     }
+    if isinstance(policy_id, str) and policy_id:
+        transform_inputs["pronresolve_policy"] = policy_id
     metadata = {
         "transform": LEXHINT_TRANSFORM_VERSION,
         "transform_inputs": transform_inputs,
-        "resolver_index": resolver_index_metadata,
+        **({"resolver_index": resolver_index_metadata} if resolver_index_metadata is not None else {}),
+        "capabilities": {"pronunciation_resolution": capability.to_dict()},
         "source_metadata": transform_source_metadata,
         "transform_report_sha256": _sha256(report_path),
         "transform_report": result.report,
@@ -309,7 +339,8 @@ def _lexhint(
         "json-map",
         metadata,
         report_path,
-        resolver_index_path=index_path,
+        resolver_index_path=resolver_index_path,
+        resolution_capability=capability,
         resolver_index_metadata=resolver_index_metadata,
     )
 

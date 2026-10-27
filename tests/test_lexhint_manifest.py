@@ -287,6 +287,12 @@ def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monk
 
     manifest = build.build_one(record, data_version="2026.11.01")
     resolver_index = manifest["resolver_index"]
+    capability = manifest["capabilities"]["pronunciation_resolution"]
+    assert capability["status"] == "available"
+    assert capability["index"] == {
+        key: resolver_index[key]
+        for key in ("name", "schema_version", "language", "locale", "dataset_version", "sha256", "size")
+    }
     assert resolver_index["dataset_version"] == "2026.11.01"
     assert len(resolver_index["sha256"]) == 64
     index_bytes = (assets / resolver_index["path"]).read_bytes()
@@ -302,7 +308,9 @@ def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monk
     index_path.write_bytes(index_bytes)
 
     built_catalog = catalog.build_catalog("2026.11.01", ids=[record.id], output=catalog_path)
-    catalog_reference = built_catalog["artifacts"][0]["resolver_index"]
+    catalog_artifact = built_catalog["artifacts"][0]
+    catalog_reference = catalog_artifact["resolver_index"]
+    assert catalog_artifact["capabilities"] == manifest["capabilities"]
     assert catalog_reference["sha256"] == resolver_index["sha256"]
     assert catalog_reference["dataset_version"] == "2026.11.01"
     validate.validate_catalog(path=catalog_path, ids=[record.id])
@@ -311,6 +319,12 @@ def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monk
     assert (release_dir / resolver_index["path"]).is_file()
     release_manifest = json.loads((release_dir / "release.json").read_text(encoding="utf-8"))
     assert release_manifest["resolver_index_count"] == 1
+    assert release_manifest["pronunciation_resolution_available_assets"] == 1
+    assert release_manifest["pronunciation_resolution_unnecessary_assets"] == 0
+    assert release_manifest["pronunciation_resolution_unavailable_assets"] == 0
+    assert release_manifest["resolver_index_total_size"] == resolver_index["size"]
+    assert release_manifest["resolver_index_total_profiles"] == 2
+    assert release_manifest["resolver_index_total_cues"] > 0
     assert any(
         item["name"] == resolver_index["path"] and item["sha256"] == resolver_index["sha256"]
         for item in release_manifest["files"]

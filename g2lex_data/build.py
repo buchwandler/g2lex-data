@@ -11,6 +11,7 @@ from typing import Self
 import g2lex
 
 from . import __version__
+from .capabilities import NO_SENSE_LINKED_MAPPING, ResolutionCapability
 from .common import ASSET_DIR, MANIFEST_DIR, REPORT_DIR, sha256_file, write_json
 from .config import AssetConfig, load_config
 from .espeak import EspeakBackend
@@ -91,12 +92,74 @@ def validate_source(
 def _transform_metadata(result: TransformResult | None) -> dict[str, object]:
     if result is None:
         return {}
-    return {
+    metadata: dict[str, object] = {
         "id": result.metadata.get("transform"),
         "inputs": result.metadata.get("transform_inputs", {}),
         "report_sha256": result.metadata.get("transform_report_sha256"),
         "report_name": result.report_path.name if result.report_path is not None else None,
     }
+    report = result.metadata.get("transform_report")
+    if isinstance(report, dict):
+        summary: dict[str, object] = {
+            key: report[key]
+            for key in (
+                "runtime_profile_count",
+                "runtime_cue_count",
+                "resolver_index_schema_version",
+                "resolver_index_byte_size",
+                "resolver_policy_id",
+            )
+            if key in report
+        }
+        discovery = report.get("ambiguity_discovery")
+        if isinstance(discovery, dict):
+            summary["ambiguity_discovery"] = {
+                key: discovery[key]
+                for key in (
+                    "entries_scanned",
+                    "ambiguous_keys",
+                    "resolvable_keys",
+                    "unlinked_ambiguity_keys",
+                    "non_ambiguous_keys",
+                    "entries_without_pronunciation",
+                    "entries_without_pos",
+                )
+                if key in discovery
+            }
+        if summary:
+            metadata["report_summary"] = summary
+    return metadata
+
+
+
+def _pronunciation_resolution_capability(
+    record: AssetConfig, result: TransformResult | None
+) -> ResolutionCapability | None:
+    if record.kind != "pronunciation":
+        return None
+    if result is not None and result.resolution_capability is not None:
+        return result.resolution_capability
+    if record.resolution_capability is not None:
+        return record.resolution_capability
+    return ResolutionCapability("unavailable", reason=NO_SENSE_LINKED_MAPPING)
+
+
+def _capability_metadata(
+    capability: ResolutionCapability | None, resolver: dict[str, object] | None
+) -> dict[str, object] | None:
+    if capability is None:
+        return None
+    if capability.status != "available":
+        if resolver is not None:
+            raise ValueError("non-available pronunciation capability cannot include a resolver index")
+        return capability.to_dict()
+    if resolver is None:
+        raise ValueError("available pronunciation capability requires a resolver index")
+    index = {
+        key: resolver[key]
+        for key in ("name", "schema_version", "language", "locale", "dataset_version", "sha256", "size")
+    }
+    return ResolutionCapability("available", index=index).to_dict()
 
 
 def _publish_resolver_pair(
@@ -121,6 +184,25 @@ def _publish_resolver_pair(
             os.replace(backup, destination)
         raise
 
+
+
+def _publish_asset_without_resolver(staged_asset: Path, asset: Path, stale_index: Path) -> None:
+    backups: list[tuple[Path, Path]] = []
+    published: list[Path] = []
+    try:
+        for destination in (asset, stale_index):
+            if destination.exists():
+                backup = staged_asset.parent / f"{destination.name}.previous"
+                os.replace(destination, backup)
+                backups.append((destination, backup))
+        os.replace(staged_asset, asset)
+        published.append(asset)
+    except BaseException:
+        for destination in published:
+            destination.unlink(missing_ok=True)
+        for destination, backup in reversed(backups):
+            os.replace(backup, destination)
+        raise
 
 def _validate_espeak_pair_config(normal: AssetConfig, piper: AssetConfig) -> None:
     if normal.name != "espeak" or piper.name != "espeak-piper":
@@ -165,7 +247,16 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
         transform_result = apply(
             record, resolved_source.path, Path(temp_name), source_metadata=resolved_source.metadata
         )
-        staged_asset_path = asset_path
+        resolution_capability = _pronunciation_resolution_capability(record, transform_result)
+        if resolution_capability is not None:
+            has_resolver_path = (
+                transform_result is not None and transform_result.resolver_index_path is not None
+            )
+            if resolution_capability.status == "available" and not has_resolver_path:
+                raise ValueError(f"available pronunciation capability has no resolver index for {record.id}")
+            if resolution_capability.status != "available" and has_resolver_path:
+                raise ValueError(f"non-available pronunciation capability has a resolver index for {record.id}")
+        staged_asset_path = Path(temp_name) / record.asset_name
         staged_index_path: Path | None = None
         if transform_result is not None and transform_result.resolver_index_path is not None:
             from pronresolve import load_index
@@ -182,6 +273,8 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
                     f"resolver index is missing for {record.id}: {staged_index_path}"
                 )
             index = load_index(staged_index_path)
+            if not index.profiles:
+                raise ValueError(f"available resolver index is empty for {record.id}")
             for field, actual in (
                 ("schema_version", index.schema_version),
                 ("language", index.language),
@@ -197,7 +290,7 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
                 "size": staged_index_path.stat().st_size,
                 "dataset_version": data_version,
             }
-            staged_asset_path = Path(temp_name) / record.asset_name
+        capability_document = _capability_metadata(resolution_capability, resolver_index_payload)
         input_path = transform_result.input_path if transform_result else resolved_source.path
         input_format = transform_result.input_format if transform_result else record.source_format
         g2lex.read_typed_lexicon(input_path, format=input_format, source_id=record.source_id)
@@ -234,6 +327,11 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
                     if resolver_index_payload is not None
                     else {}
                 ),
+                **(
+                    {"capabilities": {"pronunciation_resolution": capability_document}}
+                    if capability_document is not None
+                    else {}
+                ),
             },
         )
         verification = g2lex.verify_file(input_path, staged_asset_path, input_format=input_format)
@@ -250,20 +348,25 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
             with g2lex.open(staged_asset_path) as packed:
                 for profile in index.profiles:
                     selector = f"READING:{profile.reading_id}"
+                    if not isinstance(profile.ipa, str) or not profile.ipa:
+                        raise ValueError(f"resolver profile IPA must be a scalar string for {record.id}")
                     selected = packed.lookup(profile.word, tag=selector)
-                    if selected != profile.ipa[0]:
+                    if selected != profile.ipa:
                         raise ValueError(
                             f"resolver selector mismatch for {profile.word}/{selector}"
                         )
             _publish_resolver_pair(
                 staged_asset_path, asset_path, staged_index_path, resolver_index_path
             )
-            if transform_result.report_path is not None:
-                REPORT_DIR.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(
-                    transform_result.report_path,
-                    REPORT_DIR / f"{record.slug}.transform-report.json",
-                )
+        else:
+            stale_index = ASSET_DIR / f"g2lex-{record.slug}.pronresolve.json"
+            _publish_asset_without_resolver(staged_asset_path, asset_path, stale_index)
+        if transform_result is not None and transform_result.report_path is not None:
+            REPORT_DIR.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(
+                transform_result.report_path,
+                REPORT_DIR / f"{record.slug}.transform-report.json",
+            )
     source_metadata = dict(resolved_source.metadata)
     source_payload: dict[str, object] = {
         "id": record.source_id,
@@ -314,6 +417,11 @@ def _build_source_record(record: AssetConfig, *, data_version: str) -> dict[str,
         **(
             {"resolver_index": resolver_index_payload} if resolver_index_payload is not None else {}
         ),
+        **(
+            {"capabilities": {"pronunciation_resolution": capability_document}}
+            if capability_document is not None
+            else {}
+        ),
         "asset": {
             "name": record.asset_name,
             "filename": record.asset_name,
@@ -355,8 +463,11 @@ def _write_espeak_variant(
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     asset_path = ASSET_DIR / record.asset_name
     inputs = record.transform_inputs or {}
+    resolution_capability = _pronunciation_resolution_capability(record, None)
+    capability_document = _capability_metadata(resolution_capability, None)
     with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
         temp_dir = Path(temp_name)
+        staged_asset_path = temp_dir / record.asset_name
         input_path = temp_dir / f"{record.slug}.json"
         input_path.write_text(
             json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"
@@ -381,7 +492,7 @@ def _write_espeak_variant(
         g2lex.read_typed_lexicon(input_path, format="json-map", source_id=record.source_id)
         g2lex.pack_file(
             input_path,
-            asset_path,
+            staged_asset_path,
             input_format="json-map",
             source_id=record.source_id,
             metadata={
@@ -409,12 +520,20 @@ def _write_espeak_variant(
                 "source_ids": list(record.source_ids),
                 "word_inventory": report["word_inventory"],
                 "transform": _transform_metadata(transform_result),
+                **(
+                    {"capabilities": {"pronunciation_resolution": capability_document}}
+                    if capability_document is not None
+                    else {}
+                ),
             },
         )
         verification = g2lex.verify_file(input_path, asset_path, input_format="json-map")
         if not verification.get("lossless"):
             raise ValueError(f"lossless verification failed for {record.id}: {verification}")
-        inspected = g2lex.inspect_file(asset_path)
+        inspected = g2lex.inspect_file(staged_asset_path)
+        _publish_asset_without_resolver(
+            staged_asset_path, asset_path, ASSET_DIR / f"g2lex-{record.slug}.pronresolve.json"
+        )
     source_payload = {
         "id": list(record.source_ids),
         "provider_type": record.source_provider,
@@ -450,6 +569,11 @@ def _write_espeak_variant(
         "source": source_payload,
         "word_inventory": report["word_inventory"],
         "transform": _transform_metadata(transform_result),
+        **(
+            {"capabilities": {"pronunciation_resolution": capability_document}}
+            if capability_document is not None
+            else {}
+        ),
         "asset": {
             "name": record.asset_name,
             "filename": record.asset_name,

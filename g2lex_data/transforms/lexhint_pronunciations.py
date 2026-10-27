@@ -166,7 +166,7 @@ def transform_lexhint(
         key = normalize_key(str(profile.word))
         if key not in output:
             raise ValueError(f"reading profile has no matching G2Lex entry: {profile.word}")
-        ipa_values = tuple(profile.ipa)
+        ipa_values = (profile.ipa,) if isinstance(profile.ipa, str) else tuple(profile.ipa)
         if len(ipa_values) != 1:
             raise ValueError(f"reading profile must select exactly one IPA: {profile.reading_id}")
         ipa = normalize_ipa(str(ipa_values[0]))

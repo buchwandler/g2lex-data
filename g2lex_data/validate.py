@@ -7,6 +7,7 @@ from pathlib import Path
 import g2lex
 
 from .build import validate_source
+from .capabilities import NO_RESOLVABLE_AMBIGUITIES, NO_SENSE_LINKED_MAPPING
 from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, read_json, sha256_file
 from .config import AssetConfig, load_config
 from .inventory import build_word_inventory, logical_sha256_for_keys
@@ -25,13 +26,78 @@ def _validate_resolver_index(
     inputs = transform.get("inputs", {}) if isinstance(transform, dict) else {}
     inputs = inputs if isinstance(inputs, dict) else {}
     descriptor = manifest.get("resolver_index")
-    if descriptor is None:
-        if inputs.get("pronresolve_version") is not None:
-            raise ValueError(f"resolver index is missing from manifest for {record.id}")
-        return
-    if not isinstance(descriptor, dict):
-        raise TypeError(f"invalid resolver index descriptor for {record.id}")
+    capabilities = manifest.get("capabilities")
 
+    if record.kind != "pronunciation":
+        if descriptor is not None or capabilities is not None:
+            raise ValueError(f"non-pronunciation asset has pronunciation capability metadata: {record.id}")
+        with g2lex.open(asset_path) as packed:
+            if packed.metadata.get("resolver_index") is not None:
+                raise ValueError(f"non-pronunciation asset has resolver metadata: {record.id}")
+        return
+
+    if not isinstance(capabilities, dict):
+        raise TypeError(f"pronunciation capability is missing for {record.id}")
+    capability = capabilities.get("pronunciation_resolution")
+    if not isinstance(capability, dict):
+        raise TypeError(f"pronunciation-resolution capability is missing for {record.id}")
+    status = capability.get("status")
+    if status not in {"available", "unnecessary", "unavailable"}:
+        raise ValueError(f"invalid pronunciation-resolution status for {record.id}")
+
+    if status != "available":
+        reason = capability.get("reason")
+        if not isinstance(reason, str) or not reason.strip() or "index" in capability:
+            raise ValueError(f"invalid {status} pronunciation capability for {record.id}")
+        expected_reason = (
+            NO_RESOLVABLE_AMBIGUITIES if status == "unnecessary" else NO_SENSE_LINKED_MAPPING
+        )
+        if reason != expected_reason:
+            raise ValueError(f"unexpected {status} pronunciation capability reason for {record.id}")
+        if descriptor is not None:
+            raise ValueError(f"non-available capability has a resolver descriptor for {record.id}")
+        stale_index = ASSET_DIR / f"g2lex-{record.slug}.pronresolve.json"
+        if stale_index.exists():
+            raise ValueError(f"non-available capability has a stale resolver file for {record.id}")
+        with g2lex.open(asset_path) as packed:
+            if packed.metadata.get("resolver_index") is not None:
+                raise ValueError(f"non-available capability has embedded resolver metadata for {record.id}")
+            if packed.metadata.get("capabilities") != capabilities:
+                raise ValueError(f"G2Lex capability metadata mismatch for {record.id}")
+        if record.resolution_capability is not None and capability != record.resolution_capability.to_dict():
+            raise ValueError(f"configured pronunciation capability mismatch for {record.id}")
+        if status == "unnecessary":
+            transform_summary = transform.get("report_summary") if isinstance(transform, dict) else None
+            discovery = (
+                transform_summary.get("ambiguity_discovery")
+                if isinstance(transform_summary, dict)
+                else None
+            )
+            if (
+                not isinstance(transform_summary, dict)
+                or transform_summary.get("runtime_profile_count") != 0
+                or not isinstance(discovery, dict)
+                or discovery.get("entries_scanned") is None
+                or discovery.get("resolvable_keys") != 0
+            ):
+                raise ValueError(f"zero-profile discovery evidence is missing for {record.id}")
+            if generated is not None:
+                generated_capability = generated.resolution_capability
+                generated_report = generated.metadata.get("transform_report")
+                if (
+                    generated_capability is None
+                    or generated_capability.status != "unnecessary"
+                    or generated_capability.reason != reason
+                    or not isinstance(generated_report, dict)
+                    or generated_report.get("runtime_profile_count") != 0
+                ):
+                    raise ValueError(f"current zero-profile transform evidence mismatch for {record.id}")
+        return
+
+    if not isinstance(capability.get("index"), dict) or "reason" in capability:
+        raise ValueError(f"available pronunciation capability lacks index metadata for {record.id}")
+    if not isinstance(descriptor, dict):
+        raise TypeError(f"available pronunciation capability lacks resolver descriptor for {record.id}")
     name = descriptor.get("path", descriptor.get("name"))
     if not isinstance(name, str) or not name or Path(name).name != name:
         raise ValueError(f"invalid resolver index path for {record.id}")
@@ -46,6 +112,8 @@ def _validate_resolver_index(
     from pronresolve import load_index
 
     index = load_index(index_path)
+    if not index.profiles or index.schema_version != 2:
+        raise ValueError(f"available resolver index must be non-empty schema v2 for {record.id}")
     if (
         descriptor.get("schema_version") != index.schema_version
         or descriptor.get("language") != index.language
@@ -53,6 +121,12 @@ def _validate_resolver_index(
         or descriptor.get("dataset_version") != manifest.get("data_version")
     ):
         raise ValueError(f"resolver index identity mismatch for {record.id}")
+    expected_capability_index = {
+        key: descriptor.get(key)
+        for key in ("name", "schema_version", "language", "locale", "dataset_version", "sha256", "size")
+    }
+    if capability["index"] != expected_capability_index:
+        raise ValueError(f"capability resolver descriptor mismatch for {record.id}")
     if inputs.get("pronresolve_index_schema_version") != index.schema_version:
         raise ValueError(f"resolver index schema input mismatch for {record.id}")
     expected_language = inputs.get("lexhint_language")
@@ -66,20 +140,30 @@ def _validate_resolver_index(
         embedded = packed.metadata.get("resolver_index")
         if embedded != descriptor:
             raise ValueError(f"G2Lex resolver index metadata mismatch for {record.id}")
+        if packed.metadata.get("capabilities") != capabilities:
+            raise ValueError(f"G2Lex capability metadata mismatch for {record.id}")
         for profile in index.profiles:
-            if len(profile.ipa) != 1:
-                raise ValueError(f"resolver profile must have one IPA for {record.id}")
+            if not isinstance(profile.ipa, str) or not profile.ipa:
+                raise ValueError(f"resolver profile must have scalar IPA for {record.id}")
             selector = f"READING:{profile.reading_id}"
-            if packed.lookup(profile.word, tag=selector) != profile.ipa[0]:
+            if packed.lookup(profile.word, tag=selector) != profile.ipa:
                 raise ValueError(f"resolver selector mismatch for {record.id}: {selector}")
 
     if generated is not None:
-        if generated.resolver_index_path is None:
+        generated_capability = generated.resolution_capability
+        if (
+            generated.resolver_index_path is None
+            or generated_capability is None
+            or generated_capability.status != "available"
+            or generated_capability.index is None
+        ):
             raise ValueError(f"generated resolver index is missing for {record.id}")
+        for field in ("name", "schema_version", "language", "locale"):
+            if generated_capability.index.get(field) != capability["index"].get(field):
+                raise ValueError(f"generated resolver capability mismatch for {record.id}")
         generated_index = load_index(generated.resolver_index_path)
         if generated_index.to_dict() != index.to_dict():
             raise ValueError(f"resolver index does not match current transform for {record.id}")
-
 
 def _records(ids: list[str] | None) -> tuple[AssetConfig, ...]:
     config = load_config()
@@ -271,30 +355,37 @@ def validate_catalog(path: Path = CATALOG_PATH, *, ids: list[str] | None = None)
                 raise ValueError(f"unsupported catalog manifest URL for {identifier}")
         record = records_by_id[identifier]
         manifest_document = read_json(MANIFEST_DIR / record.manifest_name)
+        manifest_caps = manifest_document.get("capabilities")
+        catalog_caps = artifact.get("capabilities")
         manifest_index = manifest_document.get("resolver_index")
         catalog_index = artifact.get("resolver_index")
-        if manifest_index is None:
-            if catalog_index is not None:
-                raise ValueError(f"unexpected catalog resolver index for {identifier}")
-        else:
-            if not isinstance(manifest_index, dict):
-                raise TypeError(f"invalid manifest resolver index for {identifier}")
-            _validate_resolver_index(record, ASSET_DIR / record.asset_name, manifest_document)
-            if not isinstance(catalog_index, dict):
-                raise ValueError(f"catalog resolver index missing for {identifier}")
-            index_name = manifest_index.get("path", manifest_index.get("name"))
-            expected_index = {
-                "name": index_name,
-                "url": str(asset["url"]).rsplit("/", 1)[0] + "/" + str(index_name),
-                "sha256": manifest_index.get("sha256"),
-                "size": manifest_index.get("size"),
-                "schema_version": manifest_index.get("schema_version"),
-                "language": manifest_index.get("language"),
-                "locale": manifest_index.get("locale"),
-                "dataset_version": manifest_index.get("dataset_version"),
-            }
-            if catalog_index != expected_index:
-                raise ValueError(f"catalog resolver index mismatch for {identifier}")
+        _validate_resolver_index(record, ASSET_DIR / record.asset_name, manifest_document)
+        if record.kind == "pronunciation":
+            if catalog_caps != manifest_caps or not isinstance(manifest_caps, dict):
+                raise ValueError(f"catalog pronunciation capability mismatch for {identifier}")
+            capability = manifest_caps.get("pronunciation_resolution")
+            if not isinstance(capability, dict):
+                raise ValueError(f"manifest pronunciation capability missing for {identifier}")
+            if capability.get("status") == "available":
+                if not isinstance(manifest_index, dict) or not isinstance(catalog_index, dict):
+                    raise ValueError(f"catalog resolver index missing for {identifier}")
+                index_name = manifest_index.get("path", manifest_index.get("name"))
+                expected_index = {
+                    "name": index_name,
+                    "url": str(asset["url"]).rsplit("/", 1)[0] + "/" + str(index_name),
+                    "sha256": manifest_index.get("sha256"),
+                    "size": manifest_index.get("size"),
+                    "schema_version": manifest_index.get("schema_version"),
+                    "language": manifest_index.get("language"),
+                    "locale": manifest_index.get("locale"),
+                    "dataset_version": manifest_index.get("dataset_version"),
+                }
+                if catalog_index != expected_index:
+                    raise ValueError(f"catalog resolver index mismatch for {identifier}")
+            elif manifest_index is not None or catalog_index is not None:
+                raise ValueError(f"non-available catalog capability has resolver index for {identifier}")
+        elif catalog_caps is not None or manifest_caps is not None or catalog_index is not None:
+            raise ValueError(f"non-pronunciation catalog artifact has capabilities for {identifier}")
     if actual_ids != expected_ids:
         raise ValueError("catalog IDs do not match configured assets")
 
@@ -303,6 +394,7 @@ def validate_prebuilt_set(*, ids: list[str] | None = None, data_version: str) ->
     records = _records(ids)
     expected_assets = {record.asset_name for record in records}
     expected_manifests = {record.manifest_name for record in records}
+    expected_resolver_indexes: set[str] = set()
     for record in records:
         asset_path = ASSET_DIR / record.asset_name
         manifest_path = MANIFEST_DIR / record.manifest_name
@@ -336,7 +428,15 @@ def validate_prebuilt_set(*, ids: list[str] | None = None, data_version: str) ->
             if actual != expected:
                 raise ValueError(f"{label} mismatch for {record.id}")
         _validate_resolver_index(record, asset_path, manifest)
+        if record.kind == "pronunciation":
+            capability = manifest["capabilities"]["pronunciation_resolution"]
+            if capability["status"] == "available":
+                descriptor = manifest["resolver_index"]
+                expected_resolver_indexes.add(str(descriptor.get("path", descriptor.get("name"))))
     if ids is None:
+        actual_resolver_indexes = {path.name for path in ASSET_DIR.glob("*.pronresolve.json")}
+        if actual_resolver_indexes != expected_resolver_indexes:
+            raise ValueError("resolver sidecar inventory does not match available pronunciation capabilities")
         actual_assets = {path.name for path in ASSET_DIR.glob("*.g2lex")}
         actual_manifests = {path.name for path in MANIFEST_DIR.glob("*.manifest.json")}
         unexpected_assets = sorted(actual_assets - expected_assets)

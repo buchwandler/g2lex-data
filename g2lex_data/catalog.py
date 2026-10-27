@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .capabilities import NO_RESOLVABLE_AMBIGUITIES, NO_SENSE_LINKED_MAPPING
 from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, sha256_file, write_json
 from .config import load_config
 
@@ -55,6 +56,43 @@ def build_catalog(
         source = manifest.get("source")
         if not isinstance(asset, dict) or not isinstance(source, dict):
             raise TypeError(f"invalid manifest for {record.id}")
+        capabilities = manifest.get("capabilities")
+        resolution_capability = None
+        if record.kind == "pronunciation":
+            if not isinstance(capabilities, dict):
+                raise ValueError(f"pronunciation capability is missing for {record.id}")
+            resolution_capability = capabilities.get("pronunciation_resolution")
+            if not isinstance(resolution_capability, dict):
+                raise ValueError(f"pronunciation-resolution capability is missing for {record.id}")
+            status = resolution_capability.get("status")
+            if status not in {"available", "unnecessary", "unavailable"}:
+                raise ValueError(f"invalid pronunciation-resolution status for {record.id}")
+            if status == "available":
+                if (
+                    not isinstance(resolution_capability.get("index"), dict)
+                    or "reason" in resolution_capability
+                ):
+                    raise ValueError(f"available capability lacks index metadata for {record.id}")
+            elif (
+                not isinstance(resolution_capability.get("reason"), str)
+                or not resolution_capability["reason"].strip()
+                or "index" in resolution_capability
+            ):
+                raise ValueError(f"invalid {status} capability metadata for {record.id}")
+            if status != "available":
+                expected_reason = (
+                    NO_RESOLVABLE_AMBIGUITIES
+                    if status == "unnecessary"
+                    else NO_SENSE_LINKED_MAPPING
+                )
+                if resolution_capability["reason"] != expected_reason:
+                    raise ValueError(f"unexpected {status} capability reason for {record.id}")
+            if status != "available":
+                stale_index = ASSET_DIR / f"g2lex-{record.slug}.pronresolve.json"
+                if stale_index.exists():
+                    raise ValueError(f"non-available capability has a stale resolver file for {record.id}")
+        elif capabilities is not None:
+            raise ValueError(f"non-pronunciation asset has capability metadata for {record.id}")
         artifact_entry: dict[str, object] = {
             "id": record.id,
             "language": manifest["language"],
@@ -102,13 +140,18 @@ def build_catalog(
                 else None
             ),
         }
+        if resolution_capability is not None:
+            artifact_entry["capabilities"] = {"pronunciation_resolution": resolution_capability}
         resolver = manifest.get("resolver_index")
-        transform = manifest.get("transform")
-        transform_inputs = transform.get("inputs", {}) if isinstance(transform, dict) else {}
-        if not isinstance(transform_inputs, dict):
-            transform_inputs = {}
-        if resolver is None and transform_inputs.get("pronresolve_version") is not None:
-            raise ValueError(f"resolver index missing from manifest for {record.id}")
+        if record.kind == "pronunciation":
+            assert isinstance(resolution_capability, dict)
+            status = resolution_capability["status"]
+            if status == "available" and resolver is None:
+                raise ValueError(f"available capability lacks resolver index for {record.id}")
+            if status != "available" and resolver is not None:
+                raise ValueError(f"non-available capability has resolver index for {record.id}")
+        elif resolver is not None:
+            raise ValueError(f"non-pronunciation asset has a resolver index for {record.id}")
         if resolver is not None:
             if not isinstance(resolver, dict):
                 raise TypeError(f"invalid resolver index metadata for {record.id}")
@@ -131,12 +174,30 @@ def build_catalog(
             from pronresolve import load_index
 
             index = load_index(index_path)
+            if not index.profiles or index.schema_version != 2:
+                raise ValueError(f"resolver index must be non-empty schema v2 for {record.id}")
             if (
                 resolver.get("schema_version") != index.schema_version
                 or resolver.get("language") != index.language
                 or resolver.get("locale") != index.locale
             ):
                 raise ValueError(f"resolver index identity mismatch for {record.id}")
+            capability_index = resolution_capability["index"]
+            expected_capability_index = {
+                key: resolver.get(key)
+                for key in (
+                    "name",
+                    "schema_version",
+                    "language",
+                    "locale",
+                    "dataset_version",
+                    "sha256",
+                    "size",
+                )
+            }
+            if capability_index != expected_capability_index:
+                raise ValueError(f"catalog capability descriptor mismatch for {record.id}")
+            assert isinstance(asset, dict)
             artifact_entry["resolver_index"] = {
                 "name": index_name,
                 "url": _join_url(root, index_name),

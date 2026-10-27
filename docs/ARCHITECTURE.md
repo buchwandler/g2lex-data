@@ -33,6 +33,18 @@ G2Lex asset + exact manifest
 immutable release + catalog
 ```
 
+## Pronunciation-resolution capability pipeline
+
+`pronresolve` owns ambiguity discovery, the runtime cue policy, and the compact schema-v2 index. Its Policy B index compiles synonyms, glosses, topics, tags, and antonyms; examples remain available in source/build evidence but are excluded from runtime cues. `g2lex-data` consumes the public discovery/index API and does not duplicate the scoring policy or post-process examples.
+
+Every pronunciation asset carries `capabilities.pronunciation_resolution` in packed G2Lex metadata, its manifest, the catalog, and release inventory:
+
+- `available` means a non-empty schema-v2 index is paired with the asset. Its descriptor records name, schema, language, locale, dataset version, SHA-256, and size. The build verifies each profile against the matching `READING:<reading_id>` selector and IPA before publishing the asset/index pair atomically.
+- `unnecessary` means eligible LexHint discovery produced zero runtime profiles. The manifest retains `no_resolvable_same_pos_ambiguities` and compact discovery statistics; no descriptor or sidecar is published.
+- `unavailable` means the source has no validated sense-linked pronunciation mapping. Source-only assets such as `en-us:gold` declare `source_has_no_sense_linked_pronunciation_mapping`; no LexHint selector or sidecar is borrowed.
+
+Validation is status-driven: `available` requires a matching, non-empty index and selectors; the other states require a reason, no descriptor/file, and (for `unnecessary`) zero-profile discovery evidence. Catalogs expose the same state directly. Release assembly includes sidecars only for `available` assets and checks that every sidecar corresponds to exactly one such asset; release metrics report capability counts and resolver index count/bytes.
+
 ## Producer and assembler boundary
 
 Release production is split into independent jobs. Producer jobs own LexHint source resolution, source validation, transforms, eSpeak generation, packing, and manifests. The static producer builds configured assets that are not claimed by a supported eSpeak locale bundle. Each eSpeak producer builds its locale's parent assets and both derived pair members once, using the final release data version, then uploads `build/assets/` and `build/manifests/` as a workflow artifact.
