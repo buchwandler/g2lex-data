@@ -62,6 +62,12 @@ The current catalog exposes 36 English-Wiktionary-derived physical pairs and 19 
 
 The pronunciation transform calls the resolved LexHint API with the configured locale, so locale filtering occurs before the G2Lex transform removes LexHint source region tags. A locale-neutral projection may contain variants from multiple regions; consumers that know the locale should select a locale-qualified catalog asset rather than expect runtime region selection inside one G2Lex asset. The transform preserves meaningful pronunciation variants and records audit counters. Transform IDs are immutable contracts. Semantic changes require a new transform ID and data release.
 
+## Selector granularity
+
+LexHint pronunciation transforms map the source POS label to a G2Lex selector and preserve alternate pronunciations in source order. They retain finer or unrecognized labels after normalization (for example `VB`, `VBD`, and `VBN`) when the source actually supplies them; the transform does not invent grammatical tags absent from the data. Current LexHint datasets generally provide broad POS evidence, so contextual distinctions such as verb tense or lexical sense are not implied by their assets.
+
+The German Crane transform preserves its base pronunciation and adds matching LexHint POS selectors where available. CSTR and generated eSpeak outputs are untagged per-key pronunciations, while `kokoro-legacy-collapse-v1` preserves the typed selector structures present in its legacy inputs. Consumers should therefore inspect each asset's tags rather than infer fine-grained coverage from its language or source family.
+
 ## Artifact contracts
 
 Every manifest records the stable asset identity, language, kind, encoding, producer and data versions, G2Lex version, source selector, exact resolved dataset metadata, transform inputs and report, asset hash and size, logical hash, and entry counts. For LexHint sources, exact provenance includes dataset version, release tag and publication time, release asset name and digest, SQLite digest and size, source variant, Wiktionary edition, metadata language, schema, locale, and LexHint runtime version.

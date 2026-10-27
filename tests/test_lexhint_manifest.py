@@ -5,6 +5,7 @@ import json
 from dataclasses import replace
 from pathlib import Path
 
+import g2lex
 from lexhint.builder import build_dictionary
 
 from g2lex_data import build, validate
@@ -77,6 +78,22 @@ def test_lexhint_manifest_records_exact_resolved_identity(tmp_path: Path, monkey
     )
 
     manifest = build.build_one(record)
+    asset_path = tmp_path / "assets" / record.asset_name
+    asset_manifest = manifest["asset"]
+    assert manifest["id"] == record.id
+    assert manifest["language"] == record.language
+    assert manifest["name"] == record.name
+    assert manifest["phoneme_encoding"] == record.phoneme_encoding
+    assert len(asset_manifest["sha256"]) == 64
+    assert len(asset_manifest["logical_sha256"]) == 64
+    with g2lex.open(asset_path) as lexicon:
+        local_metadata = lexicon.metadata
+    assert local_metadata["id"] == record.id
+    assert local_metadata["language"] == record.language
+    assert local_metadata["name"] == record.name
+    assert local_metadata["phoneme_encoding"] == record.phoneme_encoding
+    assert hashlib.sha256(asset_path.read_bytes()).hexdigest() == asset_manifest["sha256"]
+    assert local_metadata["logical_sha256"] == asset_manifest["logical_sha256"]
     source_manifest = manifest["source"]
 
     assert source_manifest["revision"] == "data-en-english-2026.09.10"

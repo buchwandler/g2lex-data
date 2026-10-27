@@ -95,6 +95,28 @@ def test_different_pos_values_use_selectors() -> None:
     }
 
 
+
+
+def test_fine_grained_pos_selectors_are_preserved() -> None:
+    item = entry(
+        "read",
+        group("VB", "[riːd]", word="read"),
+        group("VBD", "[rɛd]", word="read"),
+        group("VBN", "[rɛd]", word="read"),
+    )
+
+    result = transform_lexhint([item])
+
+    assert result.entries["read"] == {
+        "DEFAULT": "riːd",
+        "VB": "riːd",
+        "VBD": "rɛd",
+        "VBN": "rɛd",
+    }
+    assert serialize_entries(result.entries) == (
+        '{"read":{"DEFAULT":"riːd","VB":"riːd","VBD":"rɛd","VBN":"rɛd"}}\n'
+    )
+
 def test_multi_variant_pos_remains_tuple() -> None:
     item = entry("live", group("verb", "[a]"), group("adj", "[b]", "[c]"))
     assert collapse_entry(item)["ADJ"] == ("b", "c")  # type: ignore[index]
