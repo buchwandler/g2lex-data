@@ -465,7 +465,7 @@ def _write_espeak_variant(
     inputs = record.transform_inputs or {}
     resolution_capability = _pronunciation_resolution_capability(record, None)
     capability_document = _capability_metadata(resolution_capability, None)
-    with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.") as temp_name:
+    with tempfile.TemporaryDirectory(prefix=f".{record.slug}.transform.", dir=ASSET_DIR) as temp_name:
         temp_dir = Path(temp_name)
         staged_asset_path = temp_dir / record.asset_name
         input_path = temp_dir / f"{record.slug}.json"
