@@ -11,7 +11,7 @@ from lexhint import Lexicon
 from lexhint.builder import build_dictionary
 
 from g2lex_data.config import load_config
-from g2lex_data.transforms import apply
+from g2lex_data.transforms import _locale_filtered_discovery_entries, apply
 
 
 def _build_fixture(tmp_path: Path) -> Path:
@@ -102,6 +102,36 @@ def _record(locale: str | None) -> object:
             "include_neutral": True,
         },
     )
+
+
+class _LegacyLexicon:
+    """Expose the LexHint 0.4.7 API surface used by the fallback."""
+
+    def __init__(self, lexicon: Lexicon) -> None:
+        self._lexicon = lexicon
+
+    def iter_pronunciations(self, **kwargs: object):
+        return self._lexicon.iter_pronunciations(**kwargs)
+
+    def entries(self, *args: object, **kwargs: object):
+        return self._lexicon.entries(*args, **kwargs)
+
+
+def test_locale_discovery_supports_lexhint_047_api(tmp_path: Path) -> None:
+    artifact = _build_fixture(tmp_path)
+    lexicon = _LegacyLexicon(Lexicon.from_path(artifact, language="en", locale="en_US"))
+
+    entries = list(
+        _locale_filtered_discovery_entries(
+            lexicon, language="en", locale="en_US", include_neutral=True
+        )
+    )
+
+    assert [(entry.word, entry.pos) for entry in entries] == [
+        ("live", "verb"),
+        ("live", "adjective"),
+        ("neutral", "noun"),
+    ]
 
 
 def test_one_artifact_can_derive_locale_outputs(tmp_path: Path) -> None:

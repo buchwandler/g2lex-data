@@ -160,12 +160,36 @@ def _crane(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     return TransformResult(intermediate, "kokoro-json", metadata, report)
 
 
+def _iter_lexicon_entries(lexicon: Any):
+    """Return dictionary entries across supported LexHint releases.
+
+    ``iter_entries`` was added in LexHint 0.4.8, while this project still
+    supports the 0.4.7 API.  The pronunciation iterator is available in both
+    releases, so use it to discover normalized keys and then fetch the full
+    entries (including sense evidence) on older releases.
+    """
+    iter_entries = getattr(lexicon, "iter_entries", None)
+    if callable(iter_entries):
+        return iter_entries()
+
+    def entries_from_pronunciations():
+        seen_words: set[str] = set()
+        for pronunciation_entry in lexicon.iter_pronunciations(include_neutral=True):
+            word = getattr(pronunciation_entry, "key", None)
+            if not isinstance(word, str) or word in seen_words:
+                continue
+            seen_words.add(word)
+            yield from lexicon.entries(word, all_case_variants=True)
+
+    return entries_from_pronunciations()
+
+
 def _locale_filtered_discovery_entries(
     lexicon: Any, *, language: str, locale: str | None, include_neutral: bool
 ):
     """Filter entry-level pronunciations with LexHint's locale selection rules."""
     if not locale:
-        return lexicon.iter_entries()
+        return _iter_lexicon_entries(lexicon)
 
     from dataclasses import replace
 
@@ -179,12 +203,12 @@ def _locale_filtered_discovery_entries(
 
     locale_matched_keys: set[tuple[str, str]] = set()
     if not include_neutral:
-        for entry in lexicon.iter_entries():
+        for entry in _iter_lexicon_entries(lexicon):
             if any(matches(pronunciation) for pronunciation in entry.pronunciations):
                 locale_matched_keys.add((normalize_word(entry.word), normalize_pos(entry.pos)))
 
     def filtered_entries():
-        for entry in lexicon.iter_entries():
+        for entry in _iter_lexicon_entries(lexicon):
             key = (normalize_word(entry.word), normalize_pos(entry.pos))
             if include_neutral:
                 pronunciations = tuple(
