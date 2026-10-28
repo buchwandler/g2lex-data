@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from types import SimpleNamespace
 from typing import ClassVar
+
+from pronresolve import AmbiguityIndex, ReadingProfile, SemanticAnchor, reading_id_v2, save_index
 
 from g2lex_data import build as build_module
 from g2lex_data.config import AssetConfig
@@ -212,3 +215,61 @@ def test_multiple_locale_pairs_reuse_backend_in_requested_order(monkeypatch) -> 
     assert len(FakeBackend.instances) == 1
     assert FakeBackend.instances[0].voices == ["voice-bb", "voice-aa"]
     assert FakeBackend.instances[0].closed == 1
+
+
+def test_target_build_reuses_the_canonical_locale_rules_index(monkeypatch, tmp_path) -> None:
+    from g2lex_data.transforms.lexhint_pronunciations import TRANSFORM_VERSION
+
+    canonical = replace(
+        _record("aa:lexhint-native", "lexhint-native", language="aa"),
+        source_provider="lexhint",
+        source_format="lexhint-dictionary",
+        transform=TRANSFORM_VERSION,
+        transform_inputs={"lexhint_language": "aa"},
+    )
+    target = replace(_record("aa:gold", "gold", language="aa"), phoneme_encoding="ipa")
+    anchors = ("a", "b")
+    profiles = tuple(
+        ReadingProfile(
+            word="word",
+            pos="NOUN",
+            reading_id=reading_id_v2(
+                "aa", "word", "NOUN", SemanticAnchor("fixture:aa", (anchor,))
+            ),
+            anchor_ipa=anchor,
+        )
+        for anchor in anchors
+    )
+    index = AmbiguityIndex(
+        language="aa",
+        locale="aa",
+        rules_id="aa",
+        profiles=profiles,
+    )
+    assets = tmp_path / "assets"
+    assets.mkdir()
+    index_path = assets / "g2lex-aa.pronresolve.json"
+    save_index(index, index_path)
+    monkeypatch.setattr(build_module, "ASSET_DIR", assets)
+    monkeypatch.setattr(build_module, "load_config", lambda: _config((canonical, target)))
+
+    builds: list[tuple[str, dict[str, object]]] = []
+
+    def fake_build(record, *, data_version, **kwargs):
+        builds.append((record.id, kwargs))
+        if record.id == canonical.id:
+            return {
+                "id": record.id,
+                "resolver_index": {"path": index_path.name, "rules_id": index.rules_id},
+            }
+        return {"id": record.id}
+
+    monkeypatch.setattr(build_module, "_build_source_record", fake_build)
+    session = build_module.BuildSession(data_version="test")
+
+    assert session.build_record(target) == {"id": target.id}
+    assert session.build_record(canonical)["id"] == canonical.id
+
+    assert [record_id for record_id, _ in builds] == [canonical.id, target.id]
+    assert builds[1][1]["shared_rules"].rules_id == index.rules_id
+    assert session._shared_rules_by_locale["aa"].rules_id == index.rules_id

@@ -219,15 +219,37 @@ def _lexhint(
     temp_dir: Path,
     *,
     source_metadata: Mapping[str, object] | None = None,
+    shared_rules: Any | None = None,
 ) -> TransformResult:
     import pronresolve
     from lexhint import Lexicon
     from pronresolve import __version__ as pronresolve_version
     from pronresolve import discover_ambiguities, save_index
+
     expected = record.transform_inputs or {}
     language = str(expected.get("lexhint_language", record.language.split("-", 1)[0]))
     locale = expected.get("lexhint_locale")
     include_neutral = bool(expected.get("include_neutral", True))
+    equivalence_name = expected.get("pronunciation_equivalence", "exact")
+    if equivalence_name not in ("exact", "phonodist"):
+        raise ValueError("pronunciation_equivalence must be 'exact' or 'phonodist'")
+    strict_equivalence = expected.get("strict_equivalence", False)
+    if not isinstance(strict_equivalence, bool):
+        raise TypeError("strict_equivalence must be a boolean")
+    stress_policy = expected.get("stress_policy", "all")
+    if equivalence_name == "phonodist" and stress_policy not in ("all", "primary"):
+        raise ValueError("stress_policy must be 'all' or 'primary'")
+    equivalence_policy = None
+    if equivalence_name == "phonodist" and shared_rules is None:
+        from pronresolve import PhonodistEquivalence
+
+        if stress_policy == "all":
+            equivalence_policy = PhonodistEquivalence(language=language, stress_policy="all")
+        elif stress_policy == "primary":
+            equivalence_policy = PhonodistEquivalence(language=language, stress_policy="primary")
+        else:
+            raise ValueError("stress_policy must be 'all' or 'primary'")
+
     lexicon = Lexicon.from_path(
         source,
         language=language,
@@ -252,57 +274,79 @@ def _lexhint(
         "include_neutral": include_neutral,
         "lexhint_version": resolved.get("lexhint_version"),
     }
-    discovery = discover_ambiguities(
-        _locale_filtered_discovery_entries(
-            lexicon,
+
+    discovery = None
+    discovery = None
+    rules_index = shared_rules if shared_rules is not False else None
+    if shared_rules is None:
+        discovery = discover_ambiguities(
+            _locale_filtered_discovery_entries(
+                lexicon,
+                language=language,
+                locale=locale if isinstance(locale, str) else None,
+                include_neutral=include_neutral,
+            ),
             language=language,
             locale=locale if isinstance(locale, str) else None,
-            include_neutral=include_neutral,
-        ),
-        language=language,
-        locale=locale if isinstance(locale, str) else None,
-    )
-    if discovery.index.schema_version != 2:
-        raise ValueError(
-            f"unsupported pronresolve schema version for g2lex-data: "
-            f"{discovery.index.schema_version}"
+            pronunciation_equivalence=equivalence_policy,
         )
-    profiles = discovery.index.profiles
+        if strict_equivalence and discovery.report.equivalence_errors:
+            raise ValueError(
+                "strict pronunciation equivalence failed with "
+                f"{discovery.report.equivalence_errors} comparison error(s)"
+            )
+        rules_index = discovery.index
+    if rules_index is not None and rules_index.schema_version != 3:
+        raise ValueError(
+            "unsupported pronresolve schema version for g2lex-data: "
+            f"{rules_index.schema_version}"
+        )
+
+    profiles = rules_index.profiles if rules_index is not None else ()
     result = transform_lexhint(
         lexicon.iter_pronunciations(include_neutral=include_neutral),
         source_metadata=transform_source_metadata,
-        reading_profiles=profiles,
     )
-    result.report["ambiguity_discovery"] = discovery.report.as_dict()
+    if discovery is not None:
+        result.report["ambiguity_discovery"] = discovery.report.as_dict()
+        result.report["pronunciation_equivalence"] = equivalence_name
+        if equivalence_name == "phonodist":
+            result.report["stress_policy"] = stress_policy
     result.report["runtime_profile_count"] = len(profiles)
     result.report["runtime_cue_count"] = sum(len(profile.cues) for profile in profiles)
-    result.report["resolver_index_schema_version"] = discovery.index.schema_version
+    if rules_index is not None:
+        result.report["resolver_index_schema_version"] = rules_index.schema_version
+        result.report["shared_rules_id"] = rules_index.rules_id
+    elif shared_rules is False:
+        result.report["shared_rules_status"] = "no_resolvable_rules"
 
     temp_dir.mkdir(parents=True, exist_ok=True)
-    index_path = temp_dir / f"g2lex-{record.slug}.pronresolve.json"
     resolver_index_path: Path | None = None
     resolver_index_metadata: dict[str, object] | None = None
-    if profiles:
-        save_index(discovery.index, index_path)
-        resolver_index_path = index_path
-        resolver_index_metadata = {
-            "name": index_path.name,
-            "schema_version": discovery.index.schema_version,
-            "language": discovery.index.language,
-            "locale": discovery.index.locale,
-            "dataset_version": transform_source_metadata["dataset_version"],
-        }
-        capability = ResolutionCapability("available", index=resolver_index_metadata)
-        result.report["resolver_index_byte_size"] = index_path.stat().st_size
-    else:
-        index_path.unlink(missing_ok=True)
-        capability = ResolutionCapability(
-            "unnecessary", reason=NO_RESOLVABLE_AMBIGUITIES
-        )
-        result.report["resolver_index_byte_size"] = 0
+    capability: ResolutionCapability | None = None
+    if discovery is not None:
+        assert rules_index is not None
+        index_path = temp_dir / f"g2lex-{rules_index.rules_id}.pronresolve.json"
+        if profiles:
+            save_index(rules_index, index_path)
+            resolver_index_path = index_path
+            resolver_index_metadata = {
+                "name": index_path.name,
+                "rules_id": rules_index.rules_id,
+                "schema_version": rules_index.schema_version,
+                "language": rules_index.language,
+                "locale": rules_index.locale,
+                "dataset_version": transform_source_metadata["dataset_version"],
+            }
+            capability = ResolutionCapability("available", index=resolver_index_metadata)
+            result.report["resolver_index_byte_size"] = index_path.stat().st_size
+        else:
+            index_path.unlink(missing_ok=True)
+            capability = ResolutionCapability("unnecessary", reason=NO_RESOLVABLE_AMBIGUITIES)
+            result.report["resolver_index_byte_size"] = 0
 
     policy_id = getattr(pronresolve, "RUNTIME_POLICY_ID", None)
-    if isinstance(policy_id, str) and policy_id:
+    if discovery is not None and isinstance(policy_id, str) and policy_id:
         result.report["resolver_policy_id"] = policy_id
 
     intermediate = temp_dir / f"{record.slug}.json"
@@ -312,15 +356,23 @@ def _lexhint(
     transform_inputs = {
         **expected,
         "pronresolve_version": pronresolve_version,
-        "pronresolve_index_schema_version": discovery.index.schema_version,
     }
-    if isinstance(policy_id, str) and policy_id:
+    if rules_index is not None:
+        transform_inputs["pronresolve_index_schema_version"] = rules_index.schema_version
+        transform_inputs["shared_rules_id"] = rules_index.rules_id
+    elif shared_rules is False:
+        transform_inputs["shared_rules_status"] = "no_resolvable_rules"
+    if discovery is not None and isinstance(policy_id, str) and policy_id:
         transform_inputs["pronresolve_policy"] = policy_id
     metadata = {
         "transform": LEXHINT_TRANSFORM_VERSION,
         "transform_inputs": transform_inputs,
         **({"resolver_index": resolver_index_metadata} if resolver_index_metadata is not None else {}),
-        "capabilities": {"pronunciation_resolution": capability.to_dict()},
+        **(
+            {"capabilities": {"pronunciation_resolution": capability.to_dict()}}
+            if capability is not None
+            else {}
+        ),
         "source_metadata": transform_source_metadata,
         "transform_report_sha256": _sha256(report_path),
         "transform_report": result.report,
@@ -343,7 +395,6 @@ def _lexhint(
         resolution_capability=capability,
         resolver_index_metadata=resolver_index_metadata,
     )
-
 
 def _cstr(record: Any, source: Path, temp_dir: Path) -> TransformResult:
     output = temp_dir / f"{record.slug}.tsv"
@@ -379,6 +430,7 @@ def apply(
     temp_dir: Path,
     *,
     source_metadata: Mapping[str, object] | None = None,
+    shared_rules: Any | None = None,
 ) -> TransformResult | None:
     if record.transform is None:
         return None
@@ -387,7 +439,13 @@ def apply(
     except KeyError as exc:
         raise ValueError(f"unknown transform ID: {record.transform}") from exc
     if record.transform == LEXHINT_TRANSFORM_VERSION:
-        return _lexhint(record, source, temp_dir, source_metadata=source_metadata)
+        return _lexhint(
+            record,
+            source,
+            temp_dir,
+            source_metadata=source_metadata,
+            shared_rules=shared_rules,
+        )
     if record.transform in {NORMAL_TRANSFORM_ID, PIPER_TRANSFORM_ID}:
         return _espeak(record, source, temp_dir, source_metadata=source_metadata)
     return transform(record, source, temp_dir)

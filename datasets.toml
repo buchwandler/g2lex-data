@@ -1333,6 +1333,9 @@ lexhint_source_variant = "native"
 lexhint_variant = "dictionary"
 lexhint_schema_version = "10"
 include_neutral = true
+pronunciation_equivalence = "phonodist"
+stress_policy = "all"
+strict_equivalence = true
 key_normalization = "nfc-lower"
 lexhint_version = "0.4.8"
 

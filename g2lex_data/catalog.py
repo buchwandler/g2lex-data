@@ -3,7 +3,15 @@ from __future__ import annotations
 from pathlib import Path
 
 from .capabilities import NO_RESOLVABLE_AMBIGUITIES, NO_SENSE_LINKED_MAPPING
-from .common import ASSET_DIR, CATALOG_PATH, MANIFEST_DIR, sha256_file, write_json
+from .common import (
+    ASSET_DIR,
+    CATALOG_PATH,
+    MANIFEST_DIR,
+    REPORT_DIR,
+    read_json,
+    sha256_file,
+    write_json,
+)
 from .config import load_config
 
 
@@ -18,6 +26,70 @@ def _data_tag(config, version: str) -> str:
 
 def _join_url(root: str, filename: str) -> str:
     return root.rstrip("/") + "/" + filename
+
+
+def _binding_catalog_reference(
+    record_id: str,
+    capability: object,
+    root: str,
+) -> dict[str, object]:
+    if not isinstance(capability, dict):
+        raise TypeError(f"pronunciation-binding capability is missing for {record_id}")
+    status = capability.get("status")
+    if status == "unavailable":
+        reason = capability.get("reason")
+        if not isinstance(reason, str) or not reason:
+            raise ValueError(f"invalid unavailable binding capability for {record_id}")
+        return {"status": status, "reason": reason}
+    if status not in {"complete", "partial", "unbound"}:
+        raise ValueError(f"invalid pronunciation-binding status for {record_id}")
+    rules_id = capability.get("rules_id")
+    encoding = capability.get("phoneme_encoding")
+    reading_count = capability.get("reading_count")
+    counts = capability.get("status_counts")
+    report = capability.get("report")
+    if (
+        not isinstance(rules_id, str)
+        or not isinstance(encoding, str)
+        or not isinstance(reading_count, int)
+        or not isinstance(counts, dict)
+        or not all(isinstance(value, int) and value >= 0 for value in counts.values())
+        or sum(counts.values()) != reading_count
+        or not isinstance(report, dict)
+    ):
+        raise ValueError(f"invalid pronunciation-binding summary for {record_id}")
+    name = report.get("path", report.get("name"))
+    if not isinstance(name, str) or not name or Path(name).name != name:
+        raise ValueError(f"invalid binding-report path for {record_id}")
+    report_path = REPORT_DIR / name
+    if not report_path.is_file():
+        raise FileNotFoundError(f"binding report missing for {record_id}: {report_path}")
+    if sha256_file(report_path) != report.get("sha256"):
+        raise ValueError(f"binding report SHA mismatch for {record_id}")
+    if report_path.stat().st_size != report.get("size"):
+        raise ValueError(f"binding report size mismatch for {record_id}")
+    report_data = read_json(report_path)
+    if (
+        not isinstance(report_data, dict)
+        or report_data.get("rules_id") != rules_id
+        or report_data.get("phoneme_encoding") != encoding
+        or report_data.get("reading_count") != reading_count
+        or report_data.get("status_counts") != counts
+    ):
+        raise ValueError(f"binding report summary mismatch for {record_id}")
+    return {
+        "status": status,
+        "rules_id": rules_id,
+        "phoneme_encoding": encoding,
+        "reading_count": reading_count,
+        "status_counts": dict(counts),
+        "report": {
+            "name": name,
+            "url": _join_url(root, name),
+            "sha256": report["sha256"],
+            "size": report["size"],
+        },
+    }
 
 
 def build_catalog(
@@ -37,6 +109,7 @@ def build_catalog(
     root = base_url or _release_root(config.repository, tag)
     artifacts: list[dict[str, object]] = []
     seen: set[str] = set()
+    shared_rules_by_id: dict[str, dict[str, object]] = {}
     for record in records:
         manifest_path = MANIFEST_DIR / record.manifest_name
         if not manifest_path.is_file():
@@ -58,6 +131,7 @@ def build_catalog(
             raise TypeError(f"invalid manifest for {record.id}")
         capabilities = manifest.get("capabilities")
         resolution_capability = None
+        binding_catalog_reference = None
         if record.kind == "pronunciation":
             if not isinstance(capabilities, dict):
                 raise ValueError(f"pronunciation capability is missing for {record.id}")
@@ -91,6 +165,19 @@ def build_catalog(
                 stale_index = ASSET_DIR / f"g2lex-{record.slug}.pronresolve.json"
                 if stale_index.exists():
                     raise ValueError(f"non-available capability has a stale resolver file for {record.id}")
+            binding_capability = capabilities.get("pronunciation_binding")
+            if binding_capability is not None:
+                binding_catalog_reference = _binding_catalog_reference(
+                    record.id,
+                    binding_capability,
+                    root,
+                )
+            else:
+                binding_catalog_reference = None
+            if binding_capability is not None:
+                binding_status = binding_capability.get("status")
+                if (status == "available") == (binding_status == "unavailable"):
+                    raise ValueError(f"resolution/binding capability mismatch for {record.id}")
         elif capabilities is not None:
             raise ValueError(f"non-pronunciation asset has capability metadata for {record.id}")
         artifact_entry: dict[str, object] = {
@@ -140,9 +227,16 @@ def build_catalog(
                 else None
             ),
         }
+        artifact_capabilities: dict[str, object] = {}
         if resolution_capability is not None:
-            artifact_entry["capabilities"] = {"pronunciation_resolution": resolution_capability}
-        resolver = manifest.get("resolver_index")
+            artifact_capabilities["pronunciation_resolution"] = resolution_capability
+        if binding_catalog_reference is not None:
+            artifact_capabilities["pronunciation_binding"] = binding_catalog_reference
+        if artifact_capabilities:
+            artifact_entry["capabilities"] = artifact_capabilities
+        resolver = manifest.get("shared_rules", manifest.get("resolver_index"))
+        if manifest.get("shared_rules") is not None and manifest.get("resolver_index") != resolver:
+            raise ValueError(f"legacy resolver alias differs from shared rules for {record.id}")
         if record.kind == "pronunciation":
             assert isinstance(resolution_capability, dict)
             status = resolution_capability["status"]
@@ -174,8 +268,10 @@ def build_catalog(
             from pronresolve import load_index
 
             index = load_index(index_path)
-            if not index.profiles or index.schema_version != 2:
-                raise ValueError(f"resolver index must be non-empty schema v2 for {record.id}")
+            if not index.profiles or index.schema_version != 3:
+                raise ValueError(f"shared rules must be non-empty schema v3 for {record.id}")
+            if resolver.get("rules_id") != index.rules_id:
+                raise ValueError(f"shared-rules identity mismatch for {record.id}")
             if (
                 resolver.get("schema_version") != index.schema_version
                 or resolver.get("language") != index.language
@@ -198,7 +294,8 @@ def build_catalog(
             if capability_index != expected_capability_index:
                 raise ValueError(f"catalog capability descriptor mismatch for {record.id}")
             assert isinstance(asset, dict)
-            artifact_entry["resolver_index"] = {
+            rules_reference = {
+                "rules_id": index.rules_id,
                 "name": index_name,
                 "url": _join_url(root, index_name),
                 "sha256": resolver["sha256"],
@@ -208,6 +305,12 @@ def build_catalog(
                 "locale": index.locale,
                 "dataset_version": version,
             }
+            existing_reference = shared_rules_by_id.get(index.rules_id)
+            if existing_reference is not None and existing_reference != rules_reference:
+                raise ValueError(f"conflicting shared rules references for {index.rules_id}")
+            shared_rules_by_id[index.rules_id] = rules_reference
+            artifact_entry["shared_rules"] = rules_reference
+            artifact_entry["resolver_index"] = rules_reference
         artifacts.append(artifact_entry)
     catalog: dict[str, object] = {
         "catalog_version": config.catalog_version,
@@ -215,6 +318,10 @@ def build_catalog(
         "repository": config.repository,
         "data_version": version,
         "release_tag": tag,
+        "shared_rules": sorted(
+            shared_rules_by_id.values(),
+            key=lambda item: str(item["rules_id"]),
+        ),
         "artifacts": artifacts,
     }
     write_json(output, catalog)

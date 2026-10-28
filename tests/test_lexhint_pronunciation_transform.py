@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from types import SimpleNamespace
-
 import pytest
 from lexhint import Pronunciation, PronunciationEntry, PronunciationGroup
 
@@ -186,22 +184,12 @@ def test_serialization_is_deterministic() -> None:
     assert first == '{"word":{"DEFAULT":"b","NOUN":"a","VERB":"b"}}\n'
 
 
-def test_reading_profiles_add_selectors_without_rewriting_default_variants() -> None:
+def test_transform_leaves_semantic_reading_selectors_to_the_shared_binder() -> None:
     item = entry("read", group("noun", "[riːd]", "[rɛd]"))
-    profiles = (
-        SimpleNamespace(word="read", reading_id="r1-first", ipa=("riːd",)),
-        SimpleNamespace(word="read", reading_id="r1-second", ipa=("rɛd",)),
-    )
 
-    result = transform_lexhint([item], reading_profiles=profiles)
+    result = transform_lexhint([item])
 
-    assert result.entries["read"] == {
-        "DEFAULT": ("riːd", "rɛd"),
-        "READING:r1-first": "riːd",
-        "READING:r1-second": "rɛd",
-    }
+    assert result.entries["read"] == ("riːd", "rɛd")
     assert result.report["pos_selector_count"] == 0
-    assert result.report["reading_selector_count"] == 2
-    assert serialize_entries(result.entries) == (
-        '{"read":{"DEFAULT":["riːd","rɛd"],"READING:r1-first":"riːd","READING:r1-second":"rɛd"}}\n'
-    )
+    assert "reading_selector_count" not in result.report
+    assert serialize_entries(result.entries) == '{"read":["riːd","rɛd"]}\n'

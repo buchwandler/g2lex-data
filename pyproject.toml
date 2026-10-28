@@ -15,6 +15,7 @@ dependencies = ["g2lex>=0.1.9,<0.2", "lexhint==0.4.8", "pronresolve>=0.1.1,<0.2"
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.16", "build>=1", "tomli>=2; python_version < '3.11'"]
 espeak = []
+phonetic = ["phonodist>=0.1,<0.2"]
 
 [project.scripts]
 g2lex-data = "g2lex_data.cli:main"

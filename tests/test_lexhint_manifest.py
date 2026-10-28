@@ -264,6 +264,9 @@ def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monk
     monkeypatch.setattr(build, "ASSET_DIR", assets)
     monkeypatch.setattr(build, "MANIFEST_DIR", manifests)
     monkeypatch.setattr(build, "REPORT_DIR", reports)
+    monkeypatch.setattr(validate, "REPORT_DIR", reports)
+    monkeypatch.setattr(catalog, "REPORT_DIR", reports)
+    monkeypatch.setattr(release, "REPORT_DIR", reports)
     monkeypatch.setattr(validate, "ASSET_DIR", assets)
     monkeypatch.setattr(validate, "MANIFEST_DIR", manifests)
     monkeypatch.setattr(validate, "resolve_source", lambda _: resolved)
@@ -303,14 +306,18 @@ def test_lexhint_resolver_pair_manifest_catalog_and_release(tmp_path: Path, monk
     validate.validate_one(record, verify_source=False)
     index_path = assets / resolver_index["path"]
     index_path.write_bytes(index_bytes + b"corrupt")
-    with pytest.raises(ValueError, match="resolver index SHA mismatch"):
+    with pytest.raises(ValueError, match="shared-rules SHA mismatch"):
         validate.validate_one(record, verify_transform=False, verify_source=False)
     index_path.write_bytes(index_bytes)
 
     built_catalog = catalog.build_catalog("2026.11.01", ids=[record.id], output=catalog_path)
     catalog_artifact = built_catalog["artifacts"][0]
     catalog_reference = catalog_artifact["resolver_index"]
-    assert catalog_artifact["capabilities"] == manifest["capabilities"]
+    assert catalog_artifact["capabilities"]["pronunciation_resolution"] == capability
+    assert catalog_artifact["capabilities"]["pronunciation_binding"]["status"] == manifest[
+        "capabilities"
+    ]["pronunciation_binding"]["status"]
+    assert catalog_artifact["shared_rules"]["rules_id"] == resolver_index["rules_id"]
     assert catalog_reference["sha256"] == resolver_index["sha256"]
     assert catalog_reference["dataset_version"] == "2026.11.01"
     validate.validate_catalog(path=catalog_path, ids=[record.id])

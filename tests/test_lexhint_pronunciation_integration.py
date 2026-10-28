@@ -271,29 +271,33 @@ def test_multilingual_fixture_round_trip(
         assert lexicon.lookup(word.lower()) == ipa
 
 
-def _build_ambiguity_artifact(tmp_path: Path, name: str, rows: list[dict[str, object]]) -> Path:
+def _build_ambiguity_artifact(
+    tmp_path: Path, name: str, rows: list[dict[str, object]], *, language: str = "en"
+) -> Path:
     source = tmp_path / f"{name}.jsonl"
     source.write_text(
         "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
         encoding="utf-8",
     )
     artifact, _ = build_dictionary(
-        "en", source, output=tmp_path / f"{name}.sqlite3", no_frequency=True
+        language, source, output=tmp_path / f"{name}.sqlite3", no_frequency=True
     )
     return artifact
 
 
-def _ambiguity_entry(ipa: str, gloss: str) -> dict[str, object]:
+def _ambiguity_entry(
+    ipa: str, gloss: str, *, word: str = "read", language: str = "en"
+) -> dict[str, object]:
     return {
-        "word": "read",
-        "lang_code": "en",
+        "word": word,
+        "lang_code": language,
         "pos": "noun",
         "sounds": [{"ipa": f"[{ipa}]"}],
         "senses": [{"glosses": [gloss]}],
     }
 
 
-def test_discovery_adds_stable_reading_selectors_and_report_sidecar(tmp_path: Path) -> None:
+def test_discovery_builds_rules_for_the_shared_binder_and_writes_a_report_sidecar(tmp_path: Path) -> None:
     from pronresolve import load_index
 
     rows = [_ambiguity_entry("riːd", "a reading"), _ambiguity_entry("rɛd", "a past tense")]
@@ -309,7 +313,7 @@ def test_discovery_adds_stable_reading_selectors_and_report_sidecar(tmp_path: Pa
     index = load_index(result.resolver_index_path)
     reversed_index = load_index(reversed_result.resolver_index_path)
     report = json.loads(result.report_path.read_text(encoding="utf-8"))
-    values = json.loads(result.input_path.read_text(encoding="utf-8"))["read"]
+    values = json.loads(result.input_path.read_text(encoding="utf-8"))
 
     assert index.to_dict() == reversed_index.to_dict()
     assert len(index.profiles) == 2
@@ -322,8 +326,13 @@ def test_discovery_adds_stable_reading_selectors_and_report_sidecar(tmp_path: Pa
         result.metadata["transform_inputs"]["pronresolve_index_schema_version"]
         == index.schema_version
     )
+    from g2lex_data.pronresolve_binding import bind_shared_rules
+
+    assert set(values["read"]) == {profile.anchor_ipa for profile in index.profiles}
+    bound = bind_shared_rules(values, index, phoneme_encoding=record.phoneme_encoding)
+    assert bound.report.as_dict()["status_counts"]["bound"] == 2
     for profile in index.profiles:
-        assert values[f"READING:{profile.reading_id}"] == profile.ipa
+        assert bound.entries["read"][f"READING:{profile.reading_id}"] == profile.anchor_ipa
 
 
 def test_same_ipa_entries_do_not_create_profiles(tmp_path: Path) -> None:
@@ -420,4 +429,69 @@ def test_example_only_token_is_excluded_from_policy_b_runtime_index(tmp_path: Pa
     assert index.profiles
     assert all(example_token not in {cue.token for cue in profile.cues} for profile in index.profiles)
     assert example_token not in result.resolver_index_path.read_text(encoding="utf-8")
-    assert result.metadata["transform_inputs"]["pronresolve_index_schema_version"] == 2
+    assert result.metadata["transform_inputs"]["pronresolve_index_schema_version"] == 3
+
+
+
+def test_german_phonodist_policy_preserves_prefix_stress_ambiguities(tmp_path: Path) -> None:
+    from pronresolve import load_index
+
+    pairs = {
+        "umfahren": ("ʊmˈfaːʁən", "ˈʊmˌfaːʁən"),
+        "übersetzen": ("ˈyːbɐˌzɛt͡sn̩", "ˌyːbɐˈzɛt͡sn̩"),
+        "durchfahren": ("ˈdʊʁçˌfaːʁən", "ˌdʊʁçˈfaːʁən"),
+        "unterstellen": ("ˈʊntɐˌʃtɛlən", "ˌʊntɐˈʃtɛlən"),
+        "umschreiben": ("ʊmˈʃʁaɪ̯bn̩", "ˈʊmˌʃʁaɪ̯bn̩"),
+    }
+    rows = [
+        _ambiguity_entry(ipa, f"sense {index}", word=word, language="de")
+        for word, ipas in pairs.items()
+        for index, ipa in enumerate(ipas)
+    ]
+    artifact = _build_ambiguity_artifact(tmp_path, "german-prefix", rows, language="de")
+    reversed_artifact = _build_ambiguity_artifact(
+        tmp_path, "german-prefix-reversed", list(reversed(rows)), language="de"
+    )
+    record = load_config().asset("de-de:lexhint-native")
+    assert record.transform_inputs is not None
+    assert record.transform_inputs["pronunciation_equivalence"] == "phonodist"
+    assert record.transform_inputs["stress_policy"] == "all"
+    assert record.transform_inputs["strict_equivalence"] is True
+
+    result = apply(record, artifact, tmp_path / "german-output")
+    reversed_result = apply(record, reversed_artifact, tmp_path / "german-reversed-output")
+    assert result is not None and reversed_result is not None
+    assert result.report_path is not None and reversed_result.report_path is not None
+    assert result.resolver_index_path is not None
+    assert reversed_result.resolver_index_path is not None
+    index = load_index(result.resolver_index_path)
+    reversed_index = load_index(reversed_result.resolver_index_path)
+    assert result.resolver_index_path.read_bytes() == reversed_result.resolver_index_path.read_bytes()
+    report = json.loads(result.report_path.read_text(encoding="utf-8"))
+    reversed_report = json.loads(reversed_result.report_path.read_text(encoding="utf-8"))
+    discovery_report = report["ambiguity_discovery"]
+
+    assert index.to_dict() == reversed_index.to_dict()
+    assert discovery_report == reversed_report["ambiguity_discovery"]
+    assert discovery_report["equivalence_errors"] == 0
+    assert discovery_report["equivalent_pronunciation_keys"] == 0
+    assert discovery_report["equivalence_comparisons"] == len(pairs)
+    assert discovery_report["resolvable_keys"] == len(pairs)
+    assert {profile.word for profile in index.profiles} == set(pairs)
+    assert len(index.profiles) == 2 * len(pairs)
+    assert result.metadata["transform_inputs"]["pronunciation_equivalence"] == "phonodist"
+    assert result.metadata["transform_inputs"]["stress_policy"] == "all"
+    values = json.loads(result.input_path.read_text(encoding="utf-8"))
+    from pronresolve import PhonodistEquivalence
+
+    from g2lex_data.pronresolve_binding import bind_shared_rules
+
+    bound = bind_shared_rules(
+        values,
+        index,
+        phoneme_encoding=record.phoneme_encoding,
+        equivalence_policy=PhonodistEquivalence(language="de", stress_policy="all"),
+    )
+    assert bound.report.as_dict()["status_counts"]["bound"] == len(index.profiles)
+    for profile in index.profiles:
+        assert bound.entries[profile.word][f"READING:{profile.reading_id}"] == profile.anchor_ipa

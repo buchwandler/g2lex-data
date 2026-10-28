@@ -10,13 +10,11 @@ This repository is the authoritative source, build, and release repository for e
 
 ## Pronunciation-resolution capability
 
-Every pronunciation asset advertises `capabilities.pronunciation_resolution` in its manifest and catalog. The status is one of:
+Every pronunciation asset advertises both `capabilities.pronunciation_resolution` and `capabilities.pronunciation_binding` in its manifest and catalog. `pronresolve` discovers semantic reading classes and emits schema-v3 rules; a locale build reuses one canonical rules artifact across compatible assets. The manifest's `shared_rules` reference contains its `rules_id` and checksum. `resolver_index` remains a compatibility alias.
 
-- `available`: a non-empty, validated pronresolve schema-v2 index is paired with the asset.
-- `unnecessary`: LexHint discovery found no safely resolvable same-POS ambiguity; the reason is `no_resolvable_same_pos_ambiguities` and no sidecar is published.
-- `unavailable`: the source lacks validated sense-linked pronunciation mappings; for example, `en-us:gold` uses `source_has_no_sense_linked_pronunciation_mapping` and has no sidecar.
+Resolution status is `available` when shared rules exist, `unnecessary` when canonical discovery found no resolvable ambiguity, and `unavailable` when no validated rules source exists. Binding status is `complete`, `partial`, or `unbound` according to the number of readings safely attached to target-native values; `unavailable` means there were no shared rules to bind. Binding preserves native values and existing selectors, scopes identity to normalized `(word, POS)`, and abstains for unsupported encodings or uncertain equivalence. IPA is the only built-in comparator; other encodings need an explicit reviewed adapter.
 
-Only `available` assets include an index descriptor and `.pronresolve.json` release artifact. The descriptor and paired `READING:<id>` selectors are checked against the packed G2Lex asset. Consumers should use the catalog capability rather than infer support from transform names or filenames. g2lex-data consumes pronresolve's Policy B output (synonyms, glosses, topics, tags, and antonyms); examples are excluded from runtime cues and the policy remains owned by pronresolve.
+Each binding attempt has a deterministic `.binding-report.json` sidecar with per-reading outcomes and status totals. Manifests and catalogs carry its hash and size. Validation checks report coverage and totals against selectors in the packed asset. Release assembly deduplicates rule files by `rules_id` and includes their referenced binding reports. Consumers should use catalog capabilities rather than infer support from transform names or filenames; cue policy and semantic identity remain owned by `pronresolve`.
 
 ## Configured production assets
 
@@ -76,7 +74,7 @@ python -m g2lex_data build-static --data-version 2026.09.12
 python scripts/download_lexhint_sources.py --locale en-us --locale en-gb
 ```
 
-The release workflow uploads each producer's `build/assets/` and `build/manifests/` tree as an Actions artifact. The assembler merges those trees and runs no source download, transform, or eSpeak generation. To assemble an already-built tree locally, use `--from-build`; missing or stale files fail rather than being repaired:
+The release workflow uploads each producer's complete `build/` tree—including assets, manifests, and binding reports—as an Actions artifact. The assembler merges those trees and runs no source download, transform, or eSpeak generation. To assemble an already-built tree locally, use `--from-build`; missing or stale files fail rather than being repaired:
 
 ```bash
 python -m g2lex_data release --data-version 2026.09.12 --from-build
@@ -90,8 +88,7 @@ The parity command accepts either a KokoroG2P checkout root or its
 Data versions are independent from the Python package version. A release such as
 `data-2026.09.0` stages all configured assets, manifests, `catalog.json`, and
 `release.json` under `dist/data-2026.09.0/`. Existing release directories are never
-replaced. Catalog entries contain the stable ID, language, encoding, release tag, asset
-and manifest URLs, hashes, sizes, logical hash, and license summary needed by Lexphon.
+replaced. Catalog entries contain the stable ID, language, encoding, release tag, asset and manifest URLs, hashes, sizes, logical hash, shared-rules references, binding-report references, and license summary needed by Lexphon. Shared rules are staged once per `rules_id`.
 
 ```bash
 python -m g2lex_data release --data-version data-2026.09.0

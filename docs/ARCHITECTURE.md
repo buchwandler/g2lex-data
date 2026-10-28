@@ -35,19 +35,20 @@ immutable release + catalog
 
 ## Pronunciation-resolution capability pipeline
 
-`pronresolve` owns ambiguity discovery, the runtime cue policy, and the compact schema-v2 index. Its Policy B index compiles synonyms, glosses, topics, tags, and antonyms; examples remain available in source/build evidence but are excluded from runtime cues. `g2lex-data` consumes the public discovery/index API and does not duplicate the scoring policy or post-process examples.
+`pronresolve` owns ambiguity discovery, semantic reading IDs, contrastive cue compilation, and schema-v3 shared rules. The rules identify semantic resolution classes, not target pronunciation strings; `anchor_ipa` is diagnostic only. Legacy schema-v1/v2 indexes remain loadable without silently reidentifying their IDs.
 
-Every pronunciation asset carries `capabilities.pronunciation_resolution` in packed G2Lex metadata, its manifest, the catalog, and release inventory:
+For each locale, `BuildSession` prefers the canonical `lexhint-native` source and falls back to `lexhint`, then builds and caches one rules index for every compatible variant. Pronunciation assets reference that artifact by `rules_id` through `shared_rules`; the older `resolver_index` field remains a compatibility alias. Release assembly deduplicates shared artifacts by `rules_id`.
 
-- `available` means a non-empty schema-v2 index is paired with the asset. Its descriptor records name, schema, language, locale, dataset version, SHA-256, and size. The build verifies each profile against the matching `READING:<reading_id>` selector and IPA before publishing the asset/index pair atomically.
-- `unnecessary` means eligible LexHint discovery produced zero runtime profiles. The manifest retains `no_resolvable_same_pos_ambiguities` and compact discovery statistics; no descriptor or sidecar is published.
-- `unavailable` means the source has no validated sense-linked pronunciation mapping. Source-only assets such as `en-us:gold` declare `source_has_no_sense_linked_pronunciation_mapping`; no LexHint selector or sidecar is borrowed.
+Every pronunciation asset carries `capabilities.pronunciation_resolution` and `capabilities.pronunciation_binding` in packed G2Lex metadata, its manifest, and the catalog:
 
-Validation is status-driven: `available` requires a matching, non-empty index and selectors; the other states require a reason, no descriptor/file, and (for `unnecessary`) zero-profile discovery evidence. Catalogs expose the same state directly. Release assembly includes sidecars only for `available` assets and checks that every sidecar corresponds to exactly one such asset; release metrics report capability counts and resolver index count/bytes.
+- Resolution `available` means a non-empty schema-v3 rules artifact is available. `unnecessary` means canonical discovery found zero resolvable profiles; `unavailable` means no validated semantic rules source exists.
+- Binding `complete`, `partial`, or `unbound` reports how many shared reading IDs were safely attached to target-native values. `unavailable` means no rules were available to bind. Binding only compares normalized `(word, POS)` scope and preserves the target's original values and selectors.
+- IPA values use the built-in IPA comparator. Other encodings require an explicit reviewed comparator; unsupported encodings and uncertain equivalence abstain rather than infer a conversion.
 
+Each attempted binding writes a deterministic `.binding-report.json` sidecar. Reports name the `rules_id`, encoding, per-reading status, and aggregate status counts; manifests and catalogs contain checksum/size references. Validation verifies report totals against packed `READING:<reading_id>` selectors and their native values. Release assembly includes one rules artifact per `rules_id`, includes referenced binding reports, and aggregates per-reading binding totals alongside legacy resolver metrics. The `pronunciation_resolution` capability is independent of whether a particular target asset could bind every reading.
 ## Producer and assembler boundary
 
-Release production is split into independent jobs. Producer jobs own LexHint source resolution, source validation, transforms, eSpeak generation, packing, and manifests. The static producer builds configured assets that are not claimed by a supported eSpeak locale bundle. Each eSpeak producer builds its locale's parent assets and both derived pair members once, using the final release data version, then uploads `build/assets/` and `build/manifests/` as a workflow artifact.
+Release production is split into independent jobs. Producer jobs own LexHint source resolution, source validation, transforms, eSpeak generation, packing, and manifests. The static producer builds configured assets that are not claimed by a supported eSpeak locale bundle. Each eSpeak producer builds its locale's parent assets and both derived pair members once, using the final release data version, then uploads the complete `build/` tree, including assets, manifests, and binding reports, as a workflow artifact.
 
 The assembler downloads and merges those artifacts into the normal local `build/` layout. It validates completeness, hashes, manifest versions, built-parent inventory, paired provenance, catalog data, and one common eSpeak generator identity. `release --from-build` then stages and publishes the immutable release without downloading LexHint data, running transforms, or invoking eSpeak. Missing or stale artifacts are errors, not repair triggers.
 
