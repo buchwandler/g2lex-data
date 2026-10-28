@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import tempfile
 from collections.abc import Iterable
 from pathlib import Path
@@ -22,6 +21,7 @@ from .inventory import build_word_inventory, logical_sha256_for_keys
 from .pronresolve_binding import bind_shared_rules
 from .sources import resolve_source
 from .transforms import TransformResult, apply
+from .transforms.common import serialize_entries
 
 
 def _validate_resolver_index(
@@ -450,7 +450,7 @@ def validate_one(
                 generated_binding_report = binding_result.report.as_dict()
                 bound_input_path = Path(temp_name) / f"{record.slug}.bound.json"
                 bound_input_path.write_text(
-                    json.dumps(binding_result.entries, ensure_ascii=False, separators=(",", ":")) + "\n",
+                    serialize_entries(binding_result.entries),
                     encoding="utf-8",
                 )
                 input_path = bound_input_path

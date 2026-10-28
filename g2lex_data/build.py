@@ -23,6 +23,7 @@ from .inventory import WordInventory, build_word_inventory
 from .pronresolve_binding import bind_shared_rules
 from .sources import ResolvedSource, resolve_source
 from .transforms import TransformResult, apply
+from .transforms.common import serialize_entries
 from .transforms.espeak import EspeakPairResult, generate_espeak_pair
 from .transforms.lexhint_pronunciations import TRANSFORM_VERSION as LEXHINT_TRANSFORM_VERSION
 
@@ -460,7 +461,7 @@ def _build_source_record(
             }
             input_path = Path(temp_name) / f"{record.slug}.bound.json"
             input_path.write_text(
-                json.dumps(binding_result.entries, ensure_ascii=False, separators=(",", ":")) + "\n",
+                serialize_entries(binding_result.entries),
                 encoding="utf-8",
             )
             input_format = "json-map"

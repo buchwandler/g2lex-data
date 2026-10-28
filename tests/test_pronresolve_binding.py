@@ -186,7 +186,7 @@ def test_binding_report_is_deterministic_under_target_value_order():
 def test_generic_build_binds_shared_rules_without_rewriting_target_values(monkeypatch, tmp_path):
     source = tmp_path / "target.json"
     source.write_text(
-        json.dumps({"wug": {"DEFAULT": ["a", "b"], "NOUN": "a", "VERB": "b"}}),
+        json.dumps({"wug": {"DEFAULT": ["a", "b"], "NOUN": "a", "VERB": "b"}, "other": {"DEFAULT": "x", "NOUN": "y"}}),
         encoding="utf-8",
     )
     record = replace(
@@ -258,5 +258,7 @@ def test_generic_build_binds_shared_rules_without_rewriting_target_values(monkey
     with g2lex.open(assets / record.asset_name) as packed:
         assert packed.lookup("wug", tag="NOUN") == "a"
         assert packed.lookup("wug", tag="VERB") == "b"
+        assert packed.lookup("other", tag="DEFAULT") == "x"
+        assert packed.lookup("other", tag="NOUN") == "y"
         for profile in shared.profiles:
             assert packed.lookup("wug", tag=f"READING:{profile.reading_id}") == profile.anchor_ipa
