@@ -22,7 +22,7 @@ jobs:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: g2lex-data/pyproject.toml
-      - run: python -m pip install -e ".[dev,espeak]"
+      - run: python -m pip install -e ".[dev,espeak,phonetic]"
       - run: ruff check .
       - run: pytest
 
@@ -41,7 +41,7 @@ jobs:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: g2lex-data/pyproject.toml
-      - run: python -m pip install -e ".[dev,espeak]"
+      - run: python -m pip install -e ".[dev,espeak,phonetic]"
       - name: Download smoke LexHint dictionary
         run: lexhint dataset download az --variant dictionary --source-variant english
       - name: Install pinned eSpeak-NG

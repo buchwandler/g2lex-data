@@ -40,7 +40,7 @@ Source provenance and redistribution status are documented in [DATA_SOURCES.md](
 ## Build and validate
 
 ```bash
-python -m pip install -e ".[dev,espeak]"
+python -m pip install -e ".[dev,espeak,phonetic]"
 # Preferred English-Wiktionary sources
 for lang in ar az bg ca ceb cs de el en es fr ga he hi hu hy it ja ko la lt lv mr nl pl pt ro ru sv ta te tl tr uk ur vi zh; do
   lexhint dataset download "$lang" --variant dictionary --source-variant english
